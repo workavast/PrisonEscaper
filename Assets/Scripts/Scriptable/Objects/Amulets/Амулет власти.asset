@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5759f02698a64f9ba219d27c270fd34c, type: 3}
+  m_Name: "\u0410\u043C\u0443\u043B\u0435\u0442 \u0432\u043B\u0430\u0441\u0442\u0438"
+  m_EditorClassIdentifier: 
+  name: "\u0410\u043C\u0443\u043B\u0435\u0442 \u0432\u043B\u0430\u0441\u0442\u0438"
+  description: "\u042D\u0442\u043E\u0442 \u0430\u043C\u0443\u043B\u0435\u0442 \u043E\u0431\u043B\u0430\u0434\u0430\u0435\u0442
+    \u043C\u0430\u0433\u0438\u0447\u0435\u0441\u043A\u043E\u0439 \u0441\u0438\u043B\u043E\u0439,
+    \u043A\u043E\u0442\u043E\u0440\u0430\u044F \u0443\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
+    \u0432\u043B\u0430\u0441\u0442\u044C \u0438 \u0430\u0432\u0442\u043E\u0440\u0438\u0442\u0435\u0442
+    \u0441\u0432\u043E\u0435\u0433\u043E \u043E\u0431\u043B\u0430\u0434\u0430\u0442\u0435\u043B\u044F.
+    \u041E\u043D \u043C\u043E\u0436\u0435\u0442 \u0431\u044B\u0442\u044C \u0441\u0434\u0435\u043B\u0430\u043D
+    \u0438\u0437 \u0434\u0440\u0430\u0433\u043E\u0446\u0435\u043D\u043D\u044B\u0445
+    \u043C\u0435\u0442\u0430\u043B\u043B\u043E\u0432 \u0438 \u0438\u043C\u0435\u0442\u044C
+    \u0441\u0438\u043C\u0432\u043E\u043B\u044B \u043A\u043E\u0440\u043E\u043D\u044B
+    \u0438\u043B\u0438 \u0442\u0440\u043E\u043D\u0430.  "
+  sprite: {fileID: 1149884094, guid: 94e8c04738fe07f42ab5d74b27bb52c3, type: 3}
+  type: 3
+  Rarity: 0
+  mainStats:
+    Health: 0
+    MaxHealth: 0
+    Mana: 0
+    MaxMana: 50
+    WalkSpeed: 0
+  attackStats:
+    physicalDamage: 0
+    fireDamage: 0
+    waterDamage: 0
+    airDamage: 0
+    earthDamage: 0
+    electricityDamage: 0
+    poisonDamage: 0
+    criticalChance: 0.25
+    criticalMultiply: 0.5
+    attackCooldown: 0
+    attackRange: 1
+    statusEffects:
+      fireStatusEffect:
+        Chance: 0
+        Duration: 0
+      frozenStatusEffect:
+        Chance: 0
+        Duration: 0
+      electricityStatusEffect:
+        Chance: 0
+        Duration: 0
+      poisonStatusEffect:
+        Chance: 0
+        Duration: 0
+  resistStats:
+    resistReduceCup: 0
+    fullResistAmount: 0
+    physicalResistance: 0
+    fireResistance: 0
+    waterResistance: 0
+    airResistance: 0
+    earthResistance: 0
+    electricityResistance: 0
+    poisonResistance: 0
