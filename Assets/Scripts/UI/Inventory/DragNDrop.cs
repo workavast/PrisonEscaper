@@ -38,7 +38,7 @@ namespace UI
                             
                     _beginSlot = slot;
                     _imageHolder.enabled = true;
-                    _imageHolder.sprite = _beginSlotItem.sprite;
+                    _imageHolder.sprite = _beginSlotItem.Sprite;
                     _imageHolder.rectTransform.position = Input.mousePosition;
                 }
             }

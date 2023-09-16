@@ -45,13 +45,13 @@ namespace UI
                     _placeholder.enabled = (value is null);
 
                 _itemIcon.enabled = (value is not null);
-                _itemIcon.sprite = value ? _item.sprite : null;
+                _itemIcon.sprite = value ? _item.Sprite : null;
             }
         }
 
         public bool IsSuitableType(Item item)
         {
-            bool bySlotType = slotType == SlotType.Item || item.type == itemType;
+            bool bySlotType = slotType == SlotType.Item || item.Type == itemType;
             bool byItemType = (itemType == ItemType.Item || (item is SpecialItem));  // logical expression: (have to be special) -> (is really special)  
             return bySlotType && byItemType;
         }

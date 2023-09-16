@@ -5,20 +5,18 @@ namespace PlayerInventory.Scriptable
 {
     public abstract class SpecialItem : Item
     {
-        [SerializeField] private Stats mainStats;
-        public Stats MainStats => mainStats;
+        [field: Space]
+        [field: SerializeField] public Stats MainStats { get; private set; }
         
-        [Space]
-        [SerializeField] private AttackStats attackStats;
-        public AttackStats AttackStats => attackStats;
+        [field: Space]
+        [field: SerializeField] public AttackStats AttackStats { get; private set; }
         
-        [Space]
-        [SerializeField] private ResistStats resistStats;
-        public ResistStats ResistStats => resistStats;
+        [field: Space]
+        [field: SerializeField] public ResistStats ResistStats { get; private set; }
 
         public override string Info()
         {
-            return base.Info() + MainStats.ExtraInfo() + attackStats.ExtraInfo() + resistStats.ExtraInfo();
+            return base.Info() + MainStats.ExtraInfo() + AttackStats.ExtraInfo() + ResistStats.ExtraInfo();
         }
     }
 }

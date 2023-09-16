@@ -21,7 +21,7 @@ public class Collectable : MonoBehaviour
         set
         {
             _item = value;
-            _sprite.sprite = _item.sprite;
+            _sprite.sprite = _item.Sprite;
             var collider = gameObject.AddComponent<PolygonCollider2D>();
             collider.isTrigger = true;
             

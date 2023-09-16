@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 namespace PlayerInventory.Scriptable
 {
     [CreateAssetMenu(menuName = "Items/Item", fileName = "Item")]
     public class Item : ScriptableObject
     {
-        public string name;
-        public string description;
-        public Sprite sprite;
-        public ItemType type;
-        public ItemRarity Rarity = ItemRarity.Common;
+        [field: SerializeField] public string ItemName { get; private set; }
+        [field: SerializeField] public string Description { get; private set; }
+        [field: SerializeField] public Sprite Sprite { get; private set; }
+        [field: SerializeField] public ItemType Type { get; private set; }
+        [field: SerializeField] public ItemRarity Rarity { get; private set; }
+        
         public virtual string Info()
         {
             return "";

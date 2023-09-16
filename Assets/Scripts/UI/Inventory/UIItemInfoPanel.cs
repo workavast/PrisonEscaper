@@ -15,8 +15,8 @@ public class UIItemInfoPanel : MonoBehaviour
 
     public void Show(Item item)
     {
-        title.text = item.name;
-        description.text = item.description;
+        title.text = item.ItemName;
+        description.text = item.Description;
         itemInfo.text = item.Info();
         gameObject.SetActive(true);
     }
