@@ -24,8 +24,7 @@ namespace UI
         {
             if (!_uiInventory || !_imageHolder)
                 Start();
-
-
+            
             GameObject target = eventData.pointerCurrentRaycast.gameObject;
             if (target)
             {
@@ -62,10 +61,11 @@ namespace UI
                 if (targetSlot && _beginSlot != targetSlot && targetSlot.IsSuitableType(_beginSlotItem)) // in slot
                 {
                     Item targetSlotItem = targetSlot.Item;
-
+                        
                     if (!targetSlotItem || _beginSlot.IsSuitableType(targetSlotItem)) 
                     {
                         var endSlotItem = targetSlot.Item;
+                        
                         if (endSlotItem)
                             _beginSlot.Item = endSlotItem;
                         
@@ -84,9 +84,9 @@ namespace UI
                     _beginSlot.Item = _beginSlotItem;
                 }
             }
-            else // Not in ui (TODO: may be drop feature later)
+            else // Not in ui
             {
-                _beginSlot.Item = _beginSlotItem;
+                _uiInventory.DropItem(_beginSlot, _beginSlotItem);
             }
 
             _imageHolder.enabled = false;

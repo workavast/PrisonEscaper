@@ -2,14 +2,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(ItemDropper))]
-public class Crate : MonoBehaviour
+public class Crate : MonoBehaviour, IInteractive
 {
     [SerializeField] private GameObject interactKeyImg;
     [SerializeField] private Sprite brokenCrate;
     [SerializeField] SpriteRenderer spriteRenderer;
-    
+
+    public bool Interactable { get; private set; } = true;
     private ItemDropper _dropper;
-    private bool _hasDrop = false;
+    
     private void Awake()
     {
         interactKeyImg.SetActive(false);
@@ -18,24 +19,22 @@ public class Crate : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.CompareTag("Player") && !_hasDrop) 
+        if (col.gameObject.CompareTag("Player") && Interactable) 
             interactKeyImg.SetActive(true);
-        
-    }
-    
-    private void OnTriggerStay2D(Collider2D col)
-    {
-        if (!_hasDrop && col.CompareTag("Player") && Input.GetKey(KeyCode.F))
-        {
-            spriteRenderer.sprite = brokenCrate;
-            _dropper.DropItems();
-            _hasDrop = true;
-            interactKeyImg.SetActive(false);
-        }
     }
 
     private void OnTriggerExit2D(Collider2D col)
     {
         if (col.CompareTag("Player")) interactKeyImg.SetActive(false);
     }
+    
+    public void Interact() => OpenCrate();
+
+    private void OpenCrate()
+    {
+        spriteRenderer.sprite = brokenCrate;
+        _dropper.DropItems();
+        Interactable = false;
+        interactKeyImg.SetActive(false);
+    } 
 }

@@ -6,9 +6,11 @@ using PlayerInventory.Scriptable;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class Collectable : MonoBehaviour
+public class Collectable : MonoBehaviour, IInteractive
 {
-    [SerializeField] private bool _interractable = true;
+    [SerializeField] private GameObject interactKeyImg;
+
+    [field: SerializeField] public bool Interactable { get; private set; } = true;
     [SerializeField] private SerializableItemRarity[] glowPrefabs;
     
     private AudioSource _source;
@@ -16,14 +18,14 @@ public class Collectable : MonoBehaviour
     private SpriteRenderer _sprite;
     private VisualEffect _vfx;
     private Item _item;
+    
     public Item Item
     {
+        get => _item;
         set
         {
             _item = value;
             _sprite.sprite = _item.Sprite;
-            var collider = gameObject.AddComponent<PolygonCollider2D>();
-            collider.isTrigger = true;
             
             foreach (var glow in glowPrefabs)
             {
@@ -33,15 +35,13 @@ public class Collectable : MonoBehaviour
                     break;
                 }
             }
-            
         }
-        get => _item;
     }
 
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
-        _sprite = GetComponent<SpriteRenderer>();
+        _animator = GetComponentInChildren<Animator>();
+        _sprite = GetComponentInChildren<SpriteRenderer>();
         _source = GetComponent<AudioSource>();
         _source.Stop();
     }
@@ -51,27 +51,38 @@ public class Collectable : MonoBehaviour
         // if (_vfx)
         //     _vfx.SetFloat("Alpha", _sprite.color.a);
     }
-
-    private void OnTriggerEnter2D(Collider2D other)
+    
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        if (other.CompareTag("Player") && _interractable)
-        {
-            var player = other.GetComponent<Player>();
-            if (player.Inventory.HasBagEmptySlot())
-            {
-                _animator.Play("Picked");
-                _source.Play();
-                _interractable = false;
-                StartCoroutine(onPicked(player));
-            }
-        }
+        if (col.gameObject.CompareTag("Player") && Interactable) 
+            interactKeyImg.SetActive(true);
     }
 
-    private IEnumerator onPicked(Player player) 
+    private void OnTriggerExit2D(Collider2D col)
     {
-        player.Inventory.AddItem(_item);
+        if (col.CompareTag("Player")) 
+            interactKeyImg.SetActive(false);
+    }
+
+    public void Interact() => PickUpItem();
+    
+    private void PickUpItem()
+    {
+        if (Player.Instance.Inventory.HasBagEmptySlot())
+        {
+            _animator.Play("Picked");
+            _source.Play();
+            Interactable = false;
+            interactKeyImg.SetActive(false);
+            Player.Instance.Inventory.AddItem(_item);
+            StartCoroutine(OnPickedUp());
+        }
+    }
+    
+    private IEnumerator OnPickedUp() 
+    {
         yield return new WaitForSeconds(1);
-        Destroy(transform.parent.gameObject);
+        Destroy(gameObject);
     }
 }
 

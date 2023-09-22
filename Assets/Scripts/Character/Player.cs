@@ -1,25 +1,23 @@
-﻿using New_Folder.Healthbar;
+﻿using System.Collections.Generic;
 using PlayerInventory;
-using PlayerInventory.Scriptable;
 using UniversalStatsSystem;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Character
 {
-    public class Player : PlayerMovement
+    public sealed class Player : PlayerMovement
     {
-        [field: Header("Player")] [field: Space]
-        
-        [SerializeField] private Transform characterCenter;
+        [field: Header("Player")] 
+        [field: Space]
+        [field: SerializeField] public Transform CharacterCenter { get; private set; }
         [SerializeField] private PlayerAttack playerAttack;
-        public Inventory Inventory;
         
-        public Transform CharacterCenter => characterCenter;
+        public Inventory Inventory;
         public bool AttackIsPossible { get => CanAttack && playerAttack.canAttack; }
         public bool IsAlive { private set; get; }
 
         public static Player Instance { private set; get; }
+        private readonly List<IInteractive> _interactiveObjects = new List<IInteractive>();
 
         protected override void OnAwake()
         {
@@ -43,6 +41,22 @@ namespace Character
             StatsSystem.OnDeath.AddListener(Die);
         }
 
+        protected override void OnUpdate()
+        {
+            base.OnUpdate();
+            CheckNearestInteractiveObject();
+        }
+        
+        private void OnTriggerEnter2D(Collider2D col)
+        {
+            CheckInteractiveObjectEnter(col);
+        }
+        
+        private void OnTriggerExit2D(Collider2D col)
+        {
+            CheckInteractiveObjectExit(col);
+        }
+        
         public void Attack()
         {
             if(CanAttack)
@@ -94,5 +108,52 @@ namespace Character
 
             StatsSystem.OnStatsChanged.Invoke();
         }
+        
+        #region InteractiveWithObjects
+        private void CheckInteractiveObjectEnter(Collider2D col)
+        {
+            if (col.TryGetComponent(out IInteractive loot))
+            {
+                _interactiveObjects.Add(loot);
+            }
+        }
+
+        private void CheckInteractiveObjectExit(Collider2D col)
+        {
+            if (col.TryGetComponent(out IInteractive loot))
+            {
+                if(_interactiveObjects.Contains(loot))
+                    _interactiveObjects.Remove(loot);
+            }
+        }
+        
+        private void CheckNearestInteractiveObject()
+        {
+            if (!Input.GetKeyDown(KeyCode.F) || _interactiveObjects.Count <= 0) return;
+            
+            IInteractive nearestInteractiveObj = null;
+            foreach (var interactiveObj in _interactiveObjects)
+            {
+                if (interactiveObj.Interactable)
+                {
+                    nearestInteractiveObj = interactiveObj;
+                    break;
+                }
+            }
+            if(nearestInteractiveObj is null) return;
+            
+            float minDistance = Vector2.Distance(transform.position, nearestInteractiveObj.transform.position);
+            foreach (var loot in _interactiveObjects)
+            {
+                if (loot.Interactable && minDistance > Vector2.Distance(transform.position, loot.transform.position))
+                {
+                    nearestInteractiveObj = loot;
+                    minDistance = Vector2.Distance(transform.position, loot.transform.position);
+                }
+            }
+
+            nearestInteractiveObj.Interact();
+        }
+        #endregion
     }
 }

@@ -10,7 +10,6 @@ namespace PlayerInventory
     [Serializable]
     public class Inventory 
     {
-        // [SerializeField] private int _bagCapacity;
         [field: SerializeField] public int Size { get; private set; }
         [SerializeField] private Item[] _bagItems;
 
@@ -52,13 +51,29 @@ namespace PlayerInventory
             onBagChanged.Invoke(_bagItems);
         }
 
-        public Item DeleteItem(int indexInBag)
+        public Item RemoveItem(int indexInBag)
         {
             Item item = _bagItems[indexInBag];
             _bagItems[indexInBag] = null;
             return item;
         }
 
+        public Item RemoveSpecialItem(SlotType slotType)
+        {
+            Item item;
+
+#if UNITY_EDITOR
+            if(!SpecialSlots.ContainsKey(slotType)) throw new Exception("Special slot is undefined");
+            if(SpecialSlots[slotType] is null) throw new Exception("Special item in the slot is null");
+#endif
+            
+            item = SpecialSlots[slotType];
+            Player.Instance.RemoveItemStats(SpecialSlots[slotType]!.MainStats, SpecialSlots[slotType]!.AttackStats, SpecialSlots[slotType]!.ResistStats);
+            SpecialSlots[slotType] = null;
+            
+            return item;
+        }
+        
         public bool HasBagEmptySlot()
         {
             bool res = false;

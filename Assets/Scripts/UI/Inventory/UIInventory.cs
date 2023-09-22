@@ -13,6 +13,7 @@ namespace UI
         [SerializeField] private GameObject bagSlotsParent;
         [SerializeField] private GameObject slotPrefab;
         [SerializeField] private GameObject imageHolderPrefab;
+        [SerializeField] private GameObject collectablePrefab;
         [field: SerializeField] public UIItemInfoPanel InfoPanel { get; private set; }
 
         private int _bagSlotsCount;
@@ -91,6 +92,20 @@ namespace UI
                     Player.Instance.Inventory.RemoveSpecial(_bagCells.IndexOf(to), from.slotType);
                 }
             }
+        }
+
+        public void DropItem(UIInventorySlot slot, Item item)
+        {
+            Collectable collectable =
+                Instantiate(collectablePrefab, Player.Instance.transform.position + Vector3.up, Quaternion.identity)
+                    .GetComponentInChildren<Collectable>();
+
+            collectable.Item = item;
+            
+            if (slot.IsSpecialSlot) 
+                Player.Instance.Inventory.RemoveSpecialItem(slot.slotType);
+            else 
+                Player.Instance.Inventory.RemoveItem(_bagCells.IndexOf(slot));
         }
     }
 }

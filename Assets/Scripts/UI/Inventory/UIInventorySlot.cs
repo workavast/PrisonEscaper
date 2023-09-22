@@ -14,20 +14,8 @@ namespace UI
         [SerializeField] private Image _placeholder;
         [SerializeField] private Sprite _placeholderImage;
         
-        private Item _item;
-        private UIInventory _uiInventory;
-
         public ItemType itemType = ItemType.Item;
         public SlotType slotType = SlotType.Item;
-        private void Start()
-        {
-            _placeholder.sprite = _placeholderImage;
-            if (_placeholderImage)
-                _placeholder.enabled = true;
-
-            _uiInventory = UIInventory.Instance;
-        }
-
         public Item Item
         {
             get
@@ -40,13 +28,25 @@ namespace UI
             set
             {
                 _item = value;
-                
+
                 if (_placeholder.sprite)
                     _placeholder.enabled = (value is null);
 
                 _itemIcon.enabled = (value is not null);
                 _itemIcon.sprite = value ? _item.Sprite : null;
             }
+        }
+        
+        private Item _item;
+        private UIInventory _uiInventory;
+        
+        private void Start()
+        {
+            _placeholder.sprite = _placeholderImage;
+            if (_placeholderImage)
+                _placeholder.enabled = true;
+
+            _uiInventory = UIInventory.Instance;
         }
 
         public bool IsSuitableType(Item item)
@@ -57,8 +57,7 @@ namespace UI
         }
 
         public bool IsSpecialSlot => slotType != SlotType.Item;
-
-
+        
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (_item)
