@@ -9,63 +9,78 @@ namespace Character
 	{
 		[Header("CharacterController2D")] [Space]
 
-		[SerializeField] private bool canDoubleJump = true; //If player can double jump
-		[SerializeField] private float jumpForce = 10f; // Amount of force added when the player jumps.
+		const float DoubleJumpScaleModifier = .8f; //For reduce jump force doing second jump
+
+		#region SerializeFields
+		[SerializeField] [Range(0, .3f)] private float movementSmoothing = .05f; // How much to smooth out the movement
+		[Space]
 		[SerializeField] private float gravityForce = -9.8f;
 		[SerializeField] [Range(0, 5f)] private float gravityScale = 1f;
-
 		[Space]
-		[SerializeField] [Range(0, .3f)] private float movementSmoothing = .05f; // How much to smooth out the movement
 		[SerializeField] private float dashForce = 25f;
-
+		[Space]
+		[SerializeField] private float jumpForce = 10f; // Amount of force added when the player jumps.
+		[SerializeField] private bool canDoubleJump = true; //If player can double jump
 		[SerializeField] private bool airControl = false; // Whether or not a player can steer while jumping;
+		[Space]
 		[SerializeField] private LayerMask whatIsGround; // A mask determining what is ground to the character
-
-		[SerializeField] private Transform groundCheck; // A position marking where to check if the player is grounded.
-		[SerializeField] private Transform wallCheck; //Posicion que controla si el personaje toca una pared
-
+		[SerializeField] private Transform wallUpperCheck;
+		[SerializeField] private Transform wallLowerCheck;
+		[SerializeField] private Transform groundLedgeCheck;
+		[SerializeField] private float wallCheckWidth;
+		[Tooltip("Max height of ledge in percent of height of player collider")] 
+		[SerializeField] [Range(0,100)] private float groundLedgeMaxHeight;
+		[SerializeField] private Vector2 groundCheckSize;
 		[Space]
 		[SerializeField] protected Animator animator;
-		
 		[Space]
 		public ParticleSystem particleJumpUp; //Trail particles
 		public ParticleSystem particleJumpDown; //Explosion particles
+		#endregion
 		
-		const float GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
-		const float WallCheckRadius = .2f; // Radius of the overlap circle to determine if grounded
-		private bool _grounded; // Whether or not the player is grounded.
-		private Rigidbody2D _rigidbody2D;
-		private bool _facingRight = true; // For determining which way the player is currently facing.
-		private Vector3 _velocity = Vector3.zero;
-		private float _limitFallSpeed = 25f; // Limit fall speed
+		public bool CanAttack { get; private set; } //If player can move
 
+		#region ProtectedFields
+		protected UnityEvent OnFallEvent;
+		protected UnityEvent OnLandEvent;
+		#endregion
+		
+		#region PrivateFields
+		private Rigidbody2D _rigidbody2D;
+		private Vector3 _velocity = Vector3.zero;
+		
+		private bool _canMove = true; //If player can move
+		private bool _grounded; // Whether or not the player is grounded.
+		private bool _facingRight = true; // For determining which way the player is currently facing.
 		private bool _canDash = true;
 		private bool _isDashing = false; //If player is dashing
-		private bool _isWall = false; //If there is a wall in front of the player
+		private bool _isWallUpper = false; //If there is a wall in front of the player
+		private bool _isWallLower = false;
 		private bool _isWallSliding = false; //If player is sliding in a wall
 		private bool _oldWallSliding = false; //If player is sliding in a wall in the previous frame
 		private bool _isDead = false;
-		private float _prevVelocityX = 0f;
-
-		private bool _canMove = true; //If player can move
-		public bool CanAttack { get; private set; } //If player can move
+		private bool _limitVelOnWallJump = false; //For limit wall jump distance with low fps
 		
+		private float _prevVelocityX = 0f;
+		private float _limitFallSpeed = 25f; // Limit fall speed
 		private float _jumpWallStartX = 0;
 		private float _jumpWallDistX = 0; //Distance between player and wall
-		private bool _limitVelOnWallJump = false; //For limit wall jump distance with low fps
-		const float DoubleJumpScaleModifier = .8f; //For reduce jump force doing second jump
+		private float _colliderHeight;
+		private float _groundLedgeMaxHeight;
 
-		protected UnityEvent OnFallEvent;
-		protected UnityEvent OnLandEvent;
+		private Vector2 _wallUpperCheckSize;
+		private Vector2 _wallLowerCheckSize;
+		private Vector2 _groundLedgeCheckSize;
+		private Vector2 _groundLedgeClimbingHitPoint = new Vector2(0,0);
+		private Vector2 _groundLedgeClimbingCheckPosition = new Vector2(0,0);
+		#endregion
 
-		private Player _player;
-		
 		protected override void OnAwake()
 		{
 			base.OnAwake();
 			
 			if (gameObject.layer == whatIsGround)
-				Debug.Log("Attention!: player layer == ground layer");
+				Debug.LogWarning("Attention!: player layer == ground layer");
 			
 			if (!_rigidbody2D)
 				_rigidbody2D = GetComponent<Rigidbody2D>();
@@ -78,28 +93,35 @@ namespace Character
 
 			if (OnLandEvent == null)
 				OnLandEvent = new UnityEvent();
-
-			_player = GetComponent<Player>();
+			
+			Vector2 colliderSize = GetComponent<CapsuleCollider2D>().size;
+			colliderSize.x *= transform.localScale.x;
+			colliderSize.y *= transform.localScale.y;
+			_groundLedgeCheckSize = colliderSize;
+			_colliderHeight = colliderSize.y;
+			
+			_groundLedgeMaxHeight = colliderSize.y * (groundLedgeMaxHeight / 100);
+			_wallUpperCheckSize = _wallLowerCheckSize = new Vector2(wallCheckWidth, _colliderHeight / 2.1f);
 		}
 
-		
 		protected override void OnFixedUpdate()
 		{
 			GroundCheck();
-			WallsAndFallCheck();
+			WallsCheck();
 			LimitVelOnWallJump();
 
 			CanAttack = (_grounded && !_isDashing && !_isWallSliding && !_isDead);
 		}
-		
+
+		#region OnFixedUpdates
 		private void GroundCheck()
 		{
-			bool groundContact = Physics2D.CircleCast(groundCheck.position, GroundedRadius, 
-				Vector2.zero,0f, whatIsGround);
+			bool groundContact = Physics2D.BoxCast(transform.position, groundCheckSize, 
+				0f, Vector2.zero, 0f, whatIsGround);
 			
 			if(groundContact && !_grounded){
 				OnLandEvent.Invoke();
-				if (!_isWall && !_isDashing)
+				if (!_isWallUpper && !_isWallLower && !_isDashing)
 					particleJumpDown.Play();
 				canDoubleJump = true;
 				if (_rigidbody2D.velocity.y < 0f)
@@ -107,11 +129,7 @@ namespace Character
 			}
 			
 			_grounded = groundContact;
-		}
-		
-		private void WallsAndFallCheck()
-		{
-			_isWall = false;
+			
 			if (!_grounded)
 			{
 				OnFallEvent.Invoke();
@@ -119,13 +137,18 @@ namespace Character
 				_prevVelocityX = _rigidbody2D.velocity.x;
 
 				_rigidbody2D.velocity += new Vector2(0, gravityForce * gravityScale * Time.fixedDeltaTime);
-				
-				bool wallContact = Physics2D.CircleCast(wallCheck.position, WallCheckRadius, 
-					Vector2.zero,0f, whatIsGround);
-				
-				_isWall = wallContact;
-				if (_isWall) _isDashing = false;
 			}
+		}
+
+		private void WallsCheck()
+		{
+			_isWallUpper = Physics2D.BoxCast(wallUpperCheck.position, _wallUpperCheckSize, 
+				0f, Vector2.zero, 0f, whatIsGround);
+			
+			_isWallLower = Physics2D.BoxCast(wallLowerCheck.position, _wallLowerCheckSize, 
+				0f, Vector2.zero, 0f, whatIsGround);
+				
+			if (_isWallUpper || _isWallLower) _isDashing = false;
 		}
 
 		private void LimitVelOnWallJump()
@@ -152,10 +175,13 @@ namespace Character
 				}
 			}
 		}
+		#endregion
 
 		protected void Move(float move, bool jump, bool dash)
 		{
-			if (_canMove)
+			if(move > 0 && _facingRight || move < 0 && ! _facingRight ) GroundLedgeClimbing();
+			
+			if (_canMove && !animator.GetBool("IsGroundLedgeClimbing"))
 			{
 				MainMove(move);
 				WallSliding(move);
@@ -164,6 +190,36 @@ namespace Character
 			}
 		}
 
+		#region Moves
+		private void GroundLedgeClimbing()//TODO: need add climbing animation
+		{
+			if (!_isWallUpper && _isWallLower && _grounded && !animator.GetBool("IsGroundLedgeClimbing"))
+			{
+				RaycastHit2D raycastHit = Physics2D.Raycast(groundLedgeCheck.position, Vector2.down, 3, whatIsGround);
+				_groundLedgeClimbingHitPoint = raycastHit.point;
+				if (raycastHit.point != Vector2.zero)
+				{
+					float ledgeHeight = _colliderHeight - Vector2.Distance(groundLedgeCheck.position, raycastHit.point);
+					
+					if (ledgeHeight < 0 || ledgeHeight > _groundLedgeMaxHeight) return;
+
+					float distance = _colliderHeight/2 - ledgeHeight;
+					_groundLedgeClimbingCheckPosition = new Vector2(groundLedgeCheck.position.x,
+						groundLedgeCheck.position.y - distance + 0.05f);
+
+					bool haveFreePlace = !Physics2D.BoxCast(_groundLedgeClimbingCheckPosition, _groundLedgeCheckSize, 
+						0f, Vector2.zero, 0f, whatIsGround);
+					if (haveFreePlace)
+					{
+						transform.position = raycastHit.point;
+						_rigidbody2D.velocity = Vector2.zero;
+						
+						animator.SetBool("IsGroundLedgeClimbing", true);
+					}
+				}
+			}
+		}
+		
 		private void MainMove(float move)
 		{
 			//only control the player if grounded or airControl is turned on
@@ -192,7 +248,7 @@ namespace Character
 		
 		private void WallSliding(float move)
 		{
-			if (_isWall && !_grounded)
+			if (_isWallUpper && !_grounded)
 			{
 				if (!_oldWallSliding && _rigidbody2D.velocity.y < 0 || _isDashing)
 				{
@@ -240,7 +296,7 @@ namespace Character
 				_rigidbody2D.velocity = new Vector2(transform.localScale.x * dashForce, 0);
 			}
 
-			if (_isWall && !_grounded && !_isWallSliding && dash && _canDash)
+			if (_isWallUpper && !_grounded && !_isWallSliding && dash && _canDash)
 			{
 				_isWallSliding = false;
 				animator.SetBool("IsWallSliding", false);
@@ -271,7 +327,7 @@ namespace Character
 				_rigidbody2D.AddForce(new Vector2(0f, jumpForce * DoubleJumpScaleModifier), ForceMode2D.Impulse);
 				animator.SetBool("IsDoubleJumping", true);
 			}
-			else if (_isWall && !_grounded && jump && _isWallSliding)
+			else if (_isWallUpper && !_grounded && jump && _isWallSliding)
 			{
 				animator.SetBool("IsJumping", true);
 				animator.SetBool("JumpUp", true);
@@ -285,7 +341,8 @@ namespace Character
 				_oldWallSliding = false;
 			}
 		}
-		
+		#endregion
+
 		private void Flip()
 		{
 			// Switch the way the player is labelled as facing.
@@ -308,7 +365,8 @@ namespace Character
 			StartCoroutine(Stun(0.25f));
 			StartCoroutine(MakeInvincible(1f));
 		}
-
+		
+		#region Coroutines
 		IEnumerator DashCooldown()
 		{
 			animator.SetBool("IsDashing", true);
@@ -353,11 +411,21 @@ namespace Character
 			Destroy(gameObject);
 			UIController.SetWindow(ScreenEnum.GameplayMenuScreen);
 		}
+		#endregion
 
+
+#if UNITY_EDITOR
 		private void OnDrawGizmosSelected()
 		{
-			Gizmos.DrawWireSphere(groundCheck.position, GroundedRadius);
-			Gizmos.DrawWireSphere(wallCheck.position, WallCheckRadius);
-		}
+			Gizmos.DrawWireCube(transform.position, groundCheckSize);
+			
+			if(wallUpperCheck) Gizmos.DrawWireCube(wallUpperCheck.position, _wallUpperCheckSize);
+			if(wallLowerCheck) Gizmos.DrawWireCube(wallLowerCheck.position, _wallLowerCheckSize);
+			if(groundLedgeCheck) Gizmos.DrawLine(groundLedgeCheck.position, groundLedgeCheck.position + Vector3.down * 3);
+
+			Gizmos.DrawWireCube(_groundLedgeClimbingHitPoint, new Vector2(0.1f,0.1f));
+			Gizmos.DrawWireCube(_groundLedgeClimbingCheckPosition, _groundLedgeCheckSize);
+		}	
+#endif
 	}
 }
