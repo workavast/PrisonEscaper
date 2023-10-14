@@ -333,6 +333,9 @@ MonoBehaviour:
   attackCooldown: 2
   attackPoint: {fileID: 3922831096558359052}
   target: {fileID: 0}
+  minRangeDistAttack: 12
+  throwableObject: {fileID: 2424522076249060556, guid: 73778ccc44e7f0f4993a8b59979695f6, type: 3}
+  attackType: 0
   wallFrontCheckPoint: {fileID: 7313414356875064491}
   wallFrontCheckLayers:
     serializedVersion: 2

@@ -360,6 +360,14 @@ PrefabInstance:
       propertyPath: test
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6078111740398473626, guid: 5d5731fa2cec7ec4db12a61909d90dc4, type: 3}
+      propertyPath: enemiesPrefabs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6078111740398473626, guid: 5d5731fa2cec7ec4db12a61909d90dc4, type: 3}
+      propertyPath: enemiesPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 382606478250803172, guid: b9fe70ecfba4b40419f25fe8131aecfd, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
