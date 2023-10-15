@@ -13,23 +13,55 @@ namespace Character
 		public Vector2 direction;
 		public bool hasHit = false;
 		public float speed = 10f;
+		public bool isPlayerWeapon = true;
 
+		public Transform owner;
 		void FixedUpdate()
 		{
 			if (!hasHit)
 				GetComponent<Rigidbody2D>().velocity = direction * speed;
 		}
 
-		void OnCollisionEnter2D(Collision2D collision)
+		private IEnumerator RemoveProjectile()
 		{
-			if (collision.gameObject.tag == "Enemy")
+			yield return new WaitForSeconds(5f);
+			if (gameObject) Destroy(gameObject);
+		}
+
+		private void Start()
+        {
+			if (direction.x < 0)
 			{
-				collision.gameObject.GetComponent<Enemy>().TakeDamage(AttackStats);
-				Destroy(gameObject);
+				transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
 			}
-			else if (collision.gameObject.tag != "Player")
+			StartCoroutine(RemoveProjectile());
+		}
+
+        void OnCollisionEnter2D(Collision2D collision)
+		{
+			if (isPlayerWeapon) 
 			{
-				Destroy(gameObject);
+				if (collision.gameObject.tag == "Enemy")
+				{
+					collision.gameObject.GetComponent<Enemy>().TakeDamage(AttackStats);
+					Destroy(gameObject);
+				}
+				else if (collision.gameObject.tag != "Player")
+				{
+					Destroy(gameObject);
+				}
+			}
+			else
+			{
+				if (collision.gameObject.tag == "Player")
+				{
+					collision.gameObject.GetComponent<Player>().TakeDamage(new AttackStats(2), transform.position);
+					Destroy(gameObject);
+				}
+				else if (collision.transform != owner)
+				{
+					Destroy(gameObject);
+				}
 			}
 		}
 	}

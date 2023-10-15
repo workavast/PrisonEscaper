@@ -23,7 +23,11 @@ public class Enemy : CharacterBase
     [SerializeField] private float attackCooldown;
     [SerializeField] private Transform attackPoint;
     [SerializeField] private Transform target;
-    
+    [SerializeField]  private float minRangeDistAttack;
+    [SerializeField] private GameObject throwableObject;
+    private enum AttackType { Melee, Ranged }
+    [SerializeField] private AttackType attackType;
+
     [Header("Orientation checks")]
     [SerializeField] private Transform wallFrontCheckPoint;
     [SerializeField] private LayerMask wallFrontCheckLayers;
@@ -41,7 +45,8 @@ public class Enemy : CharacterBase
     [Header("Other")]
     [SerializeField] private Animator animator;
     [SerializeField] private AudioClip walk, attack;
-    
+
+
     private AudioSource _source;
     private Vector3 _startPosition;
     private ItemDropper _itemDropper;
@@ -99,7 +104,116 @@ public class Enemy : CharacterBase
             Move();
     }
 
+
+    public void ThrowWeapon()
+    {
+        GameObject throwableWeapon = GameObject.Instantiate(throwableObject,
+            transform.position + new Vector3(transform.localScale.x * 0.5f, 0),
+            Quaternion.identity) as GameObject;
+        Vector2 direction = new Vector2(transform.localScale.x, 0);
+        ThrowableWeapon weaponObj = throwableWeapon.GetComponent<ThrowableWeapon>();
+        weaponObj.speed = 14;
+        weaponObj.direction = direction;
+        weaponObj.isPlayerWeapon = false;
+        weaponObj.owner = transform;
+        throwableWeapon.name = "ThrowableWeapon";
+    }
+
+    IEnumerator DistanceAttack(float minDelay, float maxDelay)
+    {
+        _attacking = true;
+        yield return new WaitForSeconds(Random.Range(minDelay, maxDelay));
+        if (!target || !transform) yield break;
+        float directionToTarget = target.position.x - transform.position.x;
+        if (Mathf.Sign(directionToTarget) != Mathf.Sign(transform.localScale.x))
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
+
+        _source.clip = attack;
+        _source.loop = false;
+        _source.Play();
+        Attack();
+        ThrowWeapon();
+    }
+
+    private bool ComparePosition()
+    {
+        float directionToTarget = target.position.x - transform.position.x;
+        if (Mathf.Sign(directionToTarget) == Mathf.Sign(transform.localScale.x)) return true;
+        return false;
+    }
+
     private void Move()
+    {
+        if (target == null) return;
+
+        float distanceToTargetX = Mathf.Abs(target.position.x - transform.position.x);
+        float distanceToTargetY = Mathf.Abs(target.position.y - transform.position.y);
+        float directionToTarget = target.position.x - transform.position.x;
+        if (distanceToTargetX < patrolRange.x && distanceToTargetY < patrolRange.y)
+        {
+            if (!_attacking)
+            {
+                switch (attackType)
+                {
+                    case AttackType.Melee:
+                        if ((!WallFrontCheck() || !ComparePosition()) && GroundCheck())
+                        {
+                            Follow();
+                        }
+                        else
+                        {
+                            _rigidbody.velocity = Vector2.zero;
+                        }
+
+                        var distance = Vector2.Distance(target.position, attackPoint.position);
+                        if (distance < attackRange)
+                        {
+                            _source.clip = attack;
+                            _source.loop = false;
+                            _source.Play();
+                            Attack();
+                        }
+                        break;
+                    case AttackType.Ranged:
+                        if (distanceToTargetX < minRangeDistAttack && (!WallFrontCheck() || ComparePosition()) && GroundCheck() && Random.value>=0.005f)
+                        {
+                            Retreat();
+                        }
+                        else
+                        {
+                            StartCoroutine(DistanceAttack(0.2f, 1.5f));
+                        }
+                        break;
+                }
+            }
+        }
+        else
+        {
+            if (!_stay)
+            {
+                Patrol();
+            }
+            else
+            {
+                _rigidbody.velocity = Vector2.zero;
+            }
+        }
+
+        var localScale = transform.localScale;
+        if (((_rigidbody.velocity.x < 0 && localScale.x > 0) || (_rigidbody.velocity.x > 0 && localScale.x < 0))
+            && Mathf.Abs(_rigidbody.velocity.x) > 0.001f)
+        {
+            transform.localScale = new Vector3(localScale.x * -1, localScale.y, localScale.z);
+        }
+
+
+        animator.SetFloat("velocity", Math.Abs(_rigidbody.velocity.x / StatsSystem.MainStats.WalkSpeed));
+    }
+
+
+    /*private void Move()
     {
         if(target == null) return;
         
@@ -149,7 +263,7 @@ public class Enemy : CharacterBase
 
         
         animator.SetFloat("velocity", Math.Abs(_rigidbody.velocity.x / StatsSystem.MainStats.WalkSpeed));
-    }
+    }*/
     private void Patrol()
     {
         bool outOfBounds;
@@ -183,13 +297,24 @@ public class Enemy : CharacterBase
         return Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundCheckLayers);
     }
 
-    private void Follow()
+    private void MoveProto(int direction)
     {
         if (transform.position.x > target.position.x)
-            _rigidbody.velocity = new Vector2(-StatsSystem.MainStats.WalkSpeed, _rigidbody.velocity.y);
+            _rigidbody.velocity = new Vector2(-StatsSystem.MainStats.WalkSpeed * direction, _rigidbody.velocity.y);
         else
-            _rigidbody.velocity = new Vector2(StatsSystem.MainStats.WalkSpeed, _rigidbody.velocity.y);
+            _rigidbody.velocity = new Vector2(StatsSystem.MainStats.WalkSpeed * direction, _rigidbody.velocity.y);
     }
+
+    private void Retreat()
+    {
+        MoveProto(-1);
+    }
+
+    private void Follow()
+    {
+        MoveProto(1);
+    }
+
 
     private void Attack()
     {
@@ -204,7 +329,7 @@ public class Enemy : CharacterBase
         base.TakeDamage(attackStats);
         
         StatsSystem.TakeDamage(attackStats);
-        Debug.Log(StatsSystem.MainStats.Health);
+      //  Debug.Log(StatsSystem.MainStats.Health);
         animator.SetTrigger("Hurt");
         StartCoroutine(Stun());
 
