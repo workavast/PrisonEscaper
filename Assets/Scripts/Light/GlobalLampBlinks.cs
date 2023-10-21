@@ -11,9 +11,8 @@ public class GlobalLampBlinks : MonoBehaviour
     [SerializeField] [Range(0,1)] private float frequency;
     [SerializeField] [Range(0,1)] private float minLampBlinkPercent;
     [SerializeField] [Range(0,1)] private float maxLampBlinkPercent;
-
     
-    private List<Animator> _lamps = new List<Animator>();
+    private List<Animator> _lamps = new();
 
     private void Awake()
     {
