@@ -2,6 +2,7 @@
 using PlayerInventory;
 using UniversalStatsSystem;
 using UnityEngine;
+using System.Collections;
 
 namespace Character
 {
@@ -15,9 +16,12 @@ namespace Character
         public Inventory Inventory;
         public bool AttackIsPossible { get => CanAttack && playerAttack.canAttack; }
         public bool IsAlive { private set; get; }
+        public bool IsHidden { private set; get; }
 
         public static Player Instance { private set; get; }
         private readonly List<IInteractive> _interactiveObjects = new List<IInteractive>();
+
+        private Coroutine _sneakTimeout;
 
         protected override void OnAwake()
         {
@@ -59,8 +63,49 @@ namespace Character
         
         public void Attack()
         {
-            if(CanAttack)
+            if (CanAttack)
+            {
                 playerAttack.Attack();
+            }
+        }
+
+        IEnumerator SneakEnd()
+        {
+            yield return new WaitForSeconds(20f);
+            if(IsHidden)ToggleSneak(false);
+        }
+
+        public void ToggleSneak(bool isActivate)
+        {
+            SpriteRenderer sr = gameObject.GetComponentInChildren<SpriteRenderer>();
+            Color tempColor = sr.color;
+            tempColor.a = isActivate?0.5f:1f;
+            sr.color = tempColor;
+            IsHidden = isActivate;
+
+            if (_sneakTimeout != null)
+            {
+                StopCoroutine(_sneakTimeout);
+                _sneakTimeout = null;
+            }
+
+            if (isActivate)
+            {
+                _sneakTimeout = StartCoroutine(SneakEnd());
+            }
+        }
+
+        public void UseAbility(int spellNum)
+        {
+            switch (spellNum)
+            {
+                case 1: // скрытность
+                    ToggleSneak(true);
+                    break;
+                default:
+                    Debug.LogError("Spell not found");
+                    break;
+            }
         }
 
         public void ThrowWeapon()

@@ -33,6 +33,8 @@ namespace Character
 			Vector2 direction = new Vector2(playerTransform.localScale.x, 0);
 			throwableWeapon.GetComponent<ThrowableWeapon>().direction = direction;
 			throwableWeapon.name = "ThrowableWeapon";
+
+			if (_player.IsHidden) _player.ToggleSneak(false);
 		}
 		
 		//TODO: make it possible to damage enemies
@@ -49,7 +51,9 @@ namespace Character
 				if (target.transform.CompareTag("Enemy"))
 					target.GetComponent<IDamageable>().TakeDamage(attackStats);
 			}
-			
+
+			if (_player.IsHidden) _player.ToggleSneak(false);
+
 			canAttack = false;
 			animator.SetBool("IsAttacking", true);
 			animator.SetInteger("numAttack", _attackVariantCycle++ % attacksCount);

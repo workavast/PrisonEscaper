@@ -56,6 +56,7 @@ public class Enemy : CharacterBase
     private bool _following, _attacking;
     private float _direction = 1f;
     private bool _frozen = false;
+    private float _agrTimeout = 0;
 
     protected override void OnAwake()
     {
@@ -81,8 +82,8 @@ public class Enemy : CharacterBase
         base.OnStart();
 
         _startPosition = transform.position;
-        
-        if(target == null)
+
+        if (target == null)
             target = Player.Instance.CharacterCenter;
     }
     
@@ -143,15 +144,33 @@ public class Enemy : CharacterBase
         if (Mathf.Sign(directionToTarget) == Mathf.Sign(transform.localScale.x)) return true;
         return false;
     }
-
+    private bool CheckFloorDiff()
+    {
+        const float allowedDifference = 0.5f;
+        float errorMargin = Player.Instance.IsGrounded()? 2f:6f;
+        float difference = Mathf.Abs(target.position.y - transform.position.y);
+        bool res = difference >= (allowedDifference - errorMargin) && difference <= (allowedDifference + errorMargin);
+        if (!res)
+        {
+            _agrTimeout = Time.time;
+        }
+            return res;
+    }
+    private bool TimeoutCheck()
+    {
+        if (_agrTimeout + 1f < Time.time)
+        { 
+            return true; 
+        }
+        return false;
+    }
     private void Move()
     {
         if (target == null) return;
 
         float distanceToTargetX = Mathf.Abs(target.position.x - transform.position.x);
         float distanceToTargetY = Mathf.Abs(target.position.y - transform.position.y);
-        float directionToTarget = target.position.x - transform.position.x;
-        if (distanceToTargetX < patrolRange.x && distanceToTargetY < patrolRange.y)
+        if (CheckFloorDiff() && distanceToTargetX < patrolRange.x && distanceToTargetY < patrolRange.y && TimeoutCheck() && !Player.Instance.IsHidden)
         {
             if (!_attacking)
             {
@@ -212,58 +231,6 @@ public class Enemy : CharacterBase
         animator.SetFloat("velocity", Math.Abs(_rigidbody.velocity.x / StatsSystem.MainStats.WalkSpeed));
     }
 
-
-    /*private void Move()
-    {
-        if(target == null) return;
-        
-        float distanceToTargetX = Mathf.Abs(target.position.x - transform.position.x);
-        float distanceToTargetY = Mathf.Abs(target.position.y - transform.position.y);
-        if (distanceToTargetX < patrolRange.x && distanceToTargetY < patrolRange.y)
-        {
-            if (!_attacking)
-            {
-                if (!WallFrontCheck() && GroundCheck())
-                {
-                    Follow();
-                }
-                else
-                {
-                    _rigidbody.velocity = Vector2.zero;
-                }
-                
-                var distance = Vector2.Distance(target.position, attackPoint.position);
-                if (distance < attackRange)
-                {
-                    _source.clip = attack;
-                    _source.loop = false;
-                    _source.Play();
-                    Attack();
-                }
-            }
-        }
-        else
-        {
-            if (!_stay)
-            {
-                Patrol();
-            }
-            else
-            {
-                _rigidbody.velocity = Vector2.zero;
-            }
-        }
-
-        var localScale = transform.localScale;
-        if (((_rigidbody.velocity.x < 0 && localScale.x > 0) || (_rigidbody.velocity.x > 0 && localScale.x < 0))
-            && Mathf.Abs(_rigidbody.velocity.x) > 0.001f)
-        {
-            transform.localScale = new Vector3(localScale.x * -1, localScale.y, localScale.z);
-        }
-
-        
-        animator.SetFloat("velocity", Math.Abs(_rigidbody.velocity.x / StatsSystem.MainStats.WalkSpeed));
-    }*/
     private void Patrol()
     {
         bool outOfBounds;

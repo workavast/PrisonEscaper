@@ -365,7 +365,12 @@ namespace Character
 			StartCoroutine(Stun(0.25f));
 			StartCoroutine(MakeInvincible(1f));
 		}
-		
+
+		public bool IsGrounded()
+		{
+			return _grounded;
+		}
+
 		#region Coroutines
 		IEnumerator DashCooldown()
 		{
