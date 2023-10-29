@@ -43,6 +43,17 @@ namespace UniversalStatsSystem
             OnHealthStatsChange?.Invoke();
         }
 
+        public bool SetMana(float value)
+        {
+            if ((MainStats.Mana + value) < 0)
+            {
+                return false;
+            }
+            MainStats.Mana = Math.Min(MainStats.Mana + value, MainStats.MaxMana);
+            OnManaStatsChange?.Invoke();
+            return true;
+        }
+
         public void TakeDamage(AttackStats attackStats)
         {
             if (isInvincible)

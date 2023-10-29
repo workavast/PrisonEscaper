@@ -97,6 +97,15 @@ public class Enemy : CharacterBase
         _frozen = false;
     }
 
+    public void SetFrozenStatus(bool is_activate)
+    {
+        if (is_activate)
+        {
+            FrozenStatus();
+        }
+        else UnFrozenStatus();
+    }
+
     protected override void OnFixedUpdate()
     {
         base.OnFixedUpdate();

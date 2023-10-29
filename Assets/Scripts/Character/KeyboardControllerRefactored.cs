@@ -32,8 +32,15 @@ namespace Character
             if (Input.GetKeyDown(KeyCode.LeftShift))
                 _player.Dash();
 
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-                _player.UseAbility(1);
+            for (int i = 1; i <= 9; i++)
+            {
+                KeyCode key = (KeyCode)System.Enum.Parse(typeof(KeyCode), "Alpha" + i);
+                if (Input.GetKeyDown(key))
+                {
+                    _player.UseAbility(i);
+                    break;
+                }
+            }
 
             if (_player && _player.IsAlive && _uiInventory)
             {
