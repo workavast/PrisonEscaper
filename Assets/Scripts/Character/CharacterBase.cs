@@ -57,6 +57,7 @@ public abstract class CharacterBase : MonoBehaviour, IDamageable, IStatusEffecta
         AddStatusEffect(attackStats);
     }
 
+
     public virtual void AddStatusEffect(AttackStats attackStats)
     {
         StatusEffectSystem.AddStatusEffects(attackStats);

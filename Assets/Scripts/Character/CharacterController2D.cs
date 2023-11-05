@@ -181,7 +181,7 @@ namespace Character
 		{
 			if(move > 0 && _facingRight || move < 0 && ! _facingRight ) GroundLedgeClimbing();
 			
-			if (_canMove && !animator.GetBool("IsGroundLedgeClimbing"))
+			if (_canMove)// && !animator.GetBool("IsGroundLedgeClimbing"))
 			{
 				MainMove(move);
 				WallSliding(move);

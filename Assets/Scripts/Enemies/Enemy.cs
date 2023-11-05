@@ -57,6 +57,7 @@ public class Enemy : CharacterBase
     private float _direction = 1f;
     private bool _frozen = false;
     private float _agrTimeout = 0;
+    private bool IsDead { get => !CheckLifeState(); }
 
     protected override void OnAwake()
     {
@@ -117,6 +118,7 @@ public class Enemy : CharacterBase
 
     public void ThrowWeapon()
     {
+        if (IsDead) return;
         GameObject throwableWeapon = GameObject.Instantiate(throwableObject,
             transform.position + new Vector3(transform.localScale.x * 0.5f, 0),
             Quaternion.identity) as GameObject;
@@ -133,7 +135,7 @@ public class Enemy : CharacterBase
     {
         _attacking = true;
         yield return new WaitForSeconds(Random.Range(minDelay, maxDelay));
-        if (!target || !transform) yield break;
+        if (!target || !transform || IsDead) yield break;
         float directionToTarget = target.position.x - transform.position.x;
         if (Mathf.Sign(directionToTarget) != Mathf.Sign(transform.localScale.x))
         {
@@ -175,7 +177,7 @@ public class Enemy : CharacterBase
     }
     private void Move()
     {
-        if (target == null) return;
+        if (target == null && IsDead) return;
 
         float distanceToTargetX = Mathf.Abs(target.position.x - transform.position.x);
         float distanceToTargetY = Mathf.Abs(target.position.y - transform.position.y);
@@ -294,25 +296,49 @@ public class Enemy : CharacterBase
 
     private void Attack()
     {
+        if (IsDead) return;
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
         _attacking = true;
         animator.SetTrigger("Attack");
         StartCoroutine(ResetAttackFlag(attackCooldown / StatsSystem.AttackStats.attackCooldown));
     }
 
-    public override void TakeDamage(AttackStats attackStats)
+    private void TakeDamageCont()
     {
-        base.TakeDamage(attackStats);
-        
-        StatsSystem.TakeDamage(attackStats);
-      //  Debug.Log(StatsSystem.MainStats.Health);
         animator.SetTrigger("Hurt");
         StartCoroutine(Stun());
 
-        if (StatsSystem.MainStats.Health <= 0)
+        if (IsDead)
         {
             StartCoroutine(Die());
         }
+    }
+    private bool CheckLifeState()
+    {
+        return StatsSystem.MainStats.Health > 0;
+    }
+
+    public override void TakeDamage(AttackStats attackStats)
+    {
+        if (IsDead) return;
+        base.TakeDamage(attackStats);
+        StatsSystem.TakeDamage(attackStats);
+
+        TakeDamageCont();
+    }
+
+    public void TakeDamage(float damageValue, StatsSystem.DamageType damageType)
+    {
+        if (IsDead) return;
+        StatsSystem.TakeDamage(damageValue, damageType);
+        TakeDamageCont();
+    }
+
+    public void TakeDamage(float damageValue) // урон в обход резистов
+    {
+        if (IsDead) return;
+        StatsSystem.TakeDamage(damageValue);
+        TakeDamageCont();
     }
 
     private IEnumerator Stun()
@@ -322,13 +348,31 @@ public class Enemy : CharacterBase
         _canMove = true;
     }
 
+    /*  private IEnumerator Die()
+      {
+          animator.SetTrigger("Dead");
+          yield return new WaitForSeconds(.4f);
+          Destroy(gameObject);
+          _itemDropper.DropItems();
+      }*/
+
     private IEnumerator Die()
     {
         animator.SetTrigger("Dead");
-        yield return new WaitForSeconds(.4f);
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        float animOffset = 0f;
+        while (!stateInfo.IsName("Dead"))
+        {
+            yield return new WaitForSeconds(0.01f);
+            stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            animOffset += 0.01f;
+        }
+        float waitTime = stateInfo.length - (0.1f + animOffset);
+        yield return new WaitForSeconds(waitTime);
         Destroy(gameObject);
         _itemDropper.DropItems();
     }
+
 
     private IEnumerator ResetAttackFlag(float attackCooldown)
     {

@@ -88,7 +88,8 @@ namespace Character
 
         private void TreesTaking()
         {
-            float spell_price = 15f, spell_duration = 8f;
+            float spell_price = 15f, spell_duration = 8f, 
+                  spell_damage = player.StatsSystem.AttackStats.earthDamage * 0.1f + 2f;
          
             GameObject _near_enemy = FindClosestEnemy();
             if (!_near_enemy) return;
@@ -97,7 +98,7 @@ namespace Character
 
             if (player.StatsSystem.SetMana(-spell_price))
             {
-                near_enemy.TakeDamage(new AttackStats(player.StatsSystem.AttackStats.earthDamage));
+                near_enemy.TakeDamage(spell_damage, StatsSystem.DamageType.Earth);
                 if (near_enemy.Health > 0)
                 {
                     near_enemy.SetFrozenStatus(true);

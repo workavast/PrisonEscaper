@@ -30,6 +30,19 @@ namespace UniversalStatsSystem
         public event Action OnHealthStatsChange;
         public event Action OnManaStatsChange;
 
+        [HideInInspector]
+        public enum DamageType
+        {
+            None,
+            Physical,
+            Fire,
+            Water,
+            Air,
+            Earth,
+            Electricity,
+            Poison
+        }
+
         public void Init()
         {
             MainStats.Health = MainStats.MaxHealth;
@@ -54,18 +67,67 @@ namespace UniversalStatsSystem
             return true;
         }
 
-        public void TakeDamage(AttackStats attackStats)
+        private float CalculateTypedDamage(float damageValue, DamageType damageType)
+        {
+            float finalDamage = damageValue, damageReduction = 0;
+
+            switch (damageType)
+            {
+                case DamageType.Physical:
+                    damageReduction = ResistStats.physicalResistance;
+                    break;
+                case DamageType.Fire:
+                    damageReduction = ResistStats.fireResistance;
+                    break;
+                case DamageType.Water:
+                    damageReduction = ResistStats.waterResistance;
+                    break;
+                case DamageType.Air:
+                    damageReduction = ResistStats.airResistance;
+                    break;
+                case DamageType.Earth:
+                    damageReduction = ResistStats.earthResistance;
+                    break;
+                case DamageType.Electricity:
+                    damageReduction = ResistStats.electricityResistance;
+                    break;
+                case DamageType.Poison:
+                    damageReduction = ResistStats.poisonResistance;
+                    break;
+            }
+
+            float effectiveResistance = Mathf.Clamp(damageReduction, 0, resistStats.fullResistAmount);
+            float resistMultiplier = 1 - Mathf.Min(effectiveResistance / resistStats.fullResistAmount, resistStats.resistReduceCup);
+
+            finalDamage *= resistMultiplier;
+            return finalDamage;
+        }
+
+        private void TakeDamageCont(float damageMagnitude)
         {
             if (isInvincible)
                 return;
-
-            float damageMagnitude = attackStats * ResistStats;
             MainStats.Health -= damageMagnitude;
             OnHealthStatsChange?.Invoke();
             if (MainStats.Health < 0)
                 OnDeath.Invoke();
 
             Debug.Log($"[Stats system]: total taken damage: {damageMagnitude}");
+        }
+
+        public void TakeDamage(float damageValue, DamageType damageType)
+        {
+            TakeDamageCont(CalculateTypedDamage(damageValue, damageType));
+        }
+
+        public void TakeDamage(float damageValue)
+        {
+            TakeDamageCont(damageValue);
+        }
+
+        public void TakeDamage(AttackStats attackStats)
+        {
+            TakeDamageCont(attackStats * ResistStats);
         }
 
         public AttackStats GetDamage()

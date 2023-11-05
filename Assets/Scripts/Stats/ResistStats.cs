@@ -7,8 +7,8 @@ namespace UniversalStatsSystem
     [System.Serializable]
     public struct ResistStats
     {
-        [SerializeField] [Range(0, 1)] private float resistReduceCup; // 0.8 = 80% 
-        [SerializeField] private float fullResistAmount; // 1000
+        [SerializeField] [Range(0, 1)] public float resistReduceCup; // 0.8 = 80% 
+        [SerializeField] public float fullResistAmount; // 1000
         
         [Space] 
         public float physicalResistance;
