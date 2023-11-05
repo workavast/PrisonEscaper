@@ -43,18 +43,33 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Deep Background
+  - name: MainBackground
+    uniqueID: 2807900235
+    locked: 0
+  - name: DeepBackground
     uniqueID: 1188977425
     locked: 0
-  - name: Background
-    uniqueID: 2274948771
+  - name: MiddleBackground
+    uniqueID: 2311386189
     locked: 0
-  - name: Middle
+  - name: FrontBackground
+    uniqueID: 410059017
+    locked: 0
+  - name: DeepMiddleground
+    uniqueID: 816976409
+    locked: 0
+  - name: MiddleMiddleground
     uniqueID: 2688346429
     locked: 0
-  - name: Frontground
-    uniqueID: 1967347483
+  - name: FrontMiddleground
+    uniqueID: 1217337539
     locked: 0
-  - name: Deep Frontground
+  - name: DeepFrontground
     uniqueID: 2997435305
+    locked: 0
+  - name: MiddleFrontground
+    uniqueID: 2532798083
+    locked: 0
+  - name: FrontFrontground
+    uniqueID: 2237705925
     locked: 0

@@ -154,7 +154,7 @@ namespace LevelGeneration
 #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
-            if (leftUpSizePoint is null || rightDownSizePoint is null) return;
+            if (leftUpSizePoint == null || rightDownSizePoint == null) return;
 
             switch (blockType)
             {
