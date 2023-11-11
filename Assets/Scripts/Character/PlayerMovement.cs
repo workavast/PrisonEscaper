@@ -60,6 +60,11 @@ namespace Character
 			_jump = true;
 		}
 
+		public void PlatformDrop()
+		{
+			IsPlatformDrop = true;
+		}
+
 		public void Dash()
 		{
 			_dash = true;

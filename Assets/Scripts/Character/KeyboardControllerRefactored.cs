@@ -19,6 +19,9 @@ namespace Character
         {
             
             _player.Move(Input.GetAxis("Horizontal"));
+            
+            if(Input.GetKeyDown(KeyCode.S))
+                _player.PlatformDrop();
 
             if (Input.GetMouseButtonDown(1))
                 _player.Attack();

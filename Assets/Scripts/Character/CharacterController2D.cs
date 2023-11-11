@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -20,6 +21,7 @@ namespace Character
 		[SerializeField] private float dashForce = 25f;
 		[Space]
 		[SerializeField] private float jumpForce = 10f; // Amount of force added when the player jumps.
+		[SerializeField] private float limitFallSpeed = 10f; // Limit fall speed
 		[SerializeField] private bool canDoubleJump = true; //If player can double jump
 		[SerializeField] private bool airControl = false; // Whether or not a player can steer while jumping;
 		[Space]
@@ -41,6 +43,7 @@ namespace Character
 		public bool CanAttack { get; private set; } //If player can move
 
 		#region ProtectedFields
+		protected bool IsPlatformDrop;
 		protected UnityEvent OnFallEvent;
 		protected UnityEvent OnLandEvent;
 		#endregion
@@ -56,15 +59,9 @@ namespace Character
 		private bool _isDashing = false; //If player is dashing
 		private bool _isWallUpper = false; //If there is a wall in front of the player
 		private bool _isWallLower = false;
-		private bool _isWallSliding = false; //If player is sliding in a wall
-		private bool _oldWallSliding = false; //If player is sliding in a wall in the previous frame
 		private bool _isDead = false;
-		private bool _limitVelOnWallJump = false; //For limit wall jump distance with low fps
-		
-		private float _prevVelocityX = 0f;
-		private float _limitFallSpeed = 25f; // Limit fall speed
-		private float _jumpWallStartX = 0;
-		private float _jumpWallDistX = 0; //Distance between player and wall
+		private bool _isJump;
+
 		private float _colliderHeight;
 		private float _groundLedgeMaxHeight;
 
@@ -73,6 +70,10 @@ namespace Character
 		private Vector2 _groundLedgeCheckSize;
 		private Vector2 _groundLedgeClimbingHitPoint = new Vector2(0,0);
 		private Vector2 _groundLedgeClimbingCheckPosition = new Vector2(0,0);
+		
+		private Vector2 _platformDescentRayCastLocalStart;
+		private Vector2 _platformDecentHitWorldPoint = new Vector2(0,0);
+		private Vector2 _platformDecentCheckBoxLocalPosition = new Vector2(0,0);
 		#endregion
 
 		protected override void OnAwake()
@@ -93,24 +94,28 @@ namespace Character
 
 			if (OnLandEvent == null)
 				OnLandEvent = new UnityEvent();
+
+			var capsuleCollider2D = GetComponent<CapsuleCollider2D>();
+			Vector2 colliderSize = capsuleCollider2D.size;
+			Vector2 localScale = transform.localScale;
 			
-			Vector2 colliderSize = GetComponent<CapsuleCollider2D>().size;
-			colliderSize.x *= transform.localScale.x;
-			colliderSize.y *= transform.localScale.y;
-			_groundLedgeCheckSize = colliderSize;
-			_colliderHeight = colliderSize.y;
+			_groundLedgeCheckSize = colliderSize * localScale;
+			_colliderHeight = colliderSize.y * localScale.y;
 			
-			_groundLedgeMaxHeight = colliderSize.y * (groundLedgeMaxHeight / 100);
+			_groundLedgeMaxHeight = _colliderHeight * (groundLedgeMaxHeight / 100);
 			_wallUpperCheckSize = _wallLowerCheckSize = new Vector2(wallCheckWidth, _colliderHeight / 2.1f);
+
+			_platformFreePlaceCheckBoxSize = colliderSize * localScale;
+			_platformRaycastCheckLocalStart = new Vector2(0, _colliderHeight + platformMaxHeight + 0.1f);
+			_platformDescentRayCastLocalStart = new Vector2(0, - platformMaxHeight - 0.1f);
 		}
 
 		protected override void OnFixedUpdate()
 		{
 			GroundCheck();
 			WallsCheck();
-			LimitVelOnWallJump();
 
-			CanAttack = (_grounded && !_isDashing && !_isWallSliding && !_isDead);
+			CanAttack = (_grounded && !_isDashing && !_isDead);
 		}
 
 		#region OnFixedUpdates
@@ -124,8 +129,6 @@ namespace Character
 				if (!_isWallUpper && !_isWallLower && !_isDashing)
 					particleJumpDown.Play();
 				canDoubleJump = true;
-				if (_rigidbody2D.velocity.y < 0f)
-					_limitVelOnWallJump = false;
 			}
 			
 			_grounded = groundContact;
@@ -134,8 +137,6 @@ namespace Character
 			{
 				OnFallEvent.Invoke();
 				
-				_prevVelocityX = _rigidbody2D.velocity.x;
-
 				_rigidbody2D.velocity += new Vector2(0, gravityForce * gravityScale * Time.fixedDeltaTime);
 			}
 		}
@@ -150,41 +151,23 @@ namespace Character
 				
 			if (_isWallUpper || _isWallLower) _isDashing = false;
 		}
-
-		private void LimitVelOnWallJump()
-		{
-			if (_limitVelOnWallJump)
-			{
-				if (_rigidbody2D.velocity.y < -0.5f)
-					_limitVelOnWallJump = false;
-				
-				_jumpWallDistX = (_jumpWallStartX - transform.position.x) * transform.localScale.x;
-				if (_jumpWallDistX < -0.5f && _jumpWallDistX > -1f)
-				{
-					_canMove = true;
-				}
-				else if (_jumpWallDistX < -1f && _jumpWallDistX >= -2f)
-				{
-					_canMove = true;
-					_rigidbody2D.velocity = new Vector2(10f * transform.localScale.x, _rigidbody2D.velocity.y);
-				}
-				else if (_jumpWallDistX < -2f || _jumpWallDistX > 0)
-				{
-					_limitVelOnWallJump = false;
-					_rigidbody2D.velocity = new Vector2(0, _rigidbody2D.velocity.y);
-				}
-			}
-		}
 		#endregion
 
 		protected void Move(float move, bool jump, bool dash)
 		{
 			if(move > 0 && _facingRight || move < 0 && ! _facingRight ) GroundLedgeClimbing();
 			
-			if (_canMove)// && !animator.GetBool("IsGroundLedgeClimbing"))
+			PlatformClimbing();
+
+			if (IsPlatformDrop)
+			{
+				PlatformDescent();
+				IsPlatformDrop = false;
+			}
+			
+			if (_canMove && !animator.GetBool("IsGroundLedgeClimbing") && !animator.GetBool("IsPlatformClimbing"))
 			{
 				MainMove(move);
-				WallSliding(move);
 				Dash(dash);
 				Jump(jump);
 			}
@@ -220,13 +203,78 @@ namespace Character
 			}
 		}
 		
+		[SerializeField] private Vector2 platformCheckSize;
+		[SerializeField] [Range(0, 2)] private float platformMaxHeight;
+		
+		private Vector2 _platformRaycastCheckLocalStart;
+		private Vector2 _platformFreePlaceCheckBoxSize;
+		private Vector2 _platformClimbingHitWorldPoint = new Vector2(0, 0);
+		private Vector2 _platformClimbingCheckBoxLocalPosition = new Vector2(0, 0);
+
+		private void PlatformClimbing()
+		{
+			if (_grounded || _rigidbody2D.velocity.y <= 0) return;
+			
+			bool contactWithPotentialPlatform = Physics2D.BoxCast(
+				(Vector2)transform.position + new Vector2(0, _colliderHeight + platformMaxHeight / 2),
+				new Vector2(1, platformMaxHeight), 0f, Vector2.zero, 0f, whatIsGround);
+			if (!contactWithPotentialPlatform) return;
+				
+			RaycastHit2D raycastHit = Physics2D.Raycast((Vector3)_platformRaycastCheckLocalStart + transform.position,
+				Vector2.down, _colliderHeight + platformMaxHeight, whatIsGround);
+			_platformClimbingHitWorldPoint = raycastHit.point;
+			if (raycastHit.point == Vector2.zero) return;
+			
+			float platformHeight = Vector2.Distance(new Vector3(0, _colliderHeight,0) + transform.position, _platformClimbingHitWorldPoint);
+			if (platformHeight > platformMaxHeight) return;
+					
+			_platformClimbingCheckBoxLocalPosition = _platformClimbingHitWorldPoint + new Vector2(0,_colliderHeight / 2 + 0.01f);
+			bool haveFreePlace = !Physics2D.BoxCast((Vector3)_platformClimbingCheckBoxLocalPosition, _platformFreePlaceCheckBoxSize, 
+				0f, Vector2.zero, 0f, whatIsGround);
+			if (!haveFreePlace) return;
+				
+			transform.position = _platformClimbingHitWorldPoint;
+			_rigidbody2D.velocity = Vector2.zero;
+
+			//TODO: add platform climbing animation
+			//animator.SetBool("IsPlatformClimbing", true);
+		}
+
+		private void PlatformDescent()
+		{
+			if (!_grounded) return;
+
+			RaycastHit2D raycastHit = Physics2D.Raycast((Vector3)_platformDescentRayCastLocalStart + transform.position,
+				Vector2.up, _colliderHeight + platformMaxHeight, whatIsGround);
+			_platformDecentHitWorldPoint = raycastHit.point;
+			if (raycastHit.point == Vector2.zero) return;
+				
+			float platformHeight = Vector2.Distance((Vector2)transform.position, _platformDecentHitWorldPoint);
+			if (platformHeight > platformMaxHeight) return;
+
+			_platformDecentCheckBoxLocalPosition = _platformDecentHitWorldPoint + new Vector2(0, -_colliderHeight / 2 - 0.01f);
+			bool haveFreePlace = !Physics2D.BoxCast((Vector3)_platformDecentCheckBoxLocalPosition, _platformFreePlaceCheckBoxSize, 
+				0f, Vector2.zero, 0f, whatIsGround);
+			if (!haveFreePlace) return;
+			
+			transform.position = _platformDecentHitWorldPoint + Vector2.down * _colliderHeight;
+			_rigidbody2D.velocity = Vector2.zero;
+
+			//TODO: add platform decent animation
+			//animator.SetBool("IsPlatformClimbing", true);
+		}
+		
 		private void MainMove(float move)
 		{
 			//only control the player if grounded or airControl is turned on
-			if ((_grounded || airControl) && !_isDashing)
+			if (!_isDashing && (_grounded || airControl))
 			{
-				if (_rigidbody2D.velocity.y < -_limitFallSpeed)
-					_rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, -_limitFallSpeed);
+				if (_rigidbody2D.velocity.y < -limitFallSpeed)
+					_rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, -limitFallSpeed);
+
+				//if we in air and we try move in wall, then return
+				if(!_grounded && (_isWallLower || _isWallUpper) && (_facingRight && move > 0 || !_facingRight && move <0)) return;
+				
 				// Move the character by finding the target velocity
 				Vector3 targetVelocity = new Vector2(move * 10f, _rigidbody2D.velocity.y);
 				// And then smoothing it out and applying it to the character
@@ -234,59 +282,21 @@ namespace Character
 					movementSmoothing);
 
 				// If the input is moving the player right and the player is facing left...
-				if (move > 0 && !_facingRight && !_isWallSliding)
+				if (move > 0 && !_facingRight)
 				{
 					Flip();
 				}
 				// Otherwise if the input is moving the player left and the player is facing right...
-				else if (move < 0 && _facingRight && !_isWallSliding)
+				else if (move < 0 && _facingRight)
 				{
 					Flip();
 				}
 			}
 		}
 		
-		private void WallSliding(float move)
-		{
-			if (_isWallUpper && !_grounded)
-			{
-				if (!_oldWallSliding && _rigidbody2D.velocity.y < 0 || _isDashing)
-				{
-					_isWallSliding = true;
-					canDoubleJump = true;
-					animator.SetBool("IsWallSliding", true);
-				}
-
-				_isDashing = false;
-
-				if (_isWallSliding)
-				{
-					if (move * -transform.localScale.x > 0.1f)
-					{
-						canDoubleJump = true;
-						_isWallSliding = false;
-						animator.SetBool("IsWallSliding", false);
-						_oldWallSliding = false;
-					}
-					else
-					{
-						_oldWallSliding = true;
-						_rigidbody2D.velocity = new Vector2(transform.localScale.x * 2, -5);
-					}
-				}
-			}
-			else if (_oldWallSliding)
-			{
-				_isWallSliding = false;
-				animator.SetBool("IsWallSliding", false);
-				_oldWallSliding = false;
-				canDoubleJump = true;
-			}
-		}
-
 		private void Dash(bool dash)
 		{
-			if (dash && _canDash && !_isWallSliding)
+			if (dash && _canDash)
 			{
 				StartCoroutine(DashCooldown());
 			}
@@ -296,11 +306,8 @@ namespace Character
 				_rigidbody2D.velocity = new Vector2(transform.localScale.x * dashForce, 0);
 			}
 
-			if (_isWallUpper && !_grounded && !_isWallSliding && dash && _canDash)
+			if (_isWallUpper && !_grounded && dash && _canDash)
 			{
-				_isWallSliding = false;
-				animator.SetBool("IsWallSliding", false);
-				_oldWallSliding = false;
 				canDoubleJump = true;
 				StartCoroutine(DashCooldown());
 			}
@@ -320,25 +327,12 @@ namespace Character
 				particleJumpDown.Play();
 				particleJumpUp.Play();
 			}
-			else if (!_grounded && jump && canDoubleJump && !_isWallSliding)
+			else if (!_grounded && jump && canDoubleJump)
 			{
 				canDoubleJump = false;
 				_rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, 0);
 				_rigidbody2D.AddForce(new Vector2(0f, jumpForce * DoubleJumpScaleModifier), ForceMode2D.Impulse);
 				animator.SetBool("IsDoubleJumping", true);
-			}
-			else if (_isWallUpper && !_grounded && jump && _isWallSliding)
-			{
-				animator.SetBool("IsJumping", true);
-				animator.SetBool("JumpUp", true);
-				_rigidbody2D.velocity = new Vector2(0f, 0f);
-				_rigidbody2D.AddForce(new Vector2(transform.localScale.x * jumpForce * DoubleJumpScaleModifier, jumpForce), ForceMode2D.Impulse);
-				_jumpWallStartX = transform.position.x;
-				_limitVelOnWallJump = true;
-				canDoubleJump = true;
-				_isWallSliding = false;
-				animator.SetBool("IsWallSliding", false);
-				_oldWallSliding = false;
 			}
 		}
 		#endregion
@@ -420,17 +414,75 @@ namespace Character
 
 
 #if UNITY_EDITOR
+		[Header("Gizmos")]
+		[SerializeField] private GizmosData groundCheck;
+		[SerializeField] private GizmosData frontWallsChecks;
+		[SerializeField] private GizmosData groundLedge;
+		[SerializeField] private GizmosData platformClimbing;
+		[SerializeField] private GizmosData platformDescent;
+
 		private void OnDrawGizmosSelected()
 		{
-			Gizmos.DrawWireCube(transform.position, groundCheckSize);
+			if(groundCheck.Show) DrawGroundCheckGizmos();
+			if(frontWallsChecks.Show) DrawFrontWallsChecksGizmos();
+			if(groundLedge.Show) DrawGroundLedgeGizmos();
+			if(platformClimbing.Show) DrawPlatformClimbingGizmos();
+			if(platformDescent.Show) DrawPlatformDescent();
+		}
+
+		private void DrawGroundCheckGizmos()
+		{
+			Gizmos.color = groundCheck.Color;
 			
+			Gizmos.DrawWireCube(transform.position, groundCheckSize);
+		}
+		
+		private void DrawFrontWallsChecksGizmos()
+		{
+			Gizmos.color = frontWallsChecks.Color;
+
 			if(wallUpperCheck) Gizmos.DrawWireCube(wallUpperCheck.position, _wallUpperCheckSize);
 			if(wallLowerCheck) Gizmos.DrawWireCube(wallLowerCheck.position, _wallLowerCheckSize);
-			if(groundLedgeCheck) Gizmos.DrawLine(groundLedgeCheck.position, groundLedgeCheck.position + Vector3.down * 3);
+		}
 
+		private void DrawGroundLedgeGizmos()
+		{
+			Gizmos.color = groundLedge.Color;
+
+			if(groundLedgeCheck) Gizmos.DrawLine(groundLedgeCheck.position, groundLedgeCheck.position + Vector3.down * 3);
+			
 			Gizmos.DrawWireCube(_groundLedgeClimbingHitPoint, new Vector2(0.1f,0.1f));
 			Gizmos.DrawWireCube(_groundLedgeClimbingCheckPosition, _groundLedgeCheckSize);
-		}	
+		}
+		
+		private void DrawPlatformClimbingGizmos()
+		{
+			Gizmos.color = platformClimbing.Color;
+			
+			Gizmos.DrawLine((Vector3)_platformRaycastCheckLocalStart + transform.position, transform.position + new Vector3(0, _colliderHeight));
+			Gizmos.DrawWireCube(transform.position + new Vector3(0,_colliderHeight + platformMaxHeight/2), new Vector2(1,platformMaxHeight));
+			
+			Gizmos.DrawWireCube(_platformClimbingHitWorldPoint, new Vector2(0.1f,0.1f));
+			Gizmos.DrawWireCube(_platformClimbingCheckBoxLocalPosition, _platformFreePlaceCheckBoxSize);
+		}
+
+		private void DrawPlatformDescent()
+		{
+			Gizmos.color = platformDescent.Color;
+			
+			Gizmos.DrawLine(transform.position + (Vector3)_platformDescentRayCastLocalStart, transform.position);
+			Gizmos.DrawWireCube(transform.position - new Vector3(0,platformMaxHeight/2), new Vector2(1,platformMaxHeight));
+			
+			Gizmos.DrawWireCube(_platformDecentHitWorldPoint, new Vector2(0.1f,0.1f));
+			Gizmos.DrawWireCube(_platformDecentCheckBoxLocalPosition, _platformFreePlaceCheckBoxSize);
+		}
+
+		[Serializable]
+		private class GizmosData
+		{
+			[field: SerializeField] public bool Show { get; private set; } = true;
+			[field: SerializeField] public Color Color { get; private set; } = new Color(1,1,1,1);
+		}
 #endif
 	}
 }
