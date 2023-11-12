@@ -8,6 +8,7 @@ namespace Character
     public class PlayerUseAbility : MonoBehaviour
     {
         [SerializeField] private GameObject treeRoots;
+        [SerializeField] private GameObject fireParticle;
         private Coroutine _sneakTimeout;
         public static PlayerUseAbility Instance { private set; get; }
         private Player player;
@@ -51,7 +52,7 @@ namespace Character
             }
         }
 
-        private GameObject FindClosestEnemy()
+        private Enemy FindClosestEnemy()
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
             GameObject closest = null;
@@ -66,8 +67,8 @@ namespace Character
                     closest = enemy;
                 }
             }
-
-            return closest;
+            Enemy near_enemy = closest.GetComponent<Enemy>();
+            return near_enemy;
         }
 
         private GameObject CreateRoots(Enemy target)
@@ -79,10 +80,16 @@ namespace Character
             return roots;
         }
 
+        IEnumerator ObjectLifeEnd(GameObject removedObject, float waitingTime)
+        {
+            yield return new WaitForSeconds(waitingTime);
+            GameObject.Destroy(removedObject);
+        }
+
         IEnumerator TreesEnd(Enemy target, GameObject roots, float spell_duration)
         {
             yield return new WaitForSeconds(spell_duration);
-            GameObject.Destroy(roots);
+            StartCoroutine(ObjectLifeEnd(roots, 0f));
             target.SetFrozenStatus(false);
         }
 
@@ -90,10 +97,8 @@ namespace Character
         {
             float spell_price = 15f, spell_duration = 8f, 
                   spell_damage = player.StatsSystem.AttackStats.earthDamage * 0.1f + 2f;
-         
-            GameObject _near_enemy = FindClosestEnemy();
-            if (!_near_enemy) return;
-            Enemy near_enemy = _near_enemy.GetComponent<Enemy>();
+
+            Enemy near_enemy = FindClosestEnemy();
             if (!near_enemy) return;
 
             if (player.StatsSystem.SetMana(-spell_price))
@@ -107,6 +112,43 @@ namespace Character
             }
         }
 
+        private void SpectralArrow()
+        {
+            float spell_price = 5f;
+            if (player.StatsSystem.SetMana(-spell_price))
+            {
+                ThrowableWeapon arrow = player.ThrowWeapon();
+                arrow.isPenetratingShot = true;
+                arrow.bonusDamage += (player.StatsSystem.AttackStats * 0.4f);
+                SpriteRenderer spriteRenderer = arrow.GetComponent<SpriteRenderer>();
+                arrow.transform.Find("particle").gameObject.SetActive(true);
+            }
+        }
+
+
+        private void MakeFire(Enemy target, float spell_duration)
+        {
+            GameObject fire = GameObject.Instantiate(fireParticle,
+            target.transform.position + new Vector3(0f, 0f, -5f),
+            Quaternion.identity) as GameObject;
+            fire.transform.SetParent(target.transform);
+            fire.transform.localScale.Set(1f, 1f, 1f);
+            StartCoroutine(ObjectLifeEnd(fire, spell_duration));
+        }
+
+        private void BurnEnemy()
+        {
+            float spell_price = 15f, spell_duration = 10f;
+            Enemy near_enemy = FindClosestEnemy();
+            if (!near_enemy) return;
+
+            if (player.StatsSystem.SetMana(-spell_price))
+            {
+                near_enemy.AddFireStatus(1f, spell_duration, player.StatsSystem.AttackStats * 0.5f);
+                MakeFire(near_enemy, spell_duration);
+            }
+        }
+
         public void UseAbility(int spellNum)
         {
             switch (spellNum)
@@ -116,6 +158,14 @@ namespace Character
                     break;
                 case 2:
                     TreesTaking(); // захват ближайшего противника в корни
+                    break;
+
+                case 3:
+                    SpectralArrow(); // пронзающая стрела
+                    break;
+
+                case 4:
+                    BurnEnemy(); // поджечь ближайшего врага
                     break;
                 default:
                    // Debug.LogError("Spell not found");

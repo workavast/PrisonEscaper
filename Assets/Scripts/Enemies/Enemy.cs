@@ -107,6 +107,15 @@ public class Enemy : CharacterBase
         else UnFrozenStatus();
     }
 
+
+    public void AddFireStatus(float chance, float duration, AttackStats baseDamage)
+    {
+        AttackStats fireEffect = baseDamage;
+        fireEffect.statusEffects = new StatusEffects(chance, duration, 0, 0, 0, 0, 0, 0);
+
+        StatusEffectSystem.AddStatusEffects(fireEffect);
+    }
+
     protected override void OnFixedUpdate()
     {
         base.OnFixedUpdate();
@@ -177,7 +186,7 @@ public class Enemy : CharacterBase
     }
     private void Move()
     {
-        if (target == null && IsDead) return;
+        if (target == null && IsDead && transform == null) return;
 
         float distanceToTargetX = Mathf.Abs(target.position.x - transform.position.x);
         float distanceToTargetY = Mathf.Abs(target.position.y - transform.position.y);
