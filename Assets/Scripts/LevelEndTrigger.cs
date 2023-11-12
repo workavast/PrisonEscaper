@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class LevelEndTrigger : MonoBehaviour
 {
-    [SerializeField] private LocationID nextLocation;
     private LevelEnd _levelEnd;
     
     private void Start()
