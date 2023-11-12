@@ -24,17 +24,19 @@ namespace Character
 			_player = Player.Instance;
 		}
 		
-		public void ThrowWeapon()
+		public ThrowableWeapon ThrowWeapon()
 		{
 			Transform playerTransform = _player.transform;
 			GameObject throwableWeapon = Player.Instantiate(throwableObject,
 				playerTransform.position + new Vector3(playerTransform.localScale.x * 0.5f, playerTransform.localScale.y * 3f),
 				Quaternion.identity) as GameObject;
 			Vector2 direction = new Vector2(playerTransform.localScale.x, 0);
-			throwableWeapon.GetComponent<ThrowableWeapon>().direction = direction;
+			ThrowableWeapon arrow = throwableWeapon.GetComponent<ThrowableWeapon>();
+			arrow.direction = direction;
 			throwableWeapon.name = "ThrowableWeapon";
 
 			if (_player.IsHidden) _player.ToggleSneak(false);
+			return arrow;
 		}
 		
 		//TODO: make it possible to damage enemies

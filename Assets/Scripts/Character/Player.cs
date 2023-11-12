@@ -78,9 +78,9 @@ namespace Character
             PlayerUseAbility.Instance.UseAbility(spellNum);
         }
 
-        public void ThrowWeapon()
+        public ThrowableWeapon ThrowWeapon()
         {
-            playerAttack.ThrowWeapon();
+            return playerAttack.ThrowWeapon();
         }
         
         public void Heal(float value)

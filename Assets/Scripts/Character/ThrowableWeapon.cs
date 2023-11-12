@@ -11,11 +11,13 @@ namespace Character
 		[field : SerializeField] public AttackStats AttackStats { get; private set; }
 		
 		public Vector2 direction;
-		public bool hasHit = false;
+		private List<GameObject> hitEnemies = new List<GameObject>();
 		public float speed = 10f;
+		public bool hasHit = false;
 		public bool isPlayerWeapon = true;
-
-		public Transform owner;
+		public bool isPenetratingShot = false;
+        public AttackStats bonusDamage = new(0);
+        public Transform owner;
 		void FixedUpdate()
 		{
 			if (!hasHit)
@@ -37,32 +39,44 @@ namespace Character
 			StartCoroutine(RemoveProjectile());
 		}
 
-        void OnCollisionEnter2D(Collision2D collision)
-		{
-			if (isPlayerWeapon) 
-			{
-				if (collision.gameObject.tag == "Enemy")
-				{
-					collision.gameObject.GetComponent<Enemy>().TakeDamage(AttackStats);
-					Destroy(gameObject);
-				}
-				else if (collision.gameObject.tag != "Player")
-				{
-					Destroy(gameObject);
-				}
-			}
-			else
-			{
-				if (collision.gameObject.tag == "Player")
-				{
-					collision.gameObject.GetComponent<Player>().TakeDamage(new AttackStats(2), transform.position);
-					Destroy(gameObject);
-				}
-				else if (collision.transform != owner)
-				{
-					Destroy(gameObject);
-				}
-			}
-		}
-	}
+        void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (isPlayerWeapon)
+            {
+                if (collision.CompareTag("Enemy"))
+                {
+                    if (!hitEnemies.Contains(collision.gameObject))
+                    {
+                        collision.GetComponent<Enemy>().TakeDamage(AttackStats + bonusDamage);
+                        hitEnemies.Add(collision.gameObject);
+                    }
+
+                    if (!isPenetratingShot)
+                    {
+                        Destroy(gameObject); // Destroy the projectile if it's not a penetrating shot
+                    }
+                }
+                else if (!collision.CompareTag("Player"))
+                {
+                    Destroy(gameObject);
+                }
+            }
+            else
+            {
+                if (collision.CompareTag("Player"))
+                {
+                    collision.GetComponent<Player>().TakeDamage(new AttackStats(2), transform.position);
+
+                    if (!isPenetratingShot)
+                    {
+                        Destroy(gameObject);
+                    }
+                }
+                else if (collision.transform != owner)
+                {
+                    Destroy(gameObject);
+                }
+            }
+        }
+    }
 }
