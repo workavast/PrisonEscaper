@@ -1,17 +1,28 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelEnd : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D other)
+    [SerializeField] private LocationID nextLocation;
+
+    public void SwitchLevel()
     {
-        if (other.CompareTag("Player"))
+        Time.timeScale = 0;
+
+        switch (nextLocation)
         {
-            Time.timeScale = 0;
-            UIController.SetWindow(ScreenEnum.GameplayMenuScreen);
+            case LocationID.None:
+                UIController.SetWindow(ScreenEnum.GameplayMenuScreen);
+                break;
+            case LocationID.Caves:
+                SceneManager.LoadScene("Caves");
+                break;
+            case LocationID.Canalization:
+                SceneManager.LoadScene("Canalization");
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 

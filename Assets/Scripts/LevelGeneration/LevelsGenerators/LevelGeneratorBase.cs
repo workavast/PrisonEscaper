@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Character;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -45,6 +46,9 @@ namespace LevelGeneration.LevelsGenerators
     
         protected virtual void Init()
         {
+            var player = FindObjectOfType<Player>();
+            if(player != null) Player = player.gameObject;
+            
             enemiesData.Init();
             lootBoxesData.Init();
             trapsData.Init();
