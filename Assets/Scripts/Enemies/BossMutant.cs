@@ -78,11 +78,11 @@ public class BossMutant : Enemy
         switch(attackType)
             {
             case 1:
-                StartCoroutine(JumpAttack()); // 80%
+                StartCoroutine(JumpAttack()); // 20%
                 break;
             default:
                 base.Attack();
-                StartCoroutine(RoarAnimation()); // 20%
+                StartCoroutine(RoarAnimation()); // 80%
                 break;
         }
     }
