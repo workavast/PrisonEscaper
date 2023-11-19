@@ -18,7 +18,7 @@ public class ItemDropper : MonoBehaviour
         {
             var position = transform.position + Vector3.right * UnityEngine.Random.Range(0, _dropRange);
             var droppedObject = Instantiate(collectablePrefab, position + dropPositionOffset, quaternion.identity);
-            droppedObject.GetComponentInChildren<Collectable>().Item = item;
+            droppedObject.GetComponentInChildren<CollectableItem>().Item = item;
         }    
     }
 

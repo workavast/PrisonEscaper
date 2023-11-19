@@ -13,7 +13,7 @@ public class LevelEnd : MonoBehaviour
         switch (nextLocation)
         {
             case LocationID.None:
-                UIController.SetWindow(ScreenEnum.GameplayMenuScreen);
+                UI.UI_Controller.SetWindow(UI.ScreenEnum.GameplayMenuScreen);
                 break;
             case LocationID.Caves:
                 SceneManager.LoadScene("Caves");

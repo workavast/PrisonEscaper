@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -12,7 +10,7 @@ public class GlobalLampBlinks : MonoBehaviour
     [SerializeField] [Range(0,1)] private float minLampBlinkPercent;
     [SerializeField] [Range(0,1)] private float maxLampBlinkPercent;
     
-    private List<Animator> _lamps = new();
+    private List<BlinkingLamp> _lamps = new();
 
     private void Awake()
     {
@@ -44,19 +42,25 @@ public class GlobalLampBlinks : MonoBehaviour
                 i--;
                 continue;
             }
-            
-            _lamps[lampIndex].SetTrigger("Blink");
+
+            _lamps[lampIndex].Blink();
             blinkLamps.Add(lampIndex);
         }
     }
 
-    public void AddLamp(Animator newAnimator)
+    public void AddLamp(BlinkingLamp newBlinkingLamp)
     {
-        _lamps.Add(newAnimator);
+        _lamps.Add(newBlinkingLamp);
+        newBlinkingLamp.OnDestroyEvent += RemoveLamp;
     }
 
+    private void RemoveLamp(BlinkingLamp blinkingLamp)
+    {
+        _lamps.Remove(blinkingLamp);
+    }
+    
     public void Clear()
     {
-        _lamps = new List<Animator>();
+        _lamps = new List<BlinkingLamp>();
     }
 }

@@ -167,7 +167,7 @@ public class Enemy : CharacterBase
     private bool CheckFloorDiff()
     {
         const float allowedDifference = 0.5f;
-        float errorMargin = Player.Instance.IsGrounded()? 2f:6f;
+        float errorMargin = Player.Instance.Grounded? 2f:6f;
         float difference = Mathf.Abs(target.position.y - transform.position.y);
         bool res = difference >= (allowedDifference - errorMargin) && difference <= (allowedDifference + errorMargin);
         if (!res)
@@ -343,7 +343,7 @@ public class Enemy : CharacterBase
         TakeDamageCont();
     }
 
-    public void TakeDamage(float damageValue) // урон в обход резистов
+    public void TakeDamage(float damageValue) // пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     {
         if (IsDead) return;
         StatsSystem.TakeDamage(damageValue);

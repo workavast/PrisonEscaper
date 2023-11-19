@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 using Random = UnityEngine.Random;
 
 namespace LevelGeneration.LevelsGenerators
@@ -26,7 +27,9 @@ namespace LevelGeneration.LevelsGenerators
         private readonly Dictionary<ConnectorID, List<GameObject>> _mainBlocksPrefabs = new();
         private readonly Dictionary<ConnectorID, List<GameObject>> _forkBlocksPrefabs = new();
         private readonly Dictionary<ConnectorID, List<GameObject>> _endBlocksPrefabs = new();
-    
+
+        [Inject] private DiContainer _container;
+        
         protected override void OnUpdate()
         {
             if (test && Input.GetKeyDown(KeyCode.Q))
@@ -91,8 +94,8 @@ namespace LevelGeneration.LevelsGenerators
                 return;
             }
 
-            if(Player is null)
-                Player = Instantiate(playerPrefab, PlayerSpawnPosition, Quaternion.Euler(0,0,0));
+            if (Player is null)
+                Player = _container.InstantiatePrefab(playerPrefab, PlayerSpawnPosition, Quaternion.Euler(0,0,0), null);
             else
                 Player.transform.position = PlayerSpawnPosition;
         }

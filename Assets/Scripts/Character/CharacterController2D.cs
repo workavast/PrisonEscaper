@@ -40,7 +40,8 @@ namespace Character
 		public ParticleSystem particleJumpDown; //Explosion particles
 		#endregion
 		
-		public bool CanAttack { get; private set; } //If player can move
+		public bool CanAttack { get; private set; }
+		public bool Grounded { get; private set; }
 
 		#region ProtectedFields
 		protected bool IsPlatformDrop;
@@ -51,15 +52,14 @@ namespace Character
 		#region PrivateFields
 		private Rigidbody2D _rigidbody2D;
 		private Vector3 _velocity = Vector3.zero;
-		
-		private bool _canMove = true; //If player can move
-		private bool _grounded; // Whether or not the player is grounded.
+
+		private bool _canMove = true;
 		private bool _facingRight = true; // For determining which way the player is currently facing.
 		private bool _canDash = true;
-		private bool _isDashing = false; //If player is dashing
-		private bool _isWallUpper = false; //If there is a wall in front of the player
-		private bool _isWallLower = false;
-		private bool _isDead = false;
+		private bool _isDashing;
+		private bool _isWallUpper; //If there is a up part of wall in front of the player
+		private bool _isWallLower; //If there is a down part of wall in front of the player
+		private bool _isDead;
 		private bool _isJump;
 
 		private float _colliderHeight;
@@ -99,13 +99,12 @@ namespace Character
 			Vector2 colliderSize = capsuleCollider2D.size;
 			Vector2 localScale = transform.localScale;
 			
-			_groundLedgeCheckSize = colliderSize * localScale;
+			_groundLedgeCheckSize = _platformFreePlaceCheckBoxSize = colliderSize * localScale;
 			_colliderHeight = colliderSize.y * localScale.y;
-			
+
 			_groundLedgeMaxHeight = _colliderHeight * (groundLedgeMaxHeight / 100);
 			_wallUpperCheckSize = _wallLowerCheckSize = new Vector2(wallCheckWidth, _colliderHeight / 2.1f);
 
-			_platformFreePlaceCheckBoxSize = colliderSize * localScale;
 			_platformRaycastCheckLocalStart = new Vector2(0, _colliderHeight + platformMaxHeight + 0.1f);
 			_platformDescentRayCastLocalStart = new Vector2(0, - platformMaxHeight - 0.1f);
 		}
@@ -115,7 +114,7 @@ namespace Character
 			GroundCheck();
 			WallsCheck();
 
-			CanAttack = (_grounded && !_isDashing && !_isDead);
+			CanAttack = (Grounded && !_isDashing && !_isDead);
 		}
 
 		#region OnFixedUpdates
@@ -124,16 +123,16 @@ namespace Character
 			bool groundContact = Physics2D.BoxCast(transform.position, groundCheckSize, 
 				0f, Vector2.zero, 0f, whatIsGround);
 			
-			if(groundContact && !_grounded){
+			if(groundContact && !Grounded){
 				OnLandEvent.Invoke();
 				if (!_isWallUpper && !_isWallLower && !_isDashing)
 					particleJumpDown.Play();
 				canDoubleJump = true;
 			}
 			
-			_grounded = groundContact;
+			Grounded = groundContact;
 			
-			if (!_grounded)
+			if (!Grounded)
 			{
 				OnFallEvent.Invoke();
 				
@@ -164,19 +163,18 @@ namespace Character
 				PlatformDescent();
 				IsPlatformDrop = false;
 			}
+
+			if (!_canMove || animator.GetBool("IsGroundLedgeClimbing") || animator.GetBool("IsPlatformClimbing")) return;
 			
-			if (_canMove && !animator.GetBool("IsGroundLedgeClimbing") && !animator.GetBool("IsPlatformClimbing"))
-			{
-				MainMove(move);
-				Dash(dash);
-				Jump(jump);
-			}
+			MainMove(move);
+			Dash(dash);
+			Jump(jump);
 		}
 
 		#region Moves
 		private void GroundLedgeClimbing()//TODO: need add climbing animation
 		{
-			if (!_isWallUpper && _isWallLower && _grounded && !animator.GetBool("IsGroundLedgeClimbing"))
+			if (!_isWallUpper && _isWallLower && Grounded && !animator.GetBool("IsGroundLedgeClimbing"))
 			{
 				RaycastHit2D raycastHit = Physics2D.Raycast(groundLedgeCheck.position, Vector2.down, 3, whatIsGround);
 				_groundLedgeClimbingHitPoint = raycastHit.point;
@@ -203,7 +201,6 @@ namespace Character
 			}
 		}
 		
-		[SerializeField] private Vector2 platformCheckSize;
 		[SerializeField] [Range(0, 2)] private float platformMaxHeight;
 		
 		private Vector2 _platformRaycastCheckLocalStart;
@@ -213,7 +210,7 @@ namespace Character
 
 		private void PlatformClimbing()
 		{
-			if (_grounded || _rigidbody2D.velocity.y <= 0) return;
+			if (Grounded || _rigidbody2D.velocity.y <= 0) return;
 			
 			bool contactWithPotentialPlatform = Physics2D.BoxCast(
 				(Vector2)transform.position + new Vector2(0, _colliderHeight + platformMaxHeight / 2),
@@ -242,7 +239,7 @@ namespace Character
 
 		private void PlatformDescent()
 		{
-			if (!_grounded) return;
+			if (!Grounded) return;
 
 			RaycastHit2D raycastHit = Physics2D.Raycast((Vector3)_platformDescentRayCastLocalStart + transform.position,
 				Vector2.up, _colliderHeight + platformMaxHeight, whatIsGround);
@@ -267,13 +264,13 @@ namespace Character
 		private void MainMove(float move)
 		{
 			//only control the player if grounded or airControl is turned on
-			if (!_isDashing && (_grounded || airControl))
+			if (!_isDashing && (Grounded || airControl))
 			{
 				if (_rigidbody2D.velocity.y < -limitFallSpeed)
 					_rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, -limitFallSpeed);
 
 				//if we in air and we try move in wall, then return
-				if(!_grounded && (_isWallLower || _isWallUpper) && (_facingRight && move > 0 || !_facingRight && move <0)) return;
+				if(!Grounded && (_isWallLower || _isWallUpper) && (_facingRight && move > 0 || !_facingRight && move <0)) return;
 				
 				// Move the character by finding the target velocity
 				Vector3 targetVelocity = new Vector2(move * 10f, _rigidbody2D.velocity.y);
@@ -306,7 +303,7 @@ namespace Character
 				_rigidbody2D.velocity = new Vector2(transform.localScale.x * dashForce, 0);
 			}
 
-			if (_isWallUpper && !_grounded && dash && _canDash)
+			if (_isWallUpper && !Grounded && dash && _canDash)
 			{
 				canDoubleJump = true;
 				StartCoroutine(DashCooldown());
@@ -316,22 +313,22 @@ namespace Character
 		private void Jump(bool jump)
 		{
 			// If the player should jump...
-			if (_grounded && jump)
+			if (Grounded && jump)
 			{
 				// Add a vertical force to the player.
 				animator.SetBool("IsJumping", true);
 				animator.SetBool("JumpUp", true);
-				_grounded = false;
-				_rigidbody2D.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+				Grounded = false;
+				_rigidbody2D.AddForce(new Vector2(0f, jumpForce * _rigidbody2D.mass), ForceMode2D.Impulse);
 				canDoubleJump = true;
 				particleJumpDown.Play();
 				particleJumpUp.Play();
 			}
-			else if (!_grounded && jump && canDoubleJump)
+			else if (!Grounded && jump && canDoubleJump)
 			{
 				canDoubleJump = false;
 				_rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, 0);
-				_rigidbody2D.AddForce(new Vector2(0f, jumpForce * DoubleJumpScaleModifier), ForceMode2D.Impulse);
+				_rigidbody2D.AddForce(new Vector2(0f, jumpForce * DoubleJumpScaleModifier * _rigidbody2D.mass), ForceMode2D.Impulse);
 				animator.SetBool("IsDoubleJumping", true);
 			}
 		}
@@ -358,11 +355,6 @@ namespace Character
 			
 			StartCoroutine(Stun(0.25f));
 			StartCoroutine(MakeInvincible(1f));
-		}
-
-		public bool IsGrounded()
-		{
-			return _grounded;
 		}
 
 		#region Coroutines
@@ -408,12 +400,13 @@ namespace Character
 			_rigidbody2D.velocity = new Vector2(0, _rigidbody2D.velocity.y);
 			yield return new WaitForSeconds(1.1f);
 			Destroy(gameObject);
-			UIController.SetWindow(ScreenEnum.GameplayMenuScreen);
+			UI.UI_Controller.SetWindow(UI.ScreenEnum.GameplayMenuScreen);
 		}
 		#endregion
 
 
 #if UNITY_EDITOR
+		#region Gizmos
 		[Header("Gizmos")]
 		[SerializeField] private GizmosData groundCheck;
 		[SerializeField] private GizmosData frontWallsChecks;
@@ -483,6 +476,7 @@ namespace Character
 			[field: SerializeField] public bool Show { get; private set; } = true;
 			[field: SerializeField] public Color Color { get; private set; } = new Color(1,1,1,1);
 		}
+		#endregion
 #endif
 	}
 }

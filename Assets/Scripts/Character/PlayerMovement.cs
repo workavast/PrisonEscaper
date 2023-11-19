@@ -1,76 +1,52 @@
 using UnityEngine;
+using Zenject;
 
 namespace Character
 {
-
 	public class PlayerMovement : CharacterController2D
 	{
-		[Header("PlayerMovement")] [Space]
+		[Header("PlayerMovement")] 
 		
+		[Inject] protected KeyboardObserver KeyboardObserver;
 		private float _horizontalMove = 0f;
 		private bool _jump = false;
 		private bool _dash = false;
-
-		//bool dashAxis = false;
-
+		
 		protected override void OnAwake()
 		{
 			base.OnAwake();
 			
 			OnFallEvent.AddListener(OnFall);
 			OnLandEvent.AddListener(OnLanding);
+
+			KeyboardObserver.OnDash += Dash;
+			KeyboardObserver.OnJump += Jump;
+			KeyboardObserver.OnPlatformDrop += PlatformDrop;
+			KeyboardObserver.OnMove += Move;
 		}
 
+		protected virtual void UnSubOfKeyBoardObserver()
+		{
+			KeyboardObserver.OnDash -= Dash;
+			KeyboardObserver.OnJump -= Jump;
+			KeyboardObserver.OnPlatformDrop -= PlatformDrop;
+			KeyboardObserver.OnMove -= Move;
+		} 
+		
 		protected override void OnUpdate()
 		{
 			base.OnUpdate();
 			
-			// horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
-
 			animator.SetFloat("Speed", Mathf.Abs(_horizontalMove));
-
-			// if (Input.GetKeyDown(KeyCode.Z))
-			// {
-			// 	jump = true;
-			// }
-			//
-			// if (Input.GetKeyDown(KeyCode.C))
-			// {
-			// 	dash = true;
-			// }
-
-			/*if (Input.GetAxisRaw("Dash") == 1 || Input.GetAxisRaw("Dash") == -1) //RT in Unity 2017 = -1, RT in Unity 2019 = 1
-			{
-				if (dashAxis == false)
-				{
-					dashAxis = true;
-					dash = true;
-				}
-			}
-			else
-			{
-				dashAxis = false;
-			}
-			*/
-
 		}
 
-		public void Jump()
-		{
-			_jump = true;
-		}
+		private void Jump() => _jump = true;
 
-		public void PlatformDrop()
-		{
-			IsPlatformDrop = true;
-		}
+		private void PlatformDrop() => IsPlatformDrop = true;
 
-		public void Dash()
-		{
-			_dash = true;
-		}
+		private void Dash() => _dash = true;
 
-		public void Move(float direction)
+		private void Move(float direction)
 		{
 			_horizontalMove = direction * StatsSystem.MainStats.WalkSpeed;
 		}
@@ -89,7 +65,6 @@ namespace Character
 		{
 			base.OnFixedUpdate();
 			
-			// Move our character
 			Move(_horizontalMove * Time.fixedDeltaTime, _jump, _dash);
 			_jump = false;
 			_dash = false;

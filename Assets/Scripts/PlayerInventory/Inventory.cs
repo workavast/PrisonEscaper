@@ -2,26 +2,27 @@
 using System.Collections.Generic;
 using Character;
 using PlayerInventory.Scriptable;
-using UnityEngine;
 using UnityEngine.Events;
 
 namespace PlayerInventory
 {
-    [Serializable]
-    public class Inventory 
+    public static class Inventory
     {
-        [field: SerializeField] public int Size { get; private set; }
-        [SerializeField] private Item[] _bagItems;
-
-
-        public UnityEvent<Item[]> onBagChanged;
+        public static int Size { get; private set; }
         
-        public Dictionary<SlotType, SpecialItem> SpecialSlots;
+        private static Item[] _bagItems;
+        public static Item[] Items => _bagItems;
 
-        public void Init()
+        public static UnityEvent<Item[]> OnBagChanged;
+        
+        public static Dictionary<SlotType, SpecialItem> SpecialSlots;
+
+        public static void Init(int startSize)
         {
+            Size = startSize;
             _bagItems = new Item[Size];
-            onBagChanged = new UnityEvent<Item[]>();
+
+            OnBagChanged = new UnityEvent<Item[]>();
             SpecialSlots = new Dictionary<SlotType, SpecialItem>()
             {
                 { SlotType.Weapon , null},
@@ -36,9 +37,8 @@ namespace PlayerInventory
                 { SlotType.HotBarSlot4 , null},
             };
         }
-        
-        
-        public void AddItem(Item item)
+
+        public static void AddItem(Item item)
         {
             for (int i = 0; i < _bagItems.Length; i++)
             {
@@ -48,17 +48,18 @@ namespace PlayerInventory
                     break;
                 }
             }
-            onBagChanged.Invoke(_bagItems);
+            
+            OnBagChanged.Invoke(_bagItems);
         }
 
-        public Item RemoveItem(int indexInBag)
+        public static Item RemoveItem(int indexInBag)
         {
             Item item = _bagItems[indexInBag];
             _bagItems[indexInBag] = null;
             return item;
         }
 
-        public Item RemoveSpecialItem(SlotType slotType)
+        public static Item RemoveSpecialItem(SlotType slotType)
         {
             Item item;
 
@@ -74,22 +75,16 @@ namespace PlayerInventory
             return item;
         }
         
-        public bool HasBagEmptySlot()
+        public static bool HasBagEmptySlot()
         {
-            bool res = false;
             foreach (var item in _bagItems)
-            {
                 if (!item)
-                {
-                    res = true;
-                    break;
-                }
-            }
+                    return true;
 
-            return res;
+            return false;
         }
 
-        public void UseItem(Item item)
+        public static void UseItem(Item item)
         {
             if (item is IUsable)
             {
@@ -98,7 +93,7 @@ namespace PlayerInventory
             }
         }
 
-        public void ApplySpecial(int indexFrom, SlotType slotType)
+        public static void ApplySpecial(int indexFrom, SlotType slotType)
         {
             if (SpecialSlots[slotType] != null)
             {
@@ -109,7 +104,7 @@ namespace PlayerInventory
             Player.Instance.ApplyItemStats(SpecialSlots[slotType]!.MainStats, SpecialSlots[slotType]!.AttackStats, SpecialSlots[slotType]!.ResistStats);
         }
 
-        public void RemoveSpecial(int indexTo, SlotType slotType)
+        public static void RemoveSpecial(int indexTo, SlotType slotType)
         {
             if (SpecialSlots[slotType] != null)
             {
@@ -122,13 +117,13 @@ namespace PlayerInventory
                 Player.Instance.ApplyItemStats(SpecialSlots[slotType]!.MainStats, SpecialSlots[slotType]!.AttackStats, SpecialSlots[slotType]!.ResistStats);
         }
 
-        public void SwapBagItems(int from, int to)
+        public static void SwapBagItems(int from, int to)
         {
             (_bagItems[from], _bagItems[to]) = ( _bagItems[to], _bagItems[from]);
         }
 
 
-        public void SwapSpecials(SlotType from, SlotType to)
+        public static void SwapSpecials(SlotType from, SlotType to)
         {
             (SpecialSlots[from], SpecialSlots[to]) = (SpecialSlots[to], SpecialSlots[from]);
         }

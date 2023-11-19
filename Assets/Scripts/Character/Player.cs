@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using PlayerInventory;
 using UniversalStatsSystem;
 using UnityEngine;
-using System.Collections;
 
 namespace Character
 {
@@ -13,9 +11,8 @@ namespace Character
         [field: SerializeField] public Transform CharacterCenter { get; private set; }
         [SerializeField] private PlayerAttack playerAttack;
         
-        public Inventory Inventory;
         public bool AttackIsPossible { get => CanAttack && playerAttack.canAttack; }
-        public bool IsAlive { private set; get; }
+        public bool IsAlive { private set; get; } = true;
         public bool IsHidden { set; get; }
 
         public static Player Instance { private set; get; }
@@ -32,23 +29,18 @@ namespace Character
             }
             
             Instance = this;
-
-            DontDestroyOnLoad(gameObject);
             
-            Inventory.Init();
             StatsSystem.Init();
             playerAttack.Init();
 
-            IsAlive = true;
             StatsSystem.OnDeath.AddListener(Die);
+
+            KeyboardObserver.OnFirstAttack += FirstAttack;
+            KeyboardObserver.OnSecondAttack += SecondAttack;
+            KeyboardObserver.OnInteract += InteractWithNearestInteractiveObject;
+            KeyboardObserver.OnAbilityUse += UseAbility;
         }
 
-        protected override void OnUpdate()
-        {
-            base.OnUpdate();
-            CheckNearestInteractiveObject();
-        }
-        
         private void OnTriggerEnter2D(Collider2D col)
         {
             CheckInteractiveObjectEnter(col);
@@ -58,24 +50,10 @@ namespace Character
         {
             CheckInteractiveObjectExit(col);
         }
-        
-        public void Attack()
-        {
-            if (CanAttack)
-            {
-                playerAttack.Attack();
-            }
-        }
 
-
-        public void ToggleSneak(bool isActivate)
+        private void OnDestroy()
         {
-            PlayerUseAbility.Instance.ToggleSneak(isActivate);
-        }
-
-        public void UseAbility(int spellNum)
-        {
-            PlayerUseAbility.Instance.UseAbility(spellNum);
+            UnSubOfKeyBoardObserver();
         }
 
         public ThrowableWeapon ThrowWeapon()
@@ -103,13 +81,11 @@ namespace Character
             StatsSystem.TakeDamage(attackStats);
         }
         
-        private void Die()
+        public void ToggleSneak(bool isActivate)
         {
-            IsAlive = false;
-
-            StartCoroutine(WaitToDead());
+            PlayerUseAbility.Instance.ToggleSneak(isActivate);
         }
-        
+
         public void ApplyItemStats(UniversalStatsSystem.Stats stats, AttackStats attackStats, ResistStats resistStats)
         {
             StatsSystem.ApplyStats(stats,attackStats,resistStats);
@@ -124,6 +100,39 @@ namespace Character
             StatsSystem.OnStatsChanged.Invoke();
         }
         
+        private void FirstAttack()
+        {
+            if (CanAttack)
+                playerAttack.Attack();
+        }
+        
+        private void SecondAttack()
+        {
+            ThrowWeapon();
+        } 
+        
+        private void UseAbility(int spellNum)
+        {
+            PlayerUseAbility.Instance.UseAbility(spellNum);
+        }
+
+        private void Die()
+        {
+            IsAlive = false;
+            UnSubOfKeyBoardObserver();
+
+            StartCoroutine(WaitToDead());
+        }
+
+        protected override void UnSubOfKeyBoardObserver()
+        {
+            base.UnSubOfKeyBoardObserver();
+            
+            KeyboardObserver.OnFirstAttack -= FirstAttack;
+            KeyboardObserver.OnSecondAttack -= SecondAttack;
+            KeyboardObserver.OnAbilityUse -= UseAbility;
+        }
+
         #region InteractiveWithObjects
         private void CheckInteractiveObjectEnter(Collider2D col)
         {
@@ -142,9 +151,9 @@ namespace Character
             }
         }
         
-        private void CheckNearestInteractiveObject()
+        private void InteractWithNearestInteractiveObject()
         {
-            if (!Input.GetKeyDown(KeyCode.F) || _interactiveObjects.Count <= 0) return;
+            if (_interactiveObjects.Count <= 0) return;
             
             IInteractive nearestInteractiveObj = null;
             foreach (var interactiveObj in _interactiveObjects)

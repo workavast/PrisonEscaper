@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using PlayerInventory;
 using PlayerInventory.Scriptable;
 using UnityEngine;
 using UniversalStatsSystem;
@@ -14,7 +14,7 @@ namespace Character
 		public Animator animator;
 		public bool canAttack = true;
 		public bool isTimeToCheck = false;
-		
+
 		private int _attackVariantCycle = 0;
 		const int attacksCount = 4;
 		private Player _player;
@@ -42,7 +42,7 @@ namespace Character
 		//TODO: make it possible to damage enemies
 		public void Attack()
 		{
-			if (!canAttack || _player.Inventory.SpecialSlots[SlotType.Weapon] is null)
+			if (!canAttack || Inventory.SpecialSlots[SlotType.Weapon] is null)
 				return;
 
 			AttackStats attackStats = _player.StatsSystem.GetDamage();
