@@ -1088,7 +1088,6 @@ GameObject:
   - component: {fileID: 2571813464765120419}
   - component: {fileID: 6605769827676471264}
   - component: {fileID: 1057866169583922928}
-  - component: {fileID: 3436413468531044213}
   m_Layer: 6
   m_Name: Colliders
   m_TagString: Untagged
@@ -2023,7 +2022,7 @@ TilemapCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 1
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
@@ -2055,126 +2054,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
---- !u!66 &3436413468531044213
-CompositeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6308621411646513941}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
-  m_GenerationType: 0
-  m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 6605769827676471264}
-    m_ColliderPaths:
-    - - X: 60000000
-        Y: 140000000
-      - X: 50000000
-        Y: 140000000
-      - X: 50000000
-        Y: 130000000
-      - X: 60000000
-        Y: 130000000
-    - - X: -40000000
-        Y: 140000000
-      - X: -80000000
-        Y: 140000000
-      - X: -80000000
-        Y: 30000000
-      - X: -40000000
-        Y: 30000000
-    - - X: 50000000
-        Y: 123125000
-      - X: 50000000
-        Y: 130000000
-      - X: 20000000
-        Y: 130000000
-      - X: 20000000
-        Y: 123125000
-      - X: 21875000
-        Y: 121250000
-      - X: 48125000
-        Y: 121250000
-    - - X: 10000000
-        Y: 73125000
-      - X: 10000000
-        Y: 80000000
-      - X: -20000000
-        Y: 80000000
-      - X: -20000000
-        Y: 73125000
-      - X: -18125000
-        Y: 71250000
-      - X: 8125000
-        Y: 71250000
-    - - X: 60000000
-        Y: 40000000
-      - X: 53125000
-        Y: 40000000
-      - X: 50000000
-        Y: 36875000
-      - X: 50000000
-        Y: 30000000
-      - X: 60000000
-        Y: 30000000
-  m_CompositePaths:
-    m_Paths:
-    - - {x: 5.999971, y: 13}
-      - {x: 5.999971, y: 14}
-      - {x: 5, y: 13.999971}
-      - {x: 5.000029, y: 13}
-    - - {x: -4.000029, y: 3}
-      - {x: -4.000029, y: 14}
-      - {x: -8, y: 13.999971}
-      - {x: -7.9999704, y: 3}
-    - - {x: 4.812489, y: 12.125}
-      - {x: 5, y: 12.3125105}
-      - {x: 4.999971, y: 13}
-      - {x: 2, y: 12.99997}
-      - {x: 2.0000076, y: 12.312493}
-      - {x: 2.1875107, y: 12.125}
-    - - {x: 0.8124892, y: 7.125}
-      - {x: 1, y: 7.3125105}
-      - {x: 0.99997073, y: 8}
-      - {x: -2, y: 7.9999704}
-      - {x: -1.9999924, y: 7.312493}
-      - {x: -1.8124893, y: 7.125}
-    - - {x: 5.999971, y: 3}
-      - {x: 5.999971, y: 4}
-      - {x: 5.3124924, y: 3.9999924}
-      - {x: 5, y: 3.6874893}
-      - {x: 5.000029, y: 3}
-  m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
-  m_UseDelaunayMesh: 0
-  m_CompositeGameObject: {fileID: 6308621411646513941}
 --- !u!1 &6458201004104529865
 GameObject:
   m_ObjectHideFlags: 0
