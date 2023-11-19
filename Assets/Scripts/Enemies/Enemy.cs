@@ -21,8 +21,8 @@ public class Enemy : CharacterBase
     
     [SerializeField] private float attackRange;
     [SerializeField] private float attackCooldown;
-    [SerializeField] private Transform attackPoint;
-    [SerializeField] private Transform target;
+    [SerializeField] protected Transform attackPoint;
+    [SerializeField] protected Transform target;
     [SerializeField]  private float minRangeDistAttack;
     [SerializeField] private GameObject throwableObject;
     private enum AttackType { Melee, Ranged }
@@ -43,7 +43,7 @@ public class Enemy : CharacterBase
     [SerializeField] private LayerMask groundCheckLayers;
 
     [Header("Other")]
-    [SerializeField] private Animator animator;
+    [SerializeField] protected Animator animator;
     [SerializeField] private AudioClip walk, attack;
 
 
@@ -53,7 +53,7 @@ public class Enemy : CharacterBase
     private bool _isAlive, _canMove;    
     private Rigidbody2D _rigidbody;
     private bool _stay;
-    private bool _following, _attacking;
+    protected bool _following, _attacking;
     private float _direction = 1f;
     private bool _frozen = false;
     private float _agrTimeout = 0;
@@ -184,7 +184,7 @@ public class Enemy : CharacterBase
         }
         return false;
     }
-    private void Move()
+    protected virtual void Move()
     {
         if (target == null && IsDead && transform == null) return;
 
@@ -303,7 +303,7 @@ public class Enemy : CharacterBase
     }
 
 
-    private void Attack()
+    protected virtual void Attack()
     {
         if (IsDead) return;
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
