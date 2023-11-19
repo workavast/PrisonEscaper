@@ -872,6 +872,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6658054688812813783, guid: 3d970e68b7469b54b8d183464a51e36f, type: 3}
+      propertyPath: enemiesData.<Prefabs>k__BackingField.dictionaryCells.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6658054688812813783, guid: 3d970e68b7469b54b8d183464a51e36f, type: 3}
+      propertyPath: enemiesData.<Prefabs>k__BackingField.dictionaryCells.Array.data[3].key
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6658054688812813783, guid: 3d970e68b7469b54b8d183464a51e36f, type: 3}
+      propertyPath: enemiesData.<Prefabs>k__BackingField.dictionaryCells.Array.data[3].value
+      value: 
+      objectReference: {fileID: 6994812358011569231, guid: a7fae26024e2adf4481e51be10b8d2b5, type: 3}
     - target: {fileID: 7248877201333741643, guid: 3d970e68b7469b54b8d183464a51e36f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
