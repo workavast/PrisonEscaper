@@ -20,7 +20,7 @@ public class Enemy : CharacterBase
     [Header("Attack")]
     
     [SerializeField] private float attackRange;
-    [SerializeField] private float attackCooldown;
+    [SerializeField] protected float attackCooldown;
     [SerializeField] protected Transform attackPoint;
     [SerializeField] protected Transform target;
     [SerializeField]  private float minRangeDistAttack;
@@ -251,7 +251,7 @@ public class Enemy : CharacterBase
         animator.SetFloat("velocity", Math.Abs(_rigidbody.velocity.x / StatsSystem.MainStats.WalkSpeed));
     }
 
-    private void Patrol()
+    protected virtual void Patrol()
     {
         bool outOfBounds;
         if (_direction > 0)
@@ -297,7 +297,7 @@ public class Enemy : CharacterBase
         MoveProto(-1);
     }
 
-    private void Follow()
+    protected virtual void Follow()
     {
         MoveProto(1);
     }

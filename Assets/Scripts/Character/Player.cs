@@ -65,6 +65,11 @@ namespace Character
         {
             StatsSystem.Heal(value);
         }
+
+        public void SetAnimIdle()
+        {
+            animator.SetBool("Hit", true);
+        }
         
         public void TakeDamage(AttackStats attackStats, Vector3 position)
         {
