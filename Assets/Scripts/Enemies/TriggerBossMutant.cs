@@ -11,6 +11,9 @@ namespace Character
         private Player player;
         [SerializeField] private BossMutantArena boss;
         [SerializeField] private CameraFollow cameraFollow;
+      //  public GameObject bossHpBar;
+
+
         private void Start()
         {
             player = Player.Instance;
@@ -21,6 +24,7 @@ namespace Character
             yield return StartCoroutine(boss.StartBossFight());
             player.enabled = true;
             cameraFollow.Target = player.transform;
+           // bossHpBar.SetActive(true);
         }
         private void OnTriggerEnter2D(Collider2D other)
         {
@@ -30,8 +34,6 @@ namespace Character
                 player.enabled = false;
                 cameraFollow.Target = boss.transform;
                 StartCoroutine(WaitBossAnim());
-
-
             }
         }
     }

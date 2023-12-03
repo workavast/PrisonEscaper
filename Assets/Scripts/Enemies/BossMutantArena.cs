@@ -1,19 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
+using Character;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BossMutantArena : Enemy
 {
-    public GameObject roarAnim;
+    [SerializeField] private GameObject roarAnim;
+    [SerializeField] private GameObject bossHpBar;
+    [SerializeField] private Transform[] arenaPlatforms;
+    [SerializeField] private AudioClip roarSound, jumpSound, hitSound, bossFightSound;
+    // public Sou
+
+
+
     private bool isFightStart = false;
     private int lastPlatform = -1;
     private float lastAttackTime = 0f;
     private float jumpWaiting = 0f;
-    public Transform[] arenaPlatforms;
-    float platformOffsetX = 43.6f, platformOffsetY = 8f;
+    private float platformOffsetX = 43.6f, platformOffsetY = 8f;
+    private float jumpDelay = 5f;
+    private float defaultSoundVolume, defGameVolume;
+    private Image HpBar;
+    private AudioSource cameraAudioSource;
+    private AudioClip defaultAudioClip;
+
+
+    private void PlaySound(AudioClip curSound)
+    {
+      //  if (_source.isPlaying) return;
+
+        _source.clip = curSound;
+        _source.loop = false;
+        _source.Play();
+    }
+   
 
     private IEnumerator RoarAnimation()
     {
+        PlaySound(roarSound);
         roarAnim.SetActive(true);
         yield return new WaitForSeconds(1f);
         roarAnim.SetActive(false);
@@ -36,8 +61,12 @@ public class BossMutantArena : Enemy
     }
 
     public IEnumerator StartBossFight()
-    {
+    { 
         yield return new WaitForSeconds(1f);
+
+        defaultSoundVolume = _source.volume;
+        cameraAudioSource = Camera.main.GetComponent<AudioSource>();
+        cameraAudioSource.Stop();
 
         transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
         roarAnim.transform.localRotation = Quaternion.Euler(0f, 0f, -20f); ;
@@ -55,9 +84,13 @@ public class BossMutantArena : Enemy
         roarAnim.transform.localRotation = Quaternion.Euler(0f, 0f, 0f); ;
         roarAnim.transform.localPosition = new Vector3(5.52f, 0.5f, roarAnim.transform.localPosition.z);
         roarAnim.transform.localScale = new Vector3(4f, 4f, 1f);
+
+
+        _source.volume *= 2f;
         StartCoroutine(ShakeCamera(1f, 0.4f));
         yield return StartCoroutine(RoarAnimation());
         yield return new WaitForSeconds(.5f);
+        _source.volume = defaultSoundVolume;
 
         roarAnim.transform.localPosition = new Vector3(3.05f, 0.12f, roarAnim.transform.localPosition.z);
         roarAnim.transform.localScale = new Vector3(2f, 2f, 1f);
@@ -66,17 +99,59 @@ public class BossMutantArena : Enemy
 
         //yield return StartCoroutine(JumpToTarget(new Vector2(curTarget.position.x+ platformOffsetX, curTarget.position.y + platformOffsetY)));
 
-        jumpWaiting = Time.time - 10f;
+        jumpWaiting = Time.time - jumpDelay;
         lastAttackTime = Time.time - attackCooldown;
         isFightStart = true;
+        bossHpBar.SetActive(true);
+        HpBar = bossHpBar.transform.Find("bar").GetComponent<Image>();
+
+        defaultAudioClip = cameraAudioSource.clip;
+        cameraAudioSource.clip = bossFightSound;
+        defGameVolume = cameraAudioSource.volume;
+        cameraAudioSource.volume *= 2;
+        cameraAudioSource.loop = true;
+        cameraAudioSource.Play();
     }
 
-    IEnumerator JumpToTarget(Vector2 targetPos)
+
+    public override void ThrowWeapon()
     {
+        if (IsDead) return;
+
+        int numWeapons = 20;
+        float angleStep = 360f / numWeapons;
+
+        for (int i = 0; i < numWeapons; i++)
+        {
+            float angle = i * angleStep;
+            Quaternion rotation = Quaternion.Euler(0, 0, angle);
+
+            float distanceFromCenter = 4f; // Расстояние от центра кольца
+
+            Vector3 spawnPosition = transform.position + rotation * new Vector3(distanceFromCenter, 0);
+
+                GameObject throwableWeapon = GameObject.Instantiate(throwableObject, spawnPosition, rotation) as GameObject;
+
+                Vector2 direction = rotation * Vector2.right;
+
+                ThrowableWeapon weaponObj = throwableWeapon.GetComponent<ThrowableWeapon>();
+                weaponObj.speed = 14;
+                weaponObj.direction = direction;
+                weaponObj.isPlayerWeapon = false;
+                weaponObj.owner = transform;
+                throwableWeapon.name = "ThrowableWeapon";
+        }
+    }
+
+
+    IEnumerator JumpToTarget(Vector2 targetPos, bool isShot = false)
+    {
+        PlaySound(jumpSound);
         float timeToJump = 0.6f, jumpHeight = 5f;
         Vector2 startPos = transform.position; // Начальная позиция объекта
 
         float elapsedTime = 0f;
+        bool hasThrownWeapon = false;
 
         while (elapsedTime < timeToJump)
         {
@@ -87,6 +162,14 @@ public class BossMutantArena : Enemy
 
             // Обновление позиции объекта
             transform.position = Vector2.Lerp(startPos, targetPos, t) + Vector2.up * height;
+
+            // Если isShot=true и еще не было броска оружия, и прошла половина времени прыжка
+            if (isShot && !hasThrownWeapon && elapsedTime >= timeToJump / 2)
+            {
+                // Вызов функции броска оружия
+                ThrowWeapon();
+                hasThrownWeapon = true; // Помечаем, что бросок оружия уже выполнен
+            }
 
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -130,7 +213,7 @@ public class BossMutantArena : Enemy
 
         if (!isFightStart) return;
 
-        if (jumpWaiting + 10 < Time.time)
+        if (jumpWaiting + jumpDelay < Time.time)
         {
             int newPlatform;
             do
@@ -141,8 +224,8 @@ public class BossMutantArena : Enemy
 
             Transform curTarget = arenaPlatforms[newPlatform];
             bool isLeft = Random.Range(0, 2) == 0;
-            StartCoroutine(JumpToTarget(new Vector2(curTarget.position.x + platformOffsetX + (isLeft ? 2f:-2f), curTarget.position.y + platformOffsetY)));
-            jumpWaiting = Time.time + Random.Range(0, 11);
+            StartCoroutine(JumpToTarget(new Vector2(curTarget.position.x + platformOffsetX + (isLeft ? 2f:-2f), curTarget.position.y + platformOffsetY), true));
+            jumpWaiting = Time.time + jumpDelay + Random.Range(0, jumpDelay/3);
         }
 
         int isPlayerLeft = target.position.x < transform.position.x ? 1 : -1;
@@ -151,6 +234,28 @@ public class BossMutantArena : Enemy
         base.Move();
 
     }
+
+
+    protected override void TakeDamageCont()
+    {
+        base.TakeDamageCont();
+        PlaySound(hitSound);
+        HpBar.fillAmount = Health / StatsSystem.MainStats.MaxHealth;
+    }
+
+
+    protected override IEnumerator Die()
+    {
+        yield return StartCoroutine(base.Die());
+        bossHpBar.SetActive(false);
+        cameraAudioSource.clip = defaultAudioClip;
+        cameraAudioSource.volume = defGameVolume;
+        cameraAudioSource.loop = true;
+        cameraAudioSource.Play();
+    }
+
+
+
     protected override void Attack()
     {
         if (lastAttackTime + attackCooldown > Time.time) return;
@@ -166,7 +271,7 @@ public class BossMutantArena : Enemy
             return;
         }
 
-        int attackType = Random.Range(1, 5);
+        int attackType = Random.Range(1, 3);
         _attacking = true;
         switch(attackType)
             {

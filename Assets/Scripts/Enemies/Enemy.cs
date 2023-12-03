@@ -24,7 +24,7 @@ public class Enemy : CharacterBase
     [SerializeField] protected Transform attackPoint;
     [SerializeField] protected Transform target;
     [SerializeField]  private float minRangeDistAttack;
-    [SerializeField] private GameObject throwableObject;
+    [SerializeField] protected GameObject throwableObject;
     private enum AttackType { Melee, Ranged }
     [SerializeField] private AttackType attackType;
 
@@ -47,7 +47,7 @@ public class Enemy : CharacterBase
     [SerializeField] private AudioClip walk, attack;
 
 
-    private AudioSource _source;
+    protected AudioSource _source;
     private Vector3 _startPosition;
     private ItemDropper _itemDropper;
     private bool _isAlive, _canMove;    
@@ -57,7 +57,7 @@ public class Enemy : CharacterBase
     private float _direction = 1f;
     private bool _frozen = false;
     private float _agrTimeout = 0;
-    private bool IsDead { get => !CheckLifeState(); }
+    protected bool IsDead { get => !CheckLifeState(); }
 
     protected override void OnAwake()
     {
@@ -125,7 +125,7 @@ public class Enemy : CharacterBase
     }
 
 
-    public void ThrowWeapon()
+    public virtual void ThrowWeapon()
     {
         if (IsDead) return;
         GameObject throwableWeapon = GameObject.Instantiate(throwableObject,
@@ -312,7 +312,7 @@ public class Enemy : CharacterBase
         StartCoroutine(ResetAttackFlag(attackCooldown / StatsSystem.AttackStats.attackCooldown));
     }
 
-    private void TakeDamageCont()
+    protected virtual void TakeDamageCont()
     {
         animator.SetTrigger("Hurt");
         StartCoroutine(Stun());
@@ -365,7 +365,7 @@ public class Enemy : CharacterBase
           _itemDropper.DropItems();
       }*/
 
-    private IEnumerator Die()
+    protected virtual IEnumerator Die()
     {
         animator.SetTrigger("Dead");
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
