@@ -24,8 +24,8 @@ namespace UI
         private void UpdateStatsPanel()
         {
             var StatsSystem = Player.Instance.StatsSystem;
-            health.text = $"Здоровье: {StatsSystem.MainStats.Health}/{StatsSystem.MainStats.MaxHealth}";
-            mana.text = $"Мана: {StatsSystem.MainStats.Mana}/{StatsSystem.MainStats.MaxMana}";
+            health.text = $"Здоровье: {StatsSystem.Health.CurrentValue}/{StatsSystem.Health.MaxValue}";
+            mana.text = $"Мана: {StatsSystem.Mana.CurrentValue}/{StatsSystem.Mana.MaxValue}";
             armor.text = $"Сопротивления:\n{StatsSystem.ResistStats.ExtraInfo()}";
             baseDamage.text = $"Урон:\n{StatsSystem.AttackStats.ExtraInfo()}";
             critChance.text = $"Шанс крита: {StatsSystem.AttackStats.criticalChance * 100}%";

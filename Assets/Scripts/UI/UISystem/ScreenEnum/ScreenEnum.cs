@@ -6,6 +6,6 @@ namespace UI
         MainMenu = 4,
         GameplayScreen = 6,
         GameplayMenuScreen = 8,
-        Inventory
+        Inventory = 10
     }
 }

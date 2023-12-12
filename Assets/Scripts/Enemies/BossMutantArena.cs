@@ -1,31 +1,28 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using Character;
 using UnityEngine;
-using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class BossMutantArena : Enemy
 {
     [SerializeField] private GameObject roarAnim;
-    [SerializeField] private GameObject bossHpBar;
     [SerializeField] private Transform[] arenaPlatforms;
     [SerializeField] private AudioClip roarSound, jumpSound, hitSound, bossFightSound;
-    // public Sou
-
-
 
     private bool isFightStart = false;
     private int lastPlatform = -1;
     private float lastAttackTime = 0f;
     private float jumpWaiting = 0f;
-    private float platformOffsetX = 43.6f, platformOffsetY = 8f;
+    private float platformOffsetX = 0f, platformOffsetY = 3f;
     private float jumpDelay = 5f;
     private float defaultSoundVolume, defGameVolume;
-    private Image HpBar;
     private AudioSource cameraAudioSource;
     private AudioClip defaultAudioClip;
 
-
+    public event Action OnStartBossBattle;
+    public event Action OnBossDie;
+    
     private void PlaySound(AudioClip curSound)
     {
       //  if (_source.isPlaying) return;
@@ -102,8 +99,7 @@ public class BossMutantArena : Enemy
         jumpWaiting = Time.time - jumpDelay;
         lastAttackTime = Time.time - attackCooldown;
         isFightStart = true;
-        bossHpBar.SetActive(true);
-        HpBar = bossHpBar.transform.Find("bar").GetComponent<Image>();
+        OnStartBossBattle?.Invoke();
 
         defaultAudioClip = cameraAudioSource.clip;
         cameraAudioSource.clip = bossFightSound;
@@ -228,7 +224,7 @@ public class BossMutantArena : Enemy
             jumpWaiting = Time.time + jumpDelay + Random.Range(0, jumpDelay/3);
         }
 
-        int isPlayerLeft = target.position.x < transform.position.x ? 1 : -1;
+        int isPlayerLeft = target.position.x > transform.position.x ? 1 : -1;
         transform.localScale = new Vector3(isPlayerLeft, transform.localScale.y, transform.localScale.z);
 
         base.Move();
@@ -240,14 +236,13 @@ public class BossMutantArena : Enemy
     {
         base.TakeDamageCont();
         PlaySound(hitSound);
-        HpBar.fillAmount = Health / StatsSystem.MainStats.MaxHealth;
     }
 
 
     protected override IEnumerator Die()
     {
         yield return StartCoroutine(base.Die());
-        bossHpBar.SetActive(false);
+        OnBossDie?.Invoke();
         cameraAudioSource.clip = defaultAudioClip;
         cameraAudioSource.volume = defGameVolume;
         cameraAudioSource.loop = true;
@@ -274,7 +269,7 @@ public class BossMutantArena : Enemy
         int attackType = Random.Range(1, 3);
         _attacking = true;
         switch(attackType)
-            {
+        {
             case 1:
                 StartCoroutine(JumpAttack()); // 20%
                 break;

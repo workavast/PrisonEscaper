@@ -164,7 +164,11 @@ namespace Character
 				IsPlatformDrop = false;
 			}
 
-			if (!_canMove || animator.GetBool("IsGroundLedgeClimbing") || animator.GetBool("IsPlatformClimbing")) return;
+			if (!_canMove 
+			    // || animator.GetBool("IsGroundLedgeClimbing") 
+			    // || animator.GetBool("IsPlatformClimbing")
+			    ) 
+				return;
 			
 			MainMove(move);
 			Dash(dash);

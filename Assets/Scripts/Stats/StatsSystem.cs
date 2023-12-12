@@ -1,6 +1,5 @@
 ﻿using System;
-using Character;
-using PlayerInventory.Scriptable;
+using SomeStorages;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
@@ -11,26 +10,24 @@ namespace UniversalStatsSystem
     public class StatsSystem
     {
         [SerializeField] private Stats mainStats;
-        public Stats MainStats => mainStats;
-        
         [Space]
         [SerializeField] private AttackStats attackStats;
-        public AttackStats AttackStats => attackStats;
-        
         [Space]
         [SerializeField] private ResistStats resistStats;
-        public ResistStats ResistStats => resistStats;
-
+        
         [Space]
         public bool isInvincible;
 
         [HideInInspector] public UnityEvent OnDeath;
         [HideInInspector] public UnityEvent OnStatsChanged;
         
-        public event Action OnHealthStatsChange;
-        public event Action OnManaStatsChange;
-
-        [HideInInspector]
+        public Stats MainStats => mainStats;
+        public AttackStats AttackStats => attackStats;
+        public ResistStats ResistStats => resistStats;
+        
+        public IReadOnlySomeStorage<float> Health => MainStats.Health;
+        public IReadOnlySomeStorage<float> Mana => MainStats.Mana;
+        
         public enum DamageType
         {
             None,
@@ -45,25 +42,17 @@ namespace UniversalStatsSystem
 
         public void Init()
         {
-            MainStats.Health = MainStats.MaxHealth;
-            MainStats.Mana = MainStats.MaxMana;
             OnStatsChanged = new UnityEvent();
         }
         
         public void Heal(float value)
         {
-            MainStats.Health = Mathf.Min(MainStats.Health + value, MainStats.MaxHealth);
-            OnHealthStatsChange?.Invoke();
+            MainStats.ChangeHealth(value);
         }
 
         public bool SetMana(float value)
         {
-            if ((MainStats.Mana + value) < 0)
-            {
-                return false;
-            }
-            MainStats.Mana = Math.Min(MainStats.Mana + value, MainStats.MaxMana);
-            OnManaStatsChange?.Invoke();
+            MainStats.ChangeMana(value);
             return true;
         }
 
@@ -107,9 +96,8 @@ namespace UniversalStatsSystem
         {
             if (isInvincible)
                 return;
-            MainStats.Health -= damageMagnitude;
-            OnHealthStatsChange?.Invoke();
-            if (MainStats.Health < 0)
+            MainStats.ChangeHealth(-damageMagnitude);
+            if (MainStats.Health.IsEmpty)
                 OnDeath.Invoke();
 
             Debug.Log($"[Stats system]: total taken damage: {damageMagnitude}");
@@ -142,8 +130,6 @@ namespace UniversalStatsSystem
             this.mainStats += mainStats;
             this.attackStats += attackStats;
             this.resistStats += resistStats;
-            OnHealthStatsChange?.Invoke();
-            OnManaStatsChange?.Invoke();
         }
         
         public void RemoveStats(Stats mainStats, AttackStats attackStats, ResistStats resistStats)
@@ -151,65 +137,63 @@ namespace UniversalStatsSystem
             this.mainStats -= mainStats;
             this.attackStats -= attackStats;
             this.resistStats -= resistStats;
-            OnHealthStatsChange?.Invoke();
-            OnManaStatsChange?.Invoke();
         }
     }
 
     [Serializable]
     public class Stats
     {
-        [HideInInspector] public float Health;
-        public float MaxHealth;
-        [HideInInspector] public float Mana;
-        public float MaxMana;
+        [SerializeField] private SomeStorageFloat health;
+        [SerializeField] private SomeStorageFloat mana;
+
+        public IReadOnlySomeStorage<float> Health => health;
+        public IReadOnlySomeStorage<float> Mana => mana;
         
         [Space]
         public float WalkSpeed;
         
         public Stats(float health, float mana,float walkSpeed)
         {
-            MaxHealth = Health = health;
-            MaxMana = Mana = mana;
+            this.health = new SomeStorageFloat(health);
+            this.mana = new SomeStorageFloat(mana);
+            
             WalkSpeed = walkSpeed;
         }
 
         public static Stats operator +(Stats a, Stats b)
         {
-            a.MaxHealth += b.MaxHealth;
-            if (a.Health > a.MaxHealth)
-                a.Health = a.MaxHealth;
-            
-            a.MaxMana += b.MaxMana;
-            if (a.Mana > a.MaxMana)
-                a.Mana = a.MaxMana;
-            
+            a.health.SetMaxValue(a.health.MaxValue + b.health.MaxValue);
+            a.mana.SetMaxValue(a.mana.MaxValue + b.mana.MaxValue);
             a.WalkSpeed += b.WalkSpeed;
             return a;
         }
 
         public static Stats operator -(Stats a, Stats b)
         {
-            a.MaxHealth -= b.MaxHealth;
-            if (a.Health > a.MaxHealth)
-                a.Health = a.MaxHealth;
-            
-            a.MaxMana -= b.MaxMana;
-            if (a.Mana > a.MaxMana)
-                a.Mana = a.MaxMana;
-            
+            a.health.SetMaxValue(a.health.MaxValue - b.health.MaxValue);
+            a.mana.SetMaxValue(a.mana.MaxValue - b.mana.MaxValue);
             a.WalkSpeed -= b.WalkSpeed;
             return a;
         }
 
+        public void ChangeHealth(float value)
+        {
+            health.ChangeCurrentValue(value);
+        }
+
+        public void ChangeMana(float value)
+        {
+            mana.ChangeCurrentValue(value);
+        }
+        
         public virtual string ExtraInfo()
         {
             string result = "";
             
-            if (MaxHealth != 0)
-                result += $"Max health: {MaxHealth.ToString("+0.#;-0.#")}\n"; 
-            if (MaxMana != 0)
-                result += $"Max mana: {MaxMana.ToString("+0.#;-0.#")}\n";
+            if (health.MaxValue != 0)
+                result += $"Max health: {health.MaxValue.ToString("+0.#;-0.#")}\n"; 
+            if (mana.MaxValue != 0)
+                result += $"Max mana: {mana.MaxValue.ToString("+0.#;-0.#")}\n";
             if (WalkSpeed != 0)
                 result += $"Walk speed: {WalkSpeed.ToString("+0.#;-0.#")}\n";
             

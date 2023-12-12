@@ -324,7 +324,7 @@ public class Enemy : CharacterBase
     }
     private bool CheckLifeState()
     {
-        return StatsSystem.MainStats.Health > 0;
+        return StatsSystem.MainStats.Health.CurrentValue > 0;
     }
 
     public override void TakeDamage(AttackStats attackStats)

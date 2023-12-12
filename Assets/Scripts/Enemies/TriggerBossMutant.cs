@@ -1,40 +1,65 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 namespace Character
 {
     public class TriggerBossMutant : MonoBehaviour
     {
-        private bool isFirst = true;
-        private Player player;
         [SerializeField] private BossMutantArena boss;
-        [SerializeField] private CameraFollow cameraFollow;
-      //  public GameObject bossHpBar;
+        
+        [SerializeField] private Collider2D enterDoorCollider;
+        [SerializeField] private Collider2D exitDoorCollider;
+        [SerializeField] private GameObject enterSprite;
+        [SerializeField] private GameObject exitSprite;
+        
+        private bool _activated;
+        private Player _player;
+        private CameraFollow _cameraFollow;
 
+        private void Awake()
+        {
+            boss.OnBossDie += SetDisable;
+            SetDisable();
+        }
 
         private void Start()
         {
-            player = Player.Instance;
+            _player = Player.Instance;
+            _cameraFollow = CameraFollow.Instance;
         }
 
         IEnumerator WaitBossAnim()
         {
+            _activated = true;
+            _player.enabled = false;
+            _cameraFollow.Target = boss.transform;
+            
+            enterDoorCollider.enabled = true;
+            exitDoorCollider.enabled = true;
+            enterSprite.SetActive(true);
+            exitSprite.SetActive(true);
+            
             yield return StartCoroutine(boss.StartBossFight());
-            player.enabled = true;
-            cameraFollow.Target = player.transform;
-           // bossHpBar.SetActive(true);
+            
+            _cameraFollow.Target = _player.transform;
+            _player.enabled = true;
         }
+        
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (isFirst && other.CompareTag("Player"))
-            {
-                isFirst = false;
-                player.enabled = false;
-                cameraFollow.Target = boss.transform;
-                StartCoroutine(WaitBossAnim());
-            }
+            if (_activated || 
+                !other.CompareTag("Player")) 
+                return;
+            
+            StartCoroutine(WaitBossAnim());
+        }
+
+        private void SetDisable()
+        {
+            enterDoorCollider.enabled = false;
+            exitDoorCollider.enabled = false;
+            enterSprite.SetActive(false);
+            exitSprite.SetActive(false);
         }
     }
 }

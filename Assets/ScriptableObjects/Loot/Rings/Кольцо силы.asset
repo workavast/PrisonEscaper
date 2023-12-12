@@ -28,10 +28,14 @@ MonoBehaviour:
   <Type>k__BackingField: 4
   <Rarity>k__BackingField: 0
   <MainStats>k__BackingField:
-    Health: 0
-    MaxHealth: 0
-    Mana: 0
-    MaxMana: 0
+    health:
+      maxValue: 0
+      currentValue: 0
+      minValue: 0
+    mana:
+      maxValue: 0
+      currentValue: 0
+      minValue: 0
     WalkSpeed: 5
   <AttackStats>k__BackingField:
     physicalDamage: 2

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace SomeStorages
@@ -8,14 +9,15 @@ namespace SomeStorages
         public override float FillingPercentage => (float)currentValue / (float)maxValue;
         public override bool IsFull => currentValue >= maxValue;
         public override bool IsEmpty => currentValue <= minValue;
-
-        public override event System.Action<int> OnMaxValueChange;
-        public override event System.Action<int> OnCurrentValueChange;
-        public override event System.Action<int> OnMinValueChange;
+        
+        public override event Action OnChange;
+        public override event Action<int> OnMaxValueChange;
+        public override event Action<int> OnCurrentValueChange;
+        public override event Action<int> OnMinValueChange;
 
         public SomeStorageInt()
         {
-            maxValue = int.MaxValue;
+            maxValue = 0;
             currentValue = 0;
             minValue = 0;
         }
@@ -46,12 +48,14 @@ namespace SomeStorages
             maxValue = newMaxValue;
             currentValue = Mathf.Clamp(currentValue, minValue, maxValue);
             OnMaxValueChange?.Invoke(maxValue);
+            OnChange?.Invoke();
         }
 
         public override void SetCurrentValue(int newCurrentValue)
         {
             currentValue = Mathf.Clamp(newCurrentValue, minValue, maxValue);
             OnCurrentValueChange?.Invoke(currentValue);
+            OnChange?.Invoke();
         }
 
         public override void SetMinValue(int newMinValue)
@@ -59,12 +63,14 @@ namespace SomeStorages
             minValue = newMinValue;
             currentValue = Mathf.Clamp(currentValue, minValue, maxValue);
             OnMinValueChange?.Invoke(minValue);
+            OnChange?.Invoke();
         }
 
         public override void ChangeCurrentValue(int value)
         {
             currentValue = Mathf.Clamp(currentValue + value, minValue, maxValue);
             OnCurrentValueChange?.Invoke(currentValue);
+            OnChange?.Invoke();
         }
     }
 }
