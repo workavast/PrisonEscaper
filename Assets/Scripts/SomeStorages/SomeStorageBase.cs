@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace SomeStorages
@@ -17,9 +18,10 @@ namespace SomeStorages
         public abstract bool IsFull { get; }
         public abstract bool IsEmpty { get; }
 
-        public abstract event System.Action<TDataType> OnMaxValueChange;
-        public abstract event System.Action<TDataType> OnCurrentValueChange;
-        public abstract event System.Action<TDataType> OnMinValueChange;
+        public abstract event Action OnChange;
+        public abstract event Action<TDataType> OnMaxValueChange;
+        public abstract event Action<TDataType> OnCurrentValueChange;
+        public abstract event Action<TDataType> OnMinValueChange;
 
         public abstract void SetMaxValue(TDataType newMaxValue);
 

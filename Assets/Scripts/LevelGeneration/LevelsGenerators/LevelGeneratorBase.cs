@@ -61,7 +61,8 @@ namespace LevelGeneration.LevelsGenerators
             InitBlocksPrefabs(_finalBlocksPrefabs, new List<List<GameObject>>(){finalBlocks});
         }
 
-        protected void InitBlocksPrefabs(IReadOnlyDictionary<ConnectorID, List<GameObject>> prefabs, IReadOnlyList<List<GameObject>> prefabsSources)
+        protected void InitBlocksPrefabs(IReadOnlyDictionary<ConnectorID, List<GameObject>> prefabs, 
+            IReadOnlyList<List<GameObject>> prefabsSources)
         {
             List<GameObject> allPrefabs = new List<GameObject>();
             foreach (var source in prefabsSources)

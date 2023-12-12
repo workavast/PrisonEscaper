@@ -1,21 +1,23 @@
+using System;
 using UnityEngine;
 
 namespace SomeStorages
 {
-    [System.Serializable]
+    [Serializable]
     public class SomeStorageFloat : SomeStorageBase<float>
     {
-        public override float FillingPercentage => currentValue / maxValue;
-        public override bool IsFull => currentValue >= maxValue;
-        public override bool IsEmpty => currentValue <= minValue;
+        public override float FillingPercentage => (currentValue / maxValue);
+        public override bool IsFull => (currentValue >= maxValue);
+        public override bool IsEmpty => (currentValue <= minValue);
 
-        public override event System.Action<float> OnMaxValueChange;
-        public override event System.Action<float> OnCurrentValueChange;
-        public override event System.Action<float> OnMinValueChange;
+        public override event Action OnChange;
+        public override event Action<float> OnMaxValueChange;
+        public override event Action<float> OnCurrentValueChange;
+        public override event Action<float> OnMinValueChange;
     
         public SomeStorageFloat()
         {
-            maxValue = float.MaxValue;
+            maxValue = 0;
             currentValue = 0;
             minValue = 0;
         }
@@ -46,12 +48,14 @@ namespace SomeStorages
             maxValue = newMaxValue;
             currentValue = Mathf.Clamp(currentValue, minValue, maxValue);
             OnMaxValueChange?.Invoke(maxValue);
+            OnChange?.Invoke();
         }
 
         public override void SetCurrentValue(float newCurrentValue)
         {
             currentValue = Mathf.Clamp(newCurrentValue, minValue, maxValue);
             OnCurrentValueChange?.Invoke(currentValue);
+            OnChange?.Invoke();
         }
 
         public override void SetMinValue(float newMinValue)
@@ -59,12 +63,14 @@ namespace SomeStorages
             minValue = newMinValue;
             currentValue = Mathf.Clamp(currentValue, minValue, maxValue);
             OnMinValueChange?.Invoke(minValue);
+            OnChange?.Invoke();
         }
     
         public override void ChangeCurrentValue(float value)
         {
             currentValue = Mathf.Clamp(currentValue + value, minValue, maxValue);
             OnCurrentValueChange?.Invoke(currentValue);
+            OnChange?.Invoke();
         }
     }
 }

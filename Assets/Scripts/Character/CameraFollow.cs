@@ -9,11 +9,12 @@ namespace Character
 
 	public class CameraFollow : MonoBehaviour
 	{
+		public static CameraFollow Instance { private set; get; }
+		
 		[SerializeField] private Vector3 positionOffset;
 
 		public float FollowSpeed = 2f;
 		public Transform Target;
-		
 		public float shakeDuration = 0f;
 		public float shakeAmount = 0.1f;
 		public float decreaseFactor = 1.0f;
@@ -24,12 +25,16 @@ namespace Character
 
 		void Awake()
 		{
+			if (Instance)
+			{
+				Destroy(gameObject);
+				return;
+			}
+			Instance = this;
+
 			Cursor.visible = false;
 			if (_camTransform == null)
-			{
 				_camTransform = GetComponent(typeof(Transform)) as Transform;
-			}
-
 		}
 
 		private void Start()

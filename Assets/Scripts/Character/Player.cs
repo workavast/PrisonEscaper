@@ -27,7 +27,6 @@ namespace Character
                 Destroy(gameObject);
                 return;
             }
-            
             Instance = this;
             
             StatsSystem.Init();

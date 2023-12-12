@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace SomeStorages
@@ -8,14 +9,15 @@ namespace SomeStorages
         public override float FillingPercentage => (float)currentValue / (float)maxValue;
         public override bool IsFull => currentValue >= maxValue;
         public override bool IsEmpty => currentValue <= minValue;
-
-        public override event System.Action<int> OnMaxValueChange;
-        public override event System.Action<int> OnCurrentValueChange;
-        public override event System.Action<int> OnMinValueChange;
+        
+        public override event Action OnChange;
+        public override event Action<int> OnMaxValueChange;
+        public override event Action<int> OnCurrentValueChange;
+        public override event Action<int> OnMinValueChange;
 
         public SomeStorageInt()
         {
-            maxValue = int.MaxValue;
+            maxValue = 0;
             currentValue = 0;
             minValue = 0;
         }

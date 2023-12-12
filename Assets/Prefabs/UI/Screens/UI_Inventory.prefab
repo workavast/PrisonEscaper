@@ -390,7 +390,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5485715345990602261}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8081302402790504349}
+        m_TargetAssemblyTypeName: UI.UI_ScreenBase, Assembly-CSharp
+        m_MethodName: _SetWindow
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 8
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &503915618474290868
 GameObject:
   m_ObjectHideFlags: 0
@@ -2213,7 +2225,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2893900997618939336}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8081302402790504349}
+        m_TargetAssemblyTypeName: UI.UI_ScreenBase, Assembly-CSharp
+        m_MethodName: _LoadScene
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4681508858393516734
 GameObject:
   m_ObjectHideFlags: 0
@@ -3129,7 +3153,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 250666416791228036}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8081302402790504349}
+        m_TargetAssemblyTypeName: UI.UI_ScreenBase, Assembly-CSharp
+        m_MethodName: _LoadScene
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6655410668478074669
 GameObject:
   m_ObjectHideFlags: 0
@@ -3835,7 +3871,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2299911101436613289}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8081302402790504349}
+        m_TargetAssemblyTypeName: UI.UI_ScreenBase, Assembly-CSharp
+        m_MethodName: _Quit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &963474586999257834
 PrefabInstance:
   m_ObjectHideFlags: 0

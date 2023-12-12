@@ -280,10 +280,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <StatsSystem>k__BackingField:
     mainStats:
-      Health: 0
-      MaxHealth: 50
-      Mana: 0
-      MaxMana: 0
+      health:
+        maxValue: 50
+        currentValue: 50
+        minValue: 0
+      mana:
+        maxValue: 50
+        currentValue: 50
+        minValue: 0
       WalkSpeed: 5
     attackStats:
       physicalDamage: 5

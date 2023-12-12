@@ -4,7 +4,7 @@ using UniversalStatsSystem;
 public abstract class CharacterBase : MonoBehaviour, IDamageable, IStatusEffectable
 {
     [field: SerializeField] public StatsSystem StatsSystem { get; private set; }
-    public float Health => StatsSystem.MainStats.Health;
+    public float Health => StatsSystem.Health.CurrentValue;
     public bool Invincible { get => StatsSystem.isInvincible; protected set => StatsSystem.isInvincible = value; }
 
     

@@ -16,8 +16,8 @@ public class BossMutant : Enemy
     IEnumerator JumpToTarget()
     {
         float timeToJump = 0.6f, jumpHeight = 5f;
-        Vector2 startPos = transform.position; // Начальная позиция объекта
-        Vector2 targetPos = target.position; // Позиция целевого объекта
+        Vector2 startPos = transform.position; // РќР°С‡Р°Р»СЊРЅР°СЏ РїРѕР·РёС†РёСЏ РѕР±СЉРµРєС‚Р°
+        Vector2 targetPos = target.position; // РџРѕР·РёС†РёСЏ С†РµР»РµРІРѕРіРѕ РѕР±СЉРµРєС‚Р°
 
         float elapsedTime = 0f;
 
@@ -25,10 +25,10 @@ public class BossMutant : Enemy
         {
             float t = elapsedTime / timeToJump;
 
-            // Формула для движения по дугообразной траектории
+            // Р¤РѕСЂРјСѓР»Р° РґР»СЏ РґРІРёР¶РµРЅРёСЏ РїРѕ РґСѓРіРѕРѕР±СЂР°Р·РЅРѕР№ С‚СЂР°РµРєС‚РѕСЂРёРё
             float height = Mathf.Sin(Mathf.PI * t) * jumpHeight;
 
-            // Обновление позиции объекта
+            // РћР±РЅРѕРІР»РµРЅРёРµ РїРѕР·РёС†РёРё РѕР±СЉРµРєС‚Р°
             transform.position = Vector2.Lerp(startPos, targetPos, t) + Vector2.up * height;
 
             elapsedTime += Time.deltaTime;
