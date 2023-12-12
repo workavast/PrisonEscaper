@@ -699,6 +699,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1118575063295566488, guid: 234942237f809bf468d98c9b1e734e19, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1118575063295566488, guid: 234942237f809bf468d98c9b1e734e19, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2232267583945122338, guid: 234942237f809bf468d98c9b1e734e19, type: 3}
       propertyPath: m_Name
       value: FullCanvas
@@ -878,7 +886,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6658054688812813783, guid: 3d970e68b7469b54b8d183464a51e36f, type: 3}
       propertyPath: enemiesData.<Prefabs>k__BackingField.dictionaryCells.Array.data[3].key
-      value: 20
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 6658054688812813783, guid: 3d970e68b7469b54b8d183464a51e36f, type: 3}
       propertyPath: enemiesData.<Prefabs>k__BackingField.dictionaryCells.Array.data[3].value

@@ -286,6 +286,7 @@ public class Enemy : CharacterBase
 
     private void MoveProto(int direction)
     {
+        if (IsDead) return;
         if (transform.position.x > target.position.x)
             _rigidbody.velocity = new Vector2(-StatsSystem.MainStats.WalkSpeed * direction, _rigidbody.velocity.y);
         else
@@ -367,6 +368,7 @@ public class Enemy : CharacterBase
 
     protected virtual IEnumerator Die()
     {
+        _rigidbody.velocity = Vector2.zero;
         animator.SetTrigger("Dead");
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         float animOffset = 0f;
