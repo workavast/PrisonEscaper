@@ -48,12 +48,14 @@ namespace SomeStorages
             maxValue = newMaxValue;
             currentValue = Mathf.Clamp(currentValue, minValue, maxValue);
             OnMaxValueChange?.Invoke(maxValue);
+            OnChange?.Invoke();
         }
 
         public override void SetCurrentValue(int newCurrentValue)
         {
             currentValue = Mathf.Clamp(newCurrentValue, minValue, maxValue);
             OnCurrentValueChange?.Invoke(currentValue);
+            OnChange?.Invoke();
         }
 
         public override void SetMinValue(int newMinValue)
@@ -61,12 +63,14 @@ namespace SomeStorages
             minValue = newMinValue;
             currentValue = Mathf.Clamp(currentValue, minValue, maxValue);
             OnMinValueChange?.Invoke(minValue);
+            OnChange?.Invoke();
         }
 
         public override void ChangeCurrentValue(int value)
         {
             currentValue = Mathf.Clamp(currentValue + value, minValue, maxValue);
             OnCurrentValueChange?.Invoke(currentValue);
+            OnChange?.Invoke();
         }
     }
 }
