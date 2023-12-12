@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="8f703710-ea8b-4946-aea0-6bbc18b77eeb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Attack 1.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Attack 1.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Attack 2.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Attack 2.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Attack 3.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Attack 3.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Bow attack.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Bow attack.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Death.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Death.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Hit 1.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Hit 1.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Hit 2.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Hit 2.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Idle.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Idle.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Jump v3.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Jump v3.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Jump.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Jump.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Player.controller" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Player.controller.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Run.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Run.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Shield end.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Shield end.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Shield idle.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Shield idle.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Shield start.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Shield start.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Slow Run.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/Slow Run.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/fall.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/fall.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/injured idle.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Character v2/injured idle.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/Idle.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/Idle.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/Jump Attack.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/Jump Attack.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/Jump.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/Jump.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/Maw J.controller" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/Maw J.controller.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/Punch.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/Punch.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/Run.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/Run.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/Swipe.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/Swipe.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/Walk.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/Walk.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/death.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/death.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/hit.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Maw J/hit.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/Jump attack.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/Jump attack.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/Jump.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/Jump.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/Mutant.controller" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/Mutant.controller.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/Mutatnt 1.controller" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/Mutatnt 1.controller.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/Punch.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/Punch.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/Roar.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/Roar.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/Run.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/Run.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/death.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/death.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/hit.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/hit.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/idle.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Mutant/idle.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/Vampire.controller" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/Vampire.controller.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/cast 1.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/cast 1.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/cast 2.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/cast 2.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/death.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/death.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/hit1.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/hit1.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/hit2.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/hit2.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/hit3.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/hit3.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/hit4.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/hit4.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/idle.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/idle.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/jump up.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/jump up.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/run.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/run.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/walk.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Animations/Vampire/walk.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Attack 1.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Attack 1/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Attack 1/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Attack 1/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Attack 1/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Attack 2.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Attack 2/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Attack 2/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Attack 2/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Attack 2/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Attack 3.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Attack 3/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Attack 3/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Attack 3/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Attack 3/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Bow attack.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Bow attack/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Bow attack/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Bow attack/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Attacks/Bow attack/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/Blue.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/Blue/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/Blue/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/Blue/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/Blue/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/LIght Blue.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/LIght Blue/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/LIght Blue/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/LIght Blue/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/LIght Blue/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/Orange.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/Orange/Fireball.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/Orange/Fireball.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/Orange/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/Orange/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/Orange/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Cast/Projectile/Orange/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Death.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Death/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Death/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Death/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Death/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Hit.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Hit/HIt 1.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Hit/HIt 1/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Hit/HIt 1/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Hit/HIt 1/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Hit/HIt 1/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Hit/HIt 2.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Hit/HIt 2/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Hit/HIt 2/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Hit/HIt 2/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Hit/HIt 2/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Idle.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Idle/Injured idle.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Idle/Injured idle/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Idle/Injured idle/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Idle/Injured idle/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Idle/Injured idle/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Idle/idle.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Idle/idle/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Idle/idle/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Idle/idle/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Idle/idle/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/Jump Up.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/Jump Up/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/Jump Up/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/Jump Up/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/Jump Up/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/fall.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/fall.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/fallNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/fallNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/self v2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/self v2.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/self v2NormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/self v2NormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/self v3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/self v3.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/self v3NormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/self v3NormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/self.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Jump/self.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Run.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Run/Run.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Run/Run/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Run/Run/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Run/Run/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Run/Run/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Run/Slow run.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Run/Slow run/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Run/Slow run/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Run/Slow run/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Run/Slow run/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Shield.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Shield/End.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Shield/End/end.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Shield/End/end.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Shield/End/endNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Shield/End/endNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Shield/Idle.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Shield/Idle/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Shield/Idle/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Shield/Idle/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Shield/Idle/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Shield/Start.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Shield/Start/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Shield/Start/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Shield/Start/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/MainCharacter/Shield/Start/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Idle.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Idle/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Idle/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Idle/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Idle/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Jump attack.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Jump attack/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Jump attack/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Jump attack/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Jump attack/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Jump.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Jump/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Jump/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Jump/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Jump/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Punch.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Punch/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Punch/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Punch/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Punch/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Run.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Run/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Run/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Run/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Run/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Swipping.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Swipping/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Swipping/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Swipping/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/Swipping/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/death.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/death/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/death/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/death/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/death/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/hit.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/hit/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/hit/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/hit/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/hit/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/walk.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/walk/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/walk/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/walk/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Maw J Laygo/walk/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Idle.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Idle/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Idle/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Idle/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Idle/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Roar.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Roar/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Roar/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Roar/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Roar/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Running.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Running/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Running/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Running/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Running/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Swipping attack.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Swipping attack/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Swipping attack/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Swipping attack/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Swipping attack/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Walk.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Walk/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Walk/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Walk/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/Walk/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/death.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/death/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/death/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/death/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/death/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/hit.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/hit/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/hit/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/hit/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/hit/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/jump attack.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/jump attack/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/jump attack/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/jump attack/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/jump attack/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/jump.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/jump/jump.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/jump/jump.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/jump/jumpNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/jump/jumpNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/punch.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/punch/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/punch/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/punch/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Mutant/punch/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Cast.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Cast/Cast 1.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Cast/Cast 1/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Cast/Cast 1/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Cast/Cast 1/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Cast/Cast 1/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Cast/Cast 2.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Cast/Cast 2/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Cast/Cast 2/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Cast/Cast 2/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Cast/Cast 2/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Cast/Cast 3.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Cast/Cast 3/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Cast/Cast 3/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Cast/Cast 3/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Cast/Cast 3/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Dead.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Dead/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Dead/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Dead/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Dead/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Hit.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Hit/HIt2.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Hit/HIt2/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Hit/HIt2/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Hit/HIt2/NewCaptureNormalMapNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Hit/HIt2/NewCaptureNormalMapNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Hit/Hit11.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Hit/Hit11/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Hit/Hit11/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Hit/Hit11/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Hit/Hit11/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Jump up.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Jump up/jump.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Jump up/jump.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Jump up/jumpNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/Jump up/jumpNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/idle.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/idle/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/idle/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/idle/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/idle/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/walk.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/walk/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/walk/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/walk/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Nightshade J Friedrich/walk/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/1H cast.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/1H cast/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/1H cast/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/1H cast/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/1H cast/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/2H cast.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/2H cast/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/2H cast/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/2H cast/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/2H cast/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Death.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Death/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Death/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Death/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Death/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit/hit1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit/hit1.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit/hit1NormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit/hit1NormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit/hit2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit/hit2.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit/hit2NormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit/hit2NormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit/hit3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit/hit3.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit/hit3NormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit/hit3NormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit/hit4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit/hit4.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit/hit4NormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Hit/hit4NormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Run.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Run/fast run.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Run/fast run.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Run/fast runNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Run/fast runNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Run/walk.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Run/walk.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Run/walkNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/Run/walkNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/idle.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/idle/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/idle/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/idle/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/idle/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/jump up.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/jump up/NewCapture.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/jump up/NewCapture.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/jump up/NewCaptureNormalMap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Captures/Vampire/jump up/NewCaptureNormalMap.png.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Maw J.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Maw J.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Mutant.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Mutant.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Vampire.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Enemies/Vampire.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/PlayerWithNewAnimations.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/PlayerWithNewAnimations.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/VFX/Fireball.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/VFX/Fireball/Fireball.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/VFX/Fireball/Fireball.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/VFX/Fireball/MagicProjectile.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/VFX/Fireball/MagicProjectile.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/VFX/Freeze vfx.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/VFX/Freeze vfx.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Boss.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Boss.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Character v2.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Character v2.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Enemy2/Sprite.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Enemy2/Sprite.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Maw J.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Maw J.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Mutant.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Mutant.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Zenject-ReflectionBaking.csproj.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Zenject-ReflectionBaking.csproj.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Zenject/OptionalExtras/Signals/Zenject-Signals.csproj.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Zenject/OptionalExtras/Signals/Zenject-Signals.csproj.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Zenject/Source/Zenject.csproj.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Zenject/Source/Zenject.csproj.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Canalization.unity.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Canalization.unity.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/TestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/TestScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/TestSceneCave.unity.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/TestSceneCave.unity.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/TileMaps/Canalization/FullSubwayTiles.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/TileMaps/Canalization/FullSubwayTiles.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/TileMaps/Canalization/SubwayDarkGround.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/TileMaps/Canalization/SubwayDarkGround.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/TileMaps/Canalization/SubwayGround.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/TileMaps/Canalization/SubwayGround.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/TileMaps/Canalization/SubwayWalls.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/TileMaps/Canalization/SubwayWalls.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/TileMaps/Canalization/tiles_out.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/TileMaps/Canalization/tiles_out.png.meta" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2ZSffblQJ4GBCnrITw4YdJK4r4s" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "Merging main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8f703710-ea8b-4946-aea0-6bbc18b77eeb" name="Changes" comment="" />
+      <created>1702420507542</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1702420507542</updated>
+      <workItem from="1702420509541" duration="13000" />
+    </task>
+    <servers />
+  </component>
+</project>
