@@ -28,8 +28,9 @@ public class MagicProjectile : ThrowableWeapon
     private AudioSource _audioSource;
     private VisualEffect _effect;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         _audioSource = GetComponent<AudioSource>();
         InitColor();
     }

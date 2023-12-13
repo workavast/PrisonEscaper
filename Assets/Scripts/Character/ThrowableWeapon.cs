@@ -26,11 +26,11 @@ namespace Character
 
 		private IEnumerator RemoveProjectile()
 		{
-			yield return new WaitForSeconds(5f);
+			yield return new WaitForSeconds(3f);
 			if (gameObject) Destroy(gameObject);
 		}
 
-		private void Start()
+		protected virtual void Start()
         {
 			if (direction.x < 0)
 			{
