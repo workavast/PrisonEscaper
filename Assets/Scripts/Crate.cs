@@ -2,11 +2,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(ItemDropper))]
+[RequireComponent(typeof(AudioSource))]
 public class Crate : MonoBehaviour, IInteractive
 {
     [SerializeField] private GameObject interactKeyImg;
     [SerializeField] private Sprite brokenCrate;
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] AudioSource audioSource;
 
     public bool Interactable { get; private set; } = true;
     private ItemDropper _dropper;
@@ -36,5 +38,6 @@ public class Crate : MonoBehaviour, IInteractive
         _dropper.DropItems();
         Interactable = false;
         interactKeyImg.SetActive(false);
+        audioSource.Play();
     } 
 }

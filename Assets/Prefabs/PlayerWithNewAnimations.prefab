@@ -59,7 +59,7 @@ Transform:
   m_GameObject: {fileID: 1042697046979344849}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.76, y: 2.42, z: 0}
+  m_LocalPosition: {x: 0.76, y: 2.2, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -103,9 +103,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingLayerID: -2057261371
+  m_SortingLayer: 10
+  m_SortingOrder: 32767
   m_Sprite: {fileID: -2042915538, guid: 41aef69284205ed4596d1b8455784728, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -10110,7 +10110,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7636788618915474143}
   - component: {fileID: 2164422594210869245}
-  - component: {fileID: 872237995954518424}
+  - component: {fileID: 7804170958987150047}
   - component: {fileID: 6249797187188443904}
   - component: {fileID: 1595480684391467295}
   - component: {fileID: 2665314331001984151}
@@ -10158,10 +10158,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <StatsSystem>k__BackingField:
     mainStats:
-      Health: 0
-      MaxHealth: 100
-      Mana: 0
-      MaxMana: 50
+      health:
+        maxValue: 100
+        currentValue: 100
+        minValue: 0
+      mana:
+        maxValue: 100
+        currentValue: 100
+        minValue: 0
       WalkSpeed: 40
     attackStats:
       physicalDamage: 0
@@ -10209,12 +10213,13 @@ MonoBehaviour:
   gravityForce: -9.8
   gravityScale: 3
   dashForce: 25
-  jumpForce: 18
+  jumpForce: 22
+  limitFallSpeed: 20
   canDoubleJump: 1
   airControl: 1
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 81
+    m_Bits: 64
   wallUpperCheck: {fileID: 6950331482885625623}
   wallLowerCheck: {fileID: 1130561031638390154}
   groundLedgeCheck: {fileID: 7624411808632969810}
@@ -10224,6 +10229,22 @@ MonoBehaviour:
   animator: {fileID: 3999804778073440320}
   particleJumpUp: {fileID: 3245062485487192709}
   particleJumpDown: {fileID: 1791314516392938413}
+  platformMaxHeight: 1.2
+  groundCheck:
+    <Show>k__BackingField: 1
+    <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  frontWallsChecks:
+    <Show>k__BackingField: 1
+    <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  groundLedge:
+    <Show>k__BackingField: 1
+    <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  platformClimbing:
+    <Show>k__BackingField: 1
+    <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  platformDescent:
+    <Show>k__BackingField: 1
+    <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
   <CharacterCenter>k__BackingField: {fileID: 1257229790305722171}
   playerAttack:
     throwableObject: {fileID: 2424522076249060556, guid: 73778ccc44e7f0f4993a8b59979695f6, type: 3}
@@ -10231,13 +10252,7 @@ MonoBehaviour:
     animator: {fileID: 3999804778073440320}
     canAttack: 1
     isTimeToCheck: 0
-  Inventory:
-    <Size>k__BackingField: 20
-    _bagItems: []
-    onBagChanged:
-      m_PersistentCalls:
-        m_Calls: []
---- !u!114 &872237995954518424
+--- !u!114 &7804170958987150047
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10246,9 +10261,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6285847508765125263}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdc442fb637948f5bd86baf757e5678a, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a77a611cbdc9114b91c3d5a0727a90a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  treeRoots: {fileID: 2424522076249060556, guid: 2a5b9a76f2ca7224998d42f04c1b75bf, type: 3}
+  fireParticle: {fileID: 7745473009384510094, guid: 2d0db6fc32f216b4b9342e5f82cabefa, type: 3}
 --- !u!50 &6249797187188443904
 Rigidbody2D:
   serializedVersion: 4
@@ -10343,6 +10360,6 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.039942425, y: 2.4591663}
-  m_Size: {x: 1.5594686, y: 4.9183326}
+  m_Offset: {x: 0, y: 1.9}
+  m_Size: {x: 1.2, y: 3.8}
   m_Direction: 0

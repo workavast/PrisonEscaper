@@ -609,10 +609,26 @@ PrefabInstance:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: 6e78973115616b147bdbe1250a46435a, type: 3}
+    - target: {fileID: 7723601440628163319, guid: 74da39abdb185ac49ae84fd1709082e6, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723601440628163319, guid: 74da39abdb185ac49ae84fd1709082e6, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 6e78973115616b147bdbe1250a46435a, type: 3}
     - target: {fileID: 7953736781235229616, guid: 74da39abdb185ac49ae84fd1709082e6, type: 3}
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 8488252009100551796, guid: 74da39abdb185ac49ae84fd1709082e6, type: 3}
+      propertyPath: main
+      value: 
+      objectReference: {fileID: 8300000, guid: 6e78973115616b147bdbe1250a46435a, type: 3}
+    - target: {fileID: 8488252009100551796, guid: 74da39abdb185ac49ae84fd1709082e6, type: 3}
+      propertyPath: bossFight
+      value: 
+      objectReference: {fileID: 8300000, guid: 5e0a29ed6b300b94c919d8c4a135bea1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

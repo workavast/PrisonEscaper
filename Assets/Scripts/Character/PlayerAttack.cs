@@ -16,7 +16,7 @@ namespace Character
 		public bool isTimeToCheck = false;
 
 		private int _attackVariantCycle = 0;
-		const int attacksCount = 4;
+		const int attacksCount = 3;
 		private Player _player;
 		
 		public void Init()

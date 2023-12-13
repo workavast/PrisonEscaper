@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class BossMutantArena : Enemy
 {
+    [SerializeField] private AudioSource _source;
     [SerializeField] private GameObject roarAnim;
     [SerializeField] private Transform[] arenaPlatforms;
     [SerializeField] private AudioClip roarSound, jumpSound, hitSound, bossFightSound;
@@ -16,13 +17,10 @@ public class BossMutantArena : Enemy
     private float jumpWaiting = 0f;
     private float platformOffsetX = 0f, platformOffsetY = 3f;
     private float jumpDelay = 5f;
-    private float defaultSoundVolume, defGameVolume;
-    private AudioSource cameraAudioSource;
-    private AudioClip defaultAudioClip;
+    private float defaultSoundVolume;
 
     public event Action OnStartBossBattle;
     public event Action OnBossDie;
-    
     private void PlaySound(AudioClip curSound)
     {
       //  if (_source.isPlaying) return;
@@ -62,8 +60,6 @@ public class BossMutantArena : Enemy
         yield return new WaitForSeconds(1f);
 
         defaultSoundVolume = _source.volume;
-        cameraAudioSource = Camera.main.GetComponent<AudioSource>();
-        cameraAudioSource.Stop();
 
         transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
         roarAnim.transform.localRotation = Quaternion.Euler(0f, 0f, -20f); ;
@@ -100,13 +96,6 @@ public class BossMutantArena : Enemy
         lastAttackTime = Time.time - attackCooldown;
         isFightStart = true;
         OnStartBossBattle?.Invoke();
-
-        defaultAudioClip = cameraAudioSource.clip;
-        cameraAudioSource.clip = bossFightSound;
-        defGameVolume = cameraAudioSource.volume;
-        cameraAudioSource.volume *= 2;
-        cameraAudioSource.loop = true;
-        cameraAudioSource.Play();
     }
 
 
@@ -197,6 +186,8 @@ public class BossMutantArena : Enemy
 
     protected override void Move()
     {
+        if(target == null) return;
+        
         float distanceToTargetX = Mathf.Abs(target.position.x - transform.position.x);
         if (distanceToTargetX < 2.5f)
         {
@@ -243,10 +234,6 @@ public class BossMutantArena : Enemy
     {
         yield return StartCoroutine(base.Die());
         OnBossDie?.Invoke();
-        cameraAudioSource.clip = defaultAudioClip;
-        cameraAudioSource.volume = defGameVolume;
-        cameraAudioSource.loop = true;
-        cameraAudioSource.Play();
     }
 
 

@@ -7,7 +7,6 @@ using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(ItemDropper))]
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(AudioSource))]
 public class Enemy : CharacterBase
 {
     //TODO fix attack mechanic because too hard to kill without take damage 
@@ -44,10 +43,7 @@ public class Enemy : CharacterBase
 
     [Header("Other")]
     [SerializeField] protected Animator animator;
-    [SerializeField] private AudioClip walk, attack;
 
-
-    protected AudioSource _source;
     private Vector3 _startPosition;
     private ItemDropper _itemDropper;
     private bool _isAlive, _canMove;    
@@ -67,8 +63,6 @@ public class Enemy : CharacterBase
         _itemDropper = GetComponent<ItemDropper>();
         // DeathEvent.AddListener(DropItems);
         _isAlive = _canMove = true;
-        _source = GetComponent<AudioSource>();
-        _source.playOnAwake = false;
         
         StatsSystem.Init();
         
@@ -153,9 +147,6 @@ public class Enemy : CharacterBase
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
 
-        _source.clip = attack;
-        _source.loop = false;
-        _source.Play();
         Attack();
         ThrowWeapon();
     }
@@ -214,9 +205,6 @@ public class Enemy : CharacterBase
                         var distance = Vector2.Distance(target.position, attackPoint.position);
                         if (distance < attackRange)
                         {
-                            _source.clip = attack;
-                            _source.loop = false;
-                            _source.Play();
                             Attack();
                         }
                         break;

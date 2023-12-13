@@ -1,4 +1,5 @@
 using System.Collections;
+using audio;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,15 +17,11 @@ namespace Character
         private bool _activated;
         private Player _player;
         private CameraFollow _cameraFollow;
-
-        private void Awake()
+        
+        private void Start()
         {
             boss.OnBossDie += SetDisable;
             SetDisable();
-        }
-
-        private void Start()
-        {
             _player = Player.Instance;
             _cameraFollow = CameraFollow.Instance;
         }
@@ -40,7 +37,9 @@ namespace Character
             enterSprite.SetActive(true);
             exitSprite.SetActive(true);
             
+            MainMusicController.Instance.StopMusic();
             yield return StartCoroutine(boss.StartBossFight());
+            MainMusicController.Instance.SetBossMusic();
             
             _cameraFollow.Target = _player.transform;
             _player.enabled = true;
@@ -57,6 +56,7 @@ namespace Character
 
         private void SetDisable()
         {
+            MainMusicController.Instance.SetDefaultMusic();
             enterDoorCollider.enabled = false;
             exitDoorCollider.enabled = false;
             enterSprite.SetActive(false);
