@@ -16,6 +16,12 @@ public class UI_SomeBar
         _slider.value = startValue;
     }
     
+    public void SetValue(float value)
+    {
+        _slider.value = value;
+        _targetValue = value;
+    }
+    
     public void SetTargetValue(float targetValue)
     {
         _targetValue = targetValue;

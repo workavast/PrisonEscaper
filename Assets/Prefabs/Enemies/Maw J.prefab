@@ -112,10 +112,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <StatsSystem>k__BackingField:
     mainStats:
-      Health: 0
-      MaxHealth: 50
-      Mana: 0
-      MaxMana: 0
+      health:
+        maxValue: 50
+        currentValue: 50
+        minValue: 0
+      mana:
+        maxValue: 0
+        currentValue: 0
+        minValue: 0
       WalkSpeed: 5
     attackStats:
       physicalDamage: 10
@@ -245,8 +249,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.02514267, y: 0.20951891}
-  m_Size: {x: 1.5184689, y: 4.419038}
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1.2, y: 4}
   m_Direction: 0
 --- !u!82 &625843890881278268
 AudioSource:
@@ -433,7 +437,7 @@ Transform:
   m_GameObject: {fileID: 7990450908803323612}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.09, y: 2.96, z: 0}
+  m_LocalPosition: {x: 0.09, y: 3, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -477,8 +481,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -2057261371
+  m_SortingLayer: 10
   m_SortingOrder: 10
   m_Sprite: {fileID: -754418887, guid: b4e2433b8c03f184f887a3bbacff6341, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -537,7 +541,7 @@ Transform:
   m_GameObject: {fileID: 8852022614090524683}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.25, y: 0.25, z: 0}
+  m_LocalPosition: {x: 1.26, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

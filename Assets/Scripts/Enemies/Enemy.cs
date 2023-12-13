@@ -131,8 +131,6 @@ public class Enemy : CharacterBase
         GameObject throwableWeapon = GameObject.Instantiate(throwableObject,
             transform.position + new Vector3(transform.localScale.x * 0.5f, 0),
             Quaternion.identity) as GameObject;
-
-        throwableWeapon.transform.localScale = new Vector3(_direction, 1, 1);
         
         Vector2 direction = new Vector2(transform.localScale.x, 0);
         ThrowableWeapon weaponObj = throwableWeapon.GetComponent<ThrowableWeapon>();
@@ -190,7 +188,10 @@ public class Enemy : CharacterBase
     }
     protected virtual void Move()
     {
-        if (target == null && IsDead && transform == null) return;
+        if (target == null ||
+            IsDead ||
+            transform == null)
+            return;
 
         float distanceToTargetX = Mathf.Abs(target.position.x - transform.position.x);
         float distanceToTargetY = Mathf.Abs(target.position.y - transform.position.y);

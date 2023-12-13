@@ -20,9 +20,16 @@ namespace UI
             _healthBar = new UI_SomeBar(this, healthSlider, Player.Instance.StatsSystem.Health.FillingPercentage);
             _manaBar = new UI_SomeBar(this, manaSlider, Player.Instance.StatsSystem.Mana.FillingPercentage);
         }
-        
-        private void SetHealthSliderValue() => _healthBar.SetTargetValue(Player.Instance.StatsSystem.Health.FillingPercentage);
-        
-        private void SetManaSliderValue() => _manaBar.SetTargetValue(Player.Instance.StatsSystem.Mana.FillingPercentage);
+
+        private void SetHealthSliderValue() => SetBarValue(_healthBar, Player.Instance.StatsSystem.Health.FillingPercentage);
+        private void SetManaSliderValue() => SetBarValue(_manaBar, Player.Instance.StatsSystem.Mana.FillingPercentage);
+
+        private void SetBarValue(UI_SomeBar bar, float value)
+        {
+            if(gameObject.activeInHierarchy)
+                bar.SetTargetValue(value);
+            else
+                bar.SetValue(value);
+        }
     }
 }

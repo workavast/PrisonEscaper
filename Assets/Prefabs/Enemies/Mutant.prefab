@@ -81,10 +81,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <StatsSystem>k__BackingField:
     mainStats:
-      Health: 0
-      MaxHealth: 50
-      Mana: 0
-      MaxMana: 0
+      health:
+        maxValue: 50
+        currentValue: 50
+        minValue: 0
+      mana:
+        maxValue: 0
+        currentValue: 0
+        minValue: 0
       WalkSpeed: 5
     attackStats:
       physicalDamage: 10
@@ -214,8 +218,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.02514267, y: 0.20951891}
-  m_Size: {x: 1.5184689, y: 4.419038}
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1.2, y: 4}
   m_Direction: 0
 --- !u!82 &4312020378194254516
 AudioSource:
