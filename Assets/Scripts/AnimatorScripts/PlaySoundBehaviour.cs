@@ -7,6 +7,8 @@ public class PlaySoundBehaviour : StateMachineBehaviour
     private AudioSource audioSource;
     public AudioClip audioSound;
     public bool loop = false;
+    [Range(0, 1)] public float volume = 1f;
+    
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -14,6 +16,7 @@ public class PlaySoundBehaviour : StateMachineBehaviour
         audioSource = animator.transform.GetComponent<AudioSource>();
         audioSource.clip = audioSound;
         audioSource.loop = loop;
+        audioSource.volume = volume;
         audioSource.Play();
     }
 

@@ -73,8 +73,16 @@ namespace UI
         //TODO: move inventory opening/closing in other class (maybe in UI_Controller??, not sure)
         private void ToggleActive()
         {
-            if(!gameObject.activeInHierarchy) UI.UI_Controller.SetWindow(ScreenEnum.Inventory);
-            else UI.UI_Controller.SetWindow(ScreenEnum.GameplayScreen);
+            if (!gameObject.activeInHierarchy)
+            {
+                UI.UI_Controller.SetWindow(ScreenEnum.Inventory);
+                Cursor.visible = true;
+            }
+            else
+            {
+                UI.UI_Controller.SetWindow(ScreenEnum.GameplayScreen);
+                Cursor.visible = false;
+            }
         }
         
         private void UpdateBackpack(Item[] items)

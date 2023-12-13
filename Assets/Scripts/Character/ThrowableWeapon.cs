@@ -8,10 +8,10 @@ namespace Character
 { 
 	public class ThrowableWeapon : MonoBehaviour
 	{
-		[field : SerializeField] public AttackStats AttackStats { get; private set; }
+		[field : SerializeField] public AttackStats AttackStats { get; set; }
 		
 		public Vector2 direction;
-		private List<GameObject> hitEnemies = new List<GameObject>();
+		protected List<GameObject> hitEnemies = new List<GameObject>();
 		public float speed = 10f;
 		public bool hasHit = false;
 		public bool isPlayerWeapon = true;
@@ -78,5 +78,5 @@ namespace Character
                 }
             }
         }
-    }
+	}
 }

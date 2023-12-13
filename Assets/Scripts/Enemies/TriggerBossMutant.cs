@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Character
 {
@@ -11,7 +12,7 @@ namespace Character
         [SerializeField] private Collider2D exitDoorCollider;
         [SerializeField] private GameObject enterSprite;
         [SerializeField] private GameObject exitSprite;
-        
+       
         private bool _activated;
         private Player _player;
         private CameraFollow _cameraFollow;

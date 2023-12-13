@@ -20,14 +20,19 @@ enum Damage
     Poison
 }
 
-public class MagicProjectile : ThrowableProjectile
+public class MagicProjectile : ThrowableWeapon
 {
     // [SerializeField] private AttackStats stats;
     private Dictionary<Damage, Color> _colors = new Dictionary<Damage, Color>();
     private Dictionary<Damage, float> _damage = new Dictionary<Damage, float>();
-    private AttackStats _damageStats;
-
+    private AudioSource _audioSource;
     private VisualEffect _effect;
+
+    private void Start()
+    {
+        _audioSource = GetComponent<AudioSource>();
+        InitColor();
+    }
 
     // public float fireDamage;
     // public float waterDamage;
@@ -45,12 +50,14 @@ public class MagicProjectile : ThrowableProjectile
         _colors.Add(Damage.Electricity, new Color(41, 216, 255) / 127);
         _colors.Add(Damage.Poison, new Color(19, 227, 11) / 127);
 
-        _damage.Add(Damage.Fire, _damageStats.fireDamage);
-        _damage.Add(Damage.Water, _damageStats.waterDamage);
-        _damage.Add(Damage.Air, _damageStats.airDamage);
-        _damage.Add(Damage.Earth, _damageStats.earthDamage);
-        _damage.Add(Damage.Electricity, _damageStats.electricityDamage);
-        _damage.Add(Damage.Poison, _damageStats.poisonDamage);
+        // var damage = owner.GetComponent<AttackStats>();
+        
+        _damage.Add(Damage.Fire, AttackStats.fireDamage);
+        _damage.Add(Damage.Water, AttackStats.waterDamage);
+        _damage.Add(Damage.Air, AttackStats.airDamage);
+        _damage.Add(Damage.Earth, AttackStats.earthDamage);
+        _damage.Add(Damage.Electricity, AttackStats.electricityDamage);
+        _damage.Add(Damage.Poison, AttackStats.poisonDamage);
 
 
         var top_values = _damage.OrderByDescending(x => x.Value).Take(3).Reverse();
@@ -81,28 +88,51 @@ public class MagicProjectile : ThrowableProjectile
     }
 
 
-    protected void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (isPlayerWeapon)
         {
-            collision.gameObject.GetComponent<Player>().TakeDamage(new AttackStats(2), transform.position);
-        }
-        else if (owner != null && collision.gameObject != owner && collision.gameObject.tag == "Enemy")
-        {
-            collision.gameObject.SendMessage("TakeDamage", Mathf.Sign(direction.x) * 2f);
-        }
-        else if (collision.gameObject.tag != "Enemy" && collision.gameObject.tag != "Player")
-        {
-        }
-        else return;
-        
-        _effect.SendEvent("Explode");
-        speed = 0;
-        StartCoroutine(DestroyAfterExplosion());
-    }
+            if (collision.CompareTag("Enemy"))
+            {
+                if (!hitEnemies.Contains(collision.gameObject))
+                {
+                    collision.GetComponent<Enemy>().TakeDamage(AttackStats + bonusDamage);
+                    hitEnemies.Add(collision.gameObject);
+                }
 
+                if (!isPenetratingShot)
+                {
+                    StartCoroutine(DestroyAfterExplosion());
+
+                }
+            }
+            else if (!collision.CompareTag("Player"))
+            {
+                StartCoroutine(DestroyAfterExplosion());
+            }
+        }
+        else
+        {
+            if (collision.CompareTag("Player"))
+            {
+                collision.GetComponent<Player>().TakeDamage(AttackStats, transform.position);
+
+                if (!isPenetratingShot)
+                {
+                    StartCoroutine(DestroyAfterExplosion());
+                }
+            }
+            else if (collision.transform != owner)
+            {
+                StartCoroutine(DestroyAfterExplosion());
+            }
+        }
+    }
+    
     private IEnumerator DestroyAfterExplosion()
     {
+        _effect.SendEvent("Explode");
+        _audioSource.Play();
         yield return new WaitForSeconds(.5f);
         Destroy(gameObject);
     }

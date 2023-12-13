@@ -131,8 +131,12 @@ public class Enemy : CharacterBase
         GameObject throwableWeapon = GameObject.Instantiate(throwableObject,
             transform.position + new Vector3(transform.localScale.x * 0.5f, 0),
             Quaternion.identity) as GameObject;
+
+        throwableWeapon.transform.localScale = new Vector3(_direction, 1, 1);
+        
         Vector2 direction = new Vector2(transform.localScale.x, 0);
         ThrowableWeapon weaponObj = throwableWeapon.GetComponent<ThrowableWeapon>();
+        weaponObj.AttackStats = StatsSystem.AttackStats;
         weaponObj.speed = 14;
         weaponObj.direction = direction;
         weaponObj.isPlayerWeapon = false;
