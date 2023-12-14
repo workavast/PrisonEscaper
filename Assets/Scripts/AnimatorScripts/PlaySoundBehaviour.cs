@@ -18,7 +18,6 @@ public class PlaySoundBehaviour : StateMachineBehaviour
         audioSource.loop = loop;
         audioSource.volume = volume;
         audioSource.Play();
-        Debug.Log("start");
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -30,9 +29,10 @@ public class PlaySoundBehaviour : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if(audioSource == null)return;
+        
         audioSource.Stop();
         audioSource.loop = false;
-        Debug.Log("exit");
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

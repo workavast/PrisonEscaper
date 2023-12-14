@@ -23,6 +23,7 @@ enum Damage
 public class MagicProjectile : ThrowableWeapon
 {
     // [SerializeField] private AttackStats stats;
+
     private Dictionary<Damage, Color> _colors = new Dictionary<Damage, Color>();
     private Dictionary<Damage, float> _damage = new Dictionary<Damage, float>();
     private AudioSource _audioSource;

@@ -215,6 +215,20 @@ MonoBehaviour:
         Chance: 0
         Duration: 0
   owner: {fileID: 0}
+  _colors2:
+    dictionaryCells:
+    - key: 0
+      value: {r: 1, g: 0, b: 0, a: 1}
+    - key: 1
+      value: {r: 0, g: 1, b: 1, a: 1}
+    - key: 2
+      value: {r: 0.9607843, g: 0.9529412, b: 0.44313726, a: 1}
+    - key: 3
+      value: {r: 0.14117648, g: 0.03529412, b: 0, a: 1}
+    - key: 4
+      value: {r: 0, g: 0, b: 1, a: 1}
+    - key: 5
+      value: {r: 0.07450981, g: 1, b: 0.043137256, a: 1}
 --- !u!50 &3508584521398740686
 Rigidbody2D:
   serializedVersion: 4

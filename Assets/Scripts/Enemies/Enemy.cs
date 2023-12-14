@@ -85,6 +85,7 @@ public class Enemy : CharacterBase
     private void FrozenStatus()
     {
         _frozen = true;
+        _rigidbody.velocity = Vector2.zero;
         animator.SetFloat("velocity", 0);
     }
     private void UnFrozenStatus()
