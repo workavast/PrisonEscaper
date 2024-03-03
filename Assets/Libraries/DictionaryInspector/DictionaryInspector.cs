@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ATTENTION!!! It is legacy code, use SerializableDictionary
+/// </summary>
 [Serializable]
 public class DictionaryInspector<TKey, TValue> : Dictionary<TKey,TValue>, ISerializationCallbackReceiver
 {

@@ -2,6 +2,7 @@
 using Character;
 using PlayerInventory;
 using PlayerInventory.Scriptable;
+using SerializableDictionaryExtension;
 using UnityEngine;
 using Zenject;
 
@@ -14,7 +15,7 @@ namespace UI
         [SerializeField] private GameObject collectablePrefab;
         [SerializeField] private DragAndDropController dragAndDropController;
         [SerializeField] private UI_ItemInfoPanel infoPanel;
-        [SerializeField] private DictionaryInspector<SlotType, UI_Slot> specialSlots;
+        [SerializeField] private SerializableDictionary<SlotType, UI_Slot> specialSlots;
 
         [Inject] private VolumeProfileController _volumeProfileController;
         [Inject] private KeyboardObserver _keyboardObserver;

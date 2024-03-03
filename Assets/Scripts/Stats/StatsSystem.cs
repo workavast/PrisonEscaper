@@ -143,8 +143,8 @@ namespace UniversalStatsSystem
     [Serializable]
     public class Stats
     {
-        [SerializeField] private SomeStorageFloat health;
-        [SerializeField] private SomeStorageFloat mana;
+        [SerializeField] private FloatStorage health;
+        [SerializeField] private FloatStorage mana;
 
         public IReadOnlySomeStorage<float> Health => health;
         public IReadOnlySomeStorage<float> Mana => mana;
@@ -154,8 +154,8 @@ namespace UniversalStatsSystem
         
         public Stats(float health, float mana,float walkSpeed)
         {
-            this.health = new SomeStorageFloat(health);
-            this.mana = new SomeStorageFloat(mana);
+            this.health = new FloatStorage(health);
+            this.mana = new FloatStorage(mana);
             
             WalkSpeed = walkSpeed;
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace SomeStorages
 {
     [System.Serializable]
-    public class SomeStorageInt : SomeStorageBase<int>
+    public class IntStorage : SomeStorageBase<int>
     {
         public override float FillingPercentage => (float)currentValue / (float)maxValue;
         public override bool IsFull => currentValue >= maxValue;
@@ -14,33 +14,21 @@ namespace SomeStorages
         public override event Action<int> OnMaxValueChange;
         public override event Action<int> OnCurrentValueChange;
         public override event Action<int> OnMinValueChange;
-
-        public SomeStorageInt()
-        {
-            maxValue = 0;
-            currentValue = 0;
-            minValue = 0;
-        }
-
-        public SomeStorageInt(int maxValue)
-        {
-            this.maxValue = maxValue;
-            currentValue = 0;
-            minValue = maxValue > 0 ? 0 : int.MinValue;
-        }
-
-        public SomeStorageInt(int maxValue, int currentValue)
-        {
-            this.maxValue = maxValue;
-            this.currentValue = currentValue;
-            minValue = maxValue > 0 ? 0 : int.MinValue;
-        }
-
-        public SomeStorageInt(int maxValue, int currentValue, int minValue)
+        
+        public IntStorage(int maxValue = 0, int currentValue = 0, int minValue = 0)
         {
             this.maxValue = maxValue;
             this.currentValue = currentValue;
             this.minValue = minValue;
+            
+#if UNITY_EDITOR
+            if(this.currentValue > this.maxValue)
+                Debug.LogWarning("Attention!: current value greater then max value");
+            if(this.minValue > this.maxValue)
+                Debug.LogWarning("Attention!: minimal value greater then max value");
+            if(this.minValue > this.currentValue)
+                Debug.LogWarning("Attention!: minimal value greater then current value");
+#endif
         }
 
         public override void SetMaxValue(int newMaxValue)

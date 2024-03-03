@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Character;
+using SerializableDictionaryExtension;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -452,7 +453,7 @@ namespace LevelGeneration.LevelsGenerators
             [field: SerializeField] public Transform Parent { get; private set; }
             [field:SerializeField] [field:Range(0, 100)] public int MinPercent { get; private set; }
             [field:SerializeField] [field:Range(0, 100)] public int MaxPercent { get; private set; }
-            [field:SerializeField] public DictionaryInspector<TIdentifier, GameObject> Prefabs { get; private set; }
+            [field:SerializeField] public SerializableDictionary<TIdentifier, GameObject> Prefabs { get; private set; }
             [HideInInspector] public List<TIdentifier> IDs = new();
             [HideInInspector] public List<SpawnableObjectCell<TIdentifier>> spawnPoints = new();
             [HideInInspector] public List<GameObject> spawned = new();

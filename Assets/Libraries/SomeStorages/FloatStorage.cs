@@ -4,7 +4,7 @@ using UnityEngine;
 namespace SomeStorages
 {
     [Serializable]
-    public class SomeStorageFloat : SomeStorageBase<float>
+    public class FloatStorage : SomeStorageBase<float>
     {
         public override float FillingPercentage => (currentValue / maxValue);
         public override bool IsFull => (currentValue >= maxValue);
@@ -14,35 +14,23 @@ namespace SomeStorages
         public override event Action<float> OnMaxValueChange;
         public override event Action<float> OnCurrentValueChange;
         public override event Action<float> OnMinValueChange;
-    
-        public SomeStorageFloat()
-        {
-            maxValue = 0;
-            currentValue = 0;
-            minValue = 0;
-        }
-
-        public SomeStorageFloat(float maxValue)
-        {
-            this.maxValue = maxValue;
-            currentValue = 0;
-            minValue = maxValue > 0 ? 0 : float.MinValue;
-        }
-
-        public SomeStorageFloat(float maxValue, float currentValue)
-        {
-            this.maxValue = maxValue;
-            this.currentValue = currentValue;
-            minValue = maxValue > 0 ? 0 : float.MinValue;
-        }
-
-        public SomeStorageFloat(float maxValue, float currentValue, float minValue)
+        
+        public FloatStorage(float maxValue = 0, float currentValue = 0, float minValue = 0)
         {
             this.maxValue = maxValue;
             this.currentValue = currentValue;
             this.minValue = minValue;
+            
+#if UNITY_EDITOR
+            if(this.currentValue > this.maxValue)
+                Debug.LogWarning("Attention!: current value greater then max value");
+            if(this.minValue > this.maxValue)
+                Debug.LogWarning("Attention!: minimal value greater then max value");
+            if(this.minValue > this.currentValue)
+                Debug.LogWarning("Attention!: minimal value greater then current value");
+#endif
         }
-    
+        
         public override void SetMaxValue(float newMaxValue)
         {
             maxValue = newMaxValue;

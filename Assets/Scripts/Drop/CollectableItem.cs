@@ -1,6 +1,7 @@
 using System.Collections;
 using PlayerInventory;
 using PlayerInventory.Scriptable;
+using SerializableDictionaryExtension;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -10,7 +11,7 @@ public class CollectableItem : MonoBehaviour, IInteractive
     [SerializeField] private GameObject interactKeyImg;
     [SerializeField] private SpriteRenderer itemSpriteRenderer;
     [SerializeField] private Animator itemAnimator;
-    [SerializeField] private DictionaryInspector<ItemRarity, GameObject> glowPrefabs;
+    [SerializeField] private SerializableDictionary<ItemRarity, GameObject> glowPrefabs;
 
     [field: SerializeField] public bool Interactable { get; private set; } = true;
    
