@@ -1,27 +1,24 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using LevelGeneration.LevelsGenerators;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Character
 {
-
 	public class CameraFollow : MonoBehaviour
 	{
 		public static CameraFollow Instance { private set; get; }
-		
+
+		[SerializeField] private LevelGeneratorBase _levelGenerator;
 		[SerializeField] private Vector3 positionOffset;
 
-		public float FollowSpeed = 2f;
 		public Transform Target;
+		public float FollowSpeed = 2f;
 		public float shakeDuration = 0f;
 		public float shakeAmount = 0.1f;
 		public float decreaseFactor = 1.0f;
 
 		private Transform _camTransform;
-
-		Vector3 originalPos;
+		private Vector3 _originalPos;
 
 		void Awake()
 		{
@@ -35,19 +32,19 @@ namespace Character
 			Cursor.visible = false;
 			if (_camTransform == null)
 				_camTransform = GetComponent(typeof(Transform)) as Transform;
+
+			_levelGenerator.OnPlayerSpawned += Init;
 		}
 
-		private void Start()
+		private void Init(Player player)
 		{
-			if(Target == null)
-				Target = Player.Instance.CharacterCenter;
-
+			Target = player.CharacterCenter;
 			_camTransform.position = Target.position;
 		}
-
+		
 		void OnEnable()
 		{
-			originalPos = _camTransform.localPosition;
+			_originalPos = _camTransform.localPosition;
 		}
 
 		private void Update()
@@ -58,7 +55,7 @@ namespace Character
 
 			if (shakeDuration > 0)
 			{
-				_camTransform.localPosition = originalPos + Random.insideUnitSphere * shakeAmount;
+				_camTransform.localPosition = _originalPos + Random.insideUnitSphere * shakeAmount;
 
 				shakeDuration -= Time.deltaTime * decreaseFactor;
 			}
@@ -66,7 +63,7 @@ namespace Character
 
 		public void ShakeCamera()
 		{
-			originalPos = _camTransform.localPosition;
+			_originalPos = _camTransform.localPosition;
 			shakeDuration = 0.2f;
 		}
 	}

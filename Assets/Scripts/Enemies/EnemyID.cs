@@ -1,7 +1,10 @@
-public enum EnemyID
+namespace Enemies
 {
-    Enemy1 = 0,
-    Enemy2 = 10,
-    Enemy3 = 20,
-    Enemy4 = 30,
+    public enum EnemyID
+    {
+        Vampire = 0,
+        Nightshade = 10,
+        MawJ = 20,
+        Enemy4 = 30,
+    }
 }

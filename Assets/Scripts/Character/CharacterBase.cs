@@ -6,31 +6,16 @@ public abstract class CharacterBase : MonoBehaviour, IDamageable, IStatusEffecta
     [field: SerializeField] public StatsSystem StatsSystem { get; private set; }
     public float Health => StatsSystem.Health.CurrentValue;
     public bool Invincible { get => StatsSystem.isInvincible; protected set => StatsSystem.isInvincible = value; }
-
     
     protected StatusEffectSystem StatusEffectSystem = new StatusEffectSystem();
     public MonoBehaviour StatusEffectCoroutine => this;
     public Vector2 Position => transform.position;
     
     private void Awake()
-    {
-        OnAwake();
-    }
+        => OnAwake();
 
     private void Start()
-    {
-        OnStart();
-    }
-
-    private void Update()
-    {
-        OnUpdate();
-    }
-
-    private void FixedUpdate()
-    {
-        OnFixedUpdate();
-    }
+        => OnStart();
     
     protected virtual void OnAwake()
     {
@@ -42,22 +27,11 @@ public abstract class CharacterBase : MonoBehaviour, IDamageable, IStatusEffecta
         
     }
 
-    protected virtual void OnUpdate()
-    {
-        
-    }
-		
-    protected virtual void OnFixedUpdate()
-    {
-
-    }
-
     public virtual void TakeDamage(AttackStats attackStats)
     {
         AddStatusEffect(attackStats);
     }
-
-
+    
     public virtual void AddStatusEffect(AttackStats attackStats)
     {
         StatusEffectSystem.AddStatusEffects(attackStats);

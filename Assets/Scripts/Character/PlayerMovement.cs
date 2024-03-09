@@ -33,10 +33,8 @@ namespace Character
 			KeyboardObserver.OnMove -= Move;
 		} 
 		
-		protected override void OnUpdate()
+		private void Update()
 		{
-			base.OnUpdate();
-			
 			animator.SetFloat("Speed", Mathf.Abs(_horizontalMove));
 		}
 

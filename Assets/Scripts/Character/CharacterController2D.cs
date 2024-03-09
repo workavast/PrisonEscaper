@@ -109,7 +109,10 @@ namespace Character
 			_platformDescentRayCastLocalStart = new Vector2(0, - platformMaxHeight - 0.1f);
 		}
 
-		protected override void OnFixedUpdate()
+		private void FixedUpdate()
+			=> OnFixedUpdate();
+		
+		protected virtual void OnFixedUpdate()
 		{
 			GroundCheck();
 			WallsCheck();

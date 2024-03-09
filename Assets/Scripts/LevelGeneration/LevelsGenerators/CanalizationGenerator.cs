@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Character;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -24,12 +25,14 @@ namespace LevelGeneration.LevelsGenerators
         [Space]
         [SerializeField] private List<GameObject> endBlocks;
     
+        [Inject] private DiContainer _container;
+        
         private readonly Dictionary<ConnectorID, List<GameObject>> _mainBlocksPrefabs = new();
         private readonly Dictionary<ConnectorID, List<GameObject>> _forkBlocksPrefabs = new();
         private readonly Dictionary<ConnectorID, List<GameObject>> _endBlocksPrefabs = new();
 
-        [Inject] private DiContainer _container;
-        
+        public override event Action<Player> OnPlayerSpawned;
+
         protected override void OnUpdate()
         {
             if (test && Input.GetKeyDown(KeyCode.Q))
@@ -95,7 +98,10 @@ namespace LevelGeneration.LevelsGenerators
             }
 
             if (Player is null)
+            {
                 Player = _container.InstantiatePrefab(playerPrefab, PlayerSpawnPosition, Quaternion.Euler(0,0,0), null);
+                OnPlayerSpawned?.Invoke(Player.GetComponent<Player>());
+            }
             else
                 Player.transform.position = PlayerSpawnPosition;
         }

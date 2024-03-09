@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Enemies;
 using UnityEngine;
 using UniversalStatsSystem;
 
@@ -153,19 +154,19 @@ namespace Character
         {
             switch (spellNum)
             {
-                case 1: // скрытность
+                case 1: // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                     ToggleSneak(true);
                     break;
                 case 2:
-                    TreesTaking(); // захват ближайшего противника в корни
+                    TreesTaking(); // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
                     break;
 
                 case 3:
-                    SpectralArrow(); // пронзающая стрела
+                    SpectralArrow(); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                     break;
 
                 case 4:
-                    BurnEnemy(); // поджечь ближайшего врага
+                    BurnEnemy(); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
                     break;
                 default:
                    // Debug.LogError("Spell not found");

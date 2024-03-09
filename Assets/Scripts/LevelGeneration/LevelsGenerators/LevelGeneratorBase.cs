@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Character;
+using Enemies;
 using SerializableDictionaryExtension;
 using UnityEngine;
+using Zenject;
 using Random = UnityEngine.Random;
 
 namespace LevelGeneration.LevelsGenerators
@@ -24,25 +26,28 @@ namespace LevelGeneration.LevelsGenerators
         [SerializeField] private SpawnableObjectData<TrapID> trapsData;
         [Space]
 
+        [Inject] private readonly EnemiesFactory _enemiesFactory;
+        
+        protected List<BlockData> AllBlocksWithFreeConnectors = new();
+        protected List<IBlockData> AllSpawnedBlocks = new();
         protected Vector3 PlayerSpawnPosition;
         protected GameObject Player;
     
         private readonly Dictionary<ConnectorID, List<GameObject>> _finalBlocksPrefabs = new();
-
-        protected List<BlockData> AllBlocksWithFreeConnectors = new();
-        protected List<IBlockData> AllSpawnedBlocks = new();
-    
         private bool _finalBlockSpawned;
 
+        public abstract event Action<Player> OnPlayerSpawned; 
+        
         private void Awake() => OnAwake();
         private void Start() => OnStart();
         private void Update() => OnUpdate();
 
-        protected virtual void OnAwake(){
-            Init();
-            GenerateLevel();
-        }
-        protected virtual void OnStart(){}
+        protected virtual void OnAwake()
+            => Init();
+
+        protected virtual void OnStart()
+            => GenerateLevel();
+        
         protected virtual void OnUpdate(){}
     
         protected virtual void Init()
@@ -80,7 +85,7 @@ namespace LevelGeneration.LevelsGenerators
         protected void GenerateLevel()
         {
             GenerateBlocks();
-            GenerateSpawnableObjects(enemiesData);
+            SpawnEnemies(enemiesData);
             GenerateSpawnableObjects(lootBoxesData);
             GenerateSpawnableObjects(trapsData);
         }
@@ -411,7 +416,39 @@ namespace LevelGeneration.LevelsGenerators
     
     
         #region GenerateSpawnableObjects
-    
+        private void SpawnEnemies(SpawnableObjectData<EnemyID> data)
+        {
+            int randomPercent = Random.Range(data.MinPercent, data.MaxPercent+1);
+        
+            float scale = (float)randomPercent / 100;
+            int trapsCount = (int)(data.spawnPoints.Count * scale);
+
+            int iter = 0;
+            for (int i = 0; i < trapsCount; i++)
+            {
+                iter++;
+                if (iter >= 500) throw new Exception("TO MUCH");
+
+                int pairIndex = Random.Range(0, data.spawnPoints.Count);
+                SpawnableObjectCell<EnemyID> pair = data.spawnPoints[pairIndex];
+
+                int idIndex = Random.Range(0, pair.IDs.Count);
+                EnemyID id = pair.IDs[idIndex];
+
+                if (!data.Prefabs.ContainsKey(id))
+                {
+                    Debug.LogWarning($"Un exist key: {id} in the {data} in the {data.Prefabs}");
+                    i--;
+                    continue;
+                }
+
+                var enemy = _enemiesFactory.Create(id, pair.Transform.position);
+                data.spawned.Add(enemy.gameObject);
+            
+                data.spawnPoints.RemoveAt(pairIndex);
+            }
+        }
+        
         private void GenerateSpawnableObjects<TIdentifier>(SpawnableObjectData<TIdentifier> data)
             where TIdentifier : Enum
         {
@@ -454,6 +491,7 @@ namespace LevelGeneration.LevelsGenerators
             [field:SerializeField] [field:Range(0, 100)] public int MinPercent { get; private set; }
             [field:SerializeField] [field:Range(0, 100)] public int MaxPercent { get; private set; }
             [field:SerializeField] public SerializableDictionary<TIdentifier, GameObject> Prefabs { get; private set; }
+            
             [HideInInspector] public List<TIdentifier> IDs = new();
             [HideInInspector] public List<SpawnableObjectCell<TIdentifier>> spawnPoints = new();
             [HideInInspector] public List<GameObject> spawned = new();
