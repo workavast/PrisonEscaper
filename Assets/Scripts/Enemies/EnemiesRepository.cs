@@ -9,7 +9,7 @@ namespace Enemies
     { 
         [Inject] private EnemiesFactory _enemiesFactory;
 
-        public IEnumerable<EnemyBase> Enemies => _enemies;
+        public IReadOnlyList<EnemyBase> Enemies => _enemies;
     
         private readonly List<EnemyBase> _enemies = new();
 

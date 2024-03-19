@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Character;
 using UnityEngine;
-using Zenject;
 using Random = UnityEngine.Random;
 
 namespace LevelGeneration.LevelsGenerators
@@ -24,15 +22,13 @@ namespace LevelGeneration.LevelsGenerators
         [SerializeField] private List<GameObject> hallwayBlocks;
         [Space]
         [SerializeField] private List<GameObject> endBlocks;
-    
-        [Inject] private DiContainer _container;
         
         private readonly Dictionary<ConnectorID, List<GameObject>> _mainBlocksPrefabs = new();
         private readonly Dictionary<ConnectorID, List<GameObject>> _forkBlocksPrefabs = new();
         private readonly Dictionary<ConnectorID, List<GameObject>> _endBlocksPrefabs = new();
 
-        public override event Action<Player> OnPlayerSpawned;
-
+        private int _iteration;
+        
         protected override void OnUpdate()
         {
             if (test && Input.GetKeyDown(KeyCode.Q))
@@ -68,6 +64,10 @@ namespace LevelGeneration.LevelsGenerators
     
         protected override void GenerateBlocks()
         {
+            _iteration++;
+            if (_iteration > 100)
+                throw new Exception("Too much iterations");
+            
             CreateStartBlock();
 
             if (!CreateMainBlocks())
@@ -96,14 +96,6 @@ namespace LevelGeneration.LevelsGenerators
                 GenerateBlocks();
                 return;
             }
-
-            if (Player is null)
-            {
-                Player = _container.InstantiatePrefab(playerPrefab, PlayerSpawnPosition, Quaternion.Euler(0,0,0), null);
-                OnPlayerSpawned?.Invoke(Player.GetComponent<Player>());
-            }
-            else
-                Player.transform.position = PlayerSpawnPosition;
         }
     
         /// <summary>
@@ -113,7 +105,7 @@ namespace LevelGeneration.LevelsGenerators
         private bool CreateMainBlocks()
         {
             int blocksCount = Random.Range(minBlockCount, maxBlockCount + 1);
-        
+            
             int forksCount = Random.Range(minForkCount, maxForkCount + 1);
 
             int lastPossibleForkIndex = (int)((float)(blocksCount + 1) * 0.75f);

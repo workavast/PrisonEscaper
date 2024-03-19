@@ -4,6 +4,6 @@ namespace GameCycleFramework
     {
         public GameCycleState CurrentState { get; }
 
-        public void SwitchState(GameCycleState newCycleState);
+        public void SwitchState(GameCycleState newCycleState, bool hardSet = false);
     }
 }

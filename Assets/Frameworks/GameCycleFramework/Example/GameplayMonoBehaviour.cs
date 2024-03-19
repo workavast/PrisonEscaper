@@ -1,18 +1,20 @@
 ﻿using UnityEngine;
+using Zenject;
 
 namespace GameCycleFramework.Example
 {
     public class GameplayMonoBehaviour : MonoBehaviour, IGameCycleUpdate, IGameCycleFixedUpdate, IGameCycleEnter, IGameCycleExit
     {
-        [SerializeField] protected GameCycleController gameCycleController;
+        [Inject] private readonly IGameCycleController _gameCycleController;
+        
         public GameCycleState GameCycleState => GameCycleState.Gameplay;
         
         protected void Awake()
         {
-            gameCycleController.AddListener(GameCycleState, this as IGameCycleUpdate);
-            gameCycleController.AddListener(GameCycleState, this as IGameCycleFixedUpdate);
-            gameCycleController.AddListener(GameCycleState, this as IGameCycleEnter);
-            gameCycleController.AddListener(GameCycleState, this as IGameCycleExit);
+            _gameCycleController.AddListener(GameCycleState, this as IGameCycleUpdate);
+            _gameCycleController.AddListener(GameCycleState, this as IGameCycleFixedUpdate);
+            _gameCycleController.AddListener(GameCycleState, this as IGameCycleEnter);
+            _gameCycleController.AddListener(GameCycleState, this as IGameCycleExit);
         }
                 
         public void GameCycleUpdate()
@@ -37,10 +39,10 @@ namespace GameCycleFramework.Example
         
         private void OnDestroy()
         {
-            gameCycleController.RemoveListener(GameCycleState, this as IGameCycleUpdate);
-            gameCycleController.RemoveListener(GameCycleState, this as IGameCycleFixedUpdate);
-            gameCycleController.AddListener(GameCycleState, this as IGameCycleEnter);
-            gameCycleController.AddListener(GameCycleState, this as IGameCycleExit);
+            _gameCycleController?.RemoveListener(GameCycleState, this as IGameCycleUpdate);
+            _gameCycleController?.RemoveListener(GameCycleState, this as IGameCycleFixedUpdate);
+            _gameCycleController?.RemoveListener(GameCycleState, this as IGameCycleEnter);
+            _gameCycleController?.RemoveListener(GameCycleState, this as IGameCycleExit);
         }
     }
 }

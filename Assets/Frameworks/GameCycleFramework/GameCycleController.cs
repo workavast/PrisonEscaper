@@ -54,9 +54,10 @@ namespace GameCycleFramework
         public void RemoveListener(GameCycleState cycleState, IGameCycleExit iGameCycleExit)
             => _actions[cycleState][GameCycleInvokeType.StateExit] -= iGameCycleExit.GameCycleExit;
 
-        public void SwitchState(GameCycleState newCycleState)
+        public void SwitchState(GameCycleState newCycleState, bool hardSet = false)
         {
-            if(CurrentState == newCycleState) return;
+            if(CurrentState == newCycleState && !hardSet) 
+                return;
             
             _actions[CurrentState][GameCycleInvokeType.StateExit]?.Invoke();
             CurrentState = newCycleState;

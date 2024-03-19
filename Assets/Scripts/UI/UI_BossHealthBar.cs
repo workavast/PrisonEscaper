@@ -1,23 +1,35 @@
 using Enemies;
+using GameCycleFramework;
+using LevelGeneration.LevelsGenerators;
+using UI;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
-public class UI_BossHealthBar : MonoBehaviour
+public class UI_BossHealthBar : MonoBehaviour, IIniteableUI , IGameCycleExit
 {
     [SerializeField] private Slider healthSlider;
+
+    [Inject] private readonly IGameCycleController _gameCycleController;
+    [Inject] private readonly LevelGeneratorBase _levelGenerator;
     
     private BossMutantArena _boss;
     private UI_SomeBar _healthBar;
 
-    private void Start()
+    public void Init()
     {
-        var boss = FindObjectOfType<BossMutantArena>();
-        
-        if(boss != null)
-            SetBoss(boss);
+        _gameCycleController.AddListener(GameCycleState.LocationGeneration, this);
         SetDisable();
     }
 
+    public void GameCycleExit()
+    {
+        var boss = FindObjectOfType<BossMutantArena>();
+
+        if (boss != null)
+            SetBoss(boss);
+    }
+    
     private void SetBoss(BossMutantArena newBoss)
     {
         _boss = newBoss;

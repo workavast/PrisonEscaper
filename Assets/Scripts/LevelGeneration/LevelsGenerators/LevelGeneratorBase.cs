@@ -27,7 +27,8 @@ namespace LevelGeneration.LevelsGenerators
         [Space]
 
         [Inject] private readonly EnemiesFactory _enemiesFactory;
-        
+        [Inject] private DiContainer _container;
+
         protected List<BlockData> AllBlocksWithFreeConnectors = new();
         protected List<IBlockData> AllSpawnedBlocks = new();
         protected Vector3 PlayerSpawnPosition;
@@ -36,7 +37,9 @@ namespace LevelGeneration.LevelsGenerators
         private readonly Dictionary<ConnectorID, List<GameObject>> _finalBlocksPrefabs = new();
         private bool _finalBlockSpawned;
 
-        public abstract event Action<Player> OnPlayerSpawned; 
+        public event Action<Player> OnPlayerSpawned;
+        public event Action OnGenereationStart;
+        public event Action OnGenerateFinished; 
         
         private void Awake() => OnAwake();
         private void Start() => OnStart();
@@ -84,12 +87,28 @@ namespace LevelGeneration.LevelsGenerators
     
         protected void GenerateLevel()
         {
+            OnGenereationStart?.Invoke();
+            
             GenerateBlocks();
+            SpawnPlayer();
             SpawnEnemies(enemiesData);
             GenerateSpawnableObjects(lootBoxesData);
             GenerateSpawnableObjects(trapsData);
+            
+            OnGenerateFinished?.Invoke();
         }
-    
+
+        private void SpawnPlayer()
+        {
+            if (Player is null)
+            {
+                Player = _container.InstantiatePrefab(playerPrefab, PlayerSpawnPosition, Quaternion.Euler(0,0,0), null);
+                OnPlayerSpawned?.Invoke(Player.GetComponent<Player>());
+            }
+            else
+                Player.transform.position = PlayerSpawnPosition;
+        }
+        
         protected virtual void ClearLevel()
         {
             foreach (var blocks in AllSpawnedBlocks)
@@ -119,7 +138,7 @@ namespace LevelGeneration.LevelsGenerators
     
         protected void CreateStartBlock()
         {
-            if (!Instantiate(startBlock, blocksParent).TryGetComponent(out IStartBlockData startBlockData))
+            if (!_container.InstantiatePrefab(startBlock, blocksParent).TryGetComponent(out IStartBlockData startBlockData))
                 throw new Exception("Start block dont have script startBlockData");
         
             InitBlockData(startBlockData);
@@ -187,6 +206,7 @@ namespace LevelGeneration.LevelsGenerators
         protected bool TryCreateEndBlocks(IReadOnlyDictionary<ConnectorID, List<GameObject>> blocksPrefabs)
         {
             int iterationsCount = AllBlocksWithFreeConnectors.Count;
+            
             for (int i = 0; i < iterationsCount; i++)
             {
                 IBlockData blockForConnection = AllBlocksWithFreeConnectors.First();
@@ -354,7 +374,7 @@ namespace LevelGeneration.LevelsGenerators
 
         private void SpawnBlock(GameObject newBlockPrefab, Vector3 newBlockPosition, IBlockData blockForConnection, ConnectorID existBlockConnector, ConnectorID newBlockConnectorID)
         {
-            IBlockData newBlock = Instantiate(newBlockPrefab, newBlockPosition, Quaternion.identity, blocksParent).GetComponent<IBlockData>();
+            IBlockData newBlock = _container.InstantiatePrefab(newBlockPrefab, newBlockPosition, Quaternion.identity, blocksParent).GetComponent<IBlockData>();
             InitBlockData(newBlock);
             blockForConnection.OccupyConnector(existBlockConnector);
             newBlock.OccupyConnector(newBlockConnectorID);
@@ -476,7 +496,7 @@ namespace LevelGeneration.LevelsGenerators
                     continue;
                 }
             
-                GameObject newObject = Instantiate(data.Prefabs[id], pair.Transform.position, Quaternion.identity, data.Parent);
+                GameObject newObject = _container.InstantiatePrefab(data.Prefabs[id], pair.Transform.position, Quaternion.identity, data.Parent);
                 data.spawned.Add(newObject);
             
                 data.spawnPoints.RemoveAt(pairIndex);

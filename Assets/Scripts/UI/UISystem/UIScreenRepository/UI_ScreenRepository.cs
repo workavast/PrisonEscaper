@@ -28,6 +28,10 @@ namespace UI
                 _screens.Add(screen.GetType(), screen);
                 screen.InitScreen();
             }
+
+            var initeables = GetComponentsInChildren<IIniteableUI>(true);
+            foreach (var initeable in initeables)
+                initeable.Init();
         }
 
         public static TScreen GetScreen<TScreen>() where TScreen : UI_ScreenBase

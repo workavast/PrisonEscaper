@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
+using CastLibrary;
 using Character;
+using Projectiles;
 using UnityEngine;
 using UniversalStatsSystem;
+using Zenject;
 using Random = UnityEngine.Random;
 
 namespace Enemies
@@ -28,9 +31,8 @@ namespace Enemies
         [SerializeField] protected float attackCooldown;
         [SerializeField] protected Transform attackPoint;
         [SerializeField] protected Transform target;
-        [SerializeField]  private float minRangeDistAttack;
-        [SerializeField] protected GameObject throwableObject;
-        private enum AttackType { Melee, Ranged }
+        [SerializeField] private float minRangeDistAttack;
+        [SerializeField] protected ProjectileId projectileId;
         [SerializeField] private AttackType attackType;
     
         [Header("Orientation checks")]
@@ -49,7 +51,9 @@ namespace Enemies
     
         [Header("Other")]
         [SerializeField] protected Animator animator;
-    
+
+        [Inject] protected ProjectileFactory _projectileFactory;
+        
         private Vector3 _startPosition;
         private ItemDropper _itemDropper;
         private bool _isAlive, _canMove;    
@@ -131,18 +135,17 @@ namespace Enemies
         public virtual void ThrowWeapon()
         {
             if (IsDead) return;
-            GameObject throwableWeapon = GameObject.Instantiate(throwableObject,
-                transform.position + new Vector3(transform.localScale.x * 0.5f, 0),
-                Quaternion.identity) as GameObject;
+            var projectileBase = _projectileFactory.Create(projectileId,
+                transform.position + new Vector3(transform.localScale.x * 0.5f, 0));
             
+            ThrowableProjectile projectile = projectileBase.Cast<ThrowableProjectile>();
             Vector2 direction = new Vector2(transform.localScale.x, 0);
-            ThrowableWeapon weaponObj = throwableWeapon.GetComponent<ThrowableWeapon>();
-            weaponObj.AttackStats = StatsSystem.AttackStats;
-            weaponObj.speed = 14;
-            weaponObj.direction = direction;
-            weaponObj.isPlayerWeapon = false;
-            weaponObj.owner = transform;
-            throwableWeapon.name = "ThrowableWeapon";
+            projectile.AttackStats = StatsSystem.AttackStats;
+            projectile.speed = 14;
+            projectile.Init(direction);
+            projectile.isPlayerWeapon = false;
+            projectile.owner = transform;
+            projectile.name = "ThrowableWeapon";
         }
     
         IEnumerator DistanceAttack(float minDelay, float maxDelay)
@@ -424,6 +427,12 @@ namespace Enemies
             if(wallBackCheckPoint) Gizmos.DrawWireCube(wallBackCheckPoint.position, new Vector3(wallCheckWidth, wallCheckHeight, 0));
             if(groundCheckPoint) Gizmos.DrawWireSphere(groundCheckPoint.position, groundCheckRadius);
             Gizmos.DrawWireSphere(Position, 5f);//electricity status effect radius
+        }
+
+        private enum AttackType
+        {
+            Melee,
+            Ranged
         }
     }
 }

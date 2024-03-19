@@ -1,6 +1,8 @@
 ﻿using Character;
+using LevelGeneration.LevelsGenerators;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace UI
 {
@@ -9,16 +11,23 @@ namespace UI
         [SerializeField] private Slider healthSlider;
         [SerializeField] private Slider manaSlider;
         
+        [Inject] private LevelGeneratorBase _levelGenerator;
+        
         private UI_SomeBar _healthBar;
         private UI_SomeBar _manaBar;
-        
-        private void Start()
-        {
-            Player.Instance.StatsSystem.Health.OnChange += SetHealthSliderValue;
-            Player.Instance.StatsSystem.Mana.OnChange += SetManaSliderValue;
 
-            _healthBar = new UI_SomeBar(this, healthSlider, Player.Instance.StatsSystem.Health.FillingPercentage);
-            _manaBar = new UI_SomeBar(this, manaSlider, Player.Instance.StatsSystem.Mana.FillingPercentage);
+        private void Awake()
+        {
+            _levelGenerator.OnPlayerSpawned += Init;
+        }
+
+        private void Init(Player player)
+        {
+            player.StatsSystem.Health.OnChange += SetHealthSliderValue;
+            player.StatsSystem.Mana.OnChange += SetManaSliderValue;
+
+            _healthBar = new UI_SomeBar(this, healthSlider, player.StatsSystem.Health.FillingPercentage);
+            _manaBar = new UI_SomeBar(this, manaSlider, player.StatsSystem.Mana.FillingPercentage);
         }
 
         private void SetHealthSliderValue() => SetBarValue(_healthBar, Player.Instance.StatsSystem.Health.FillingPercentage);

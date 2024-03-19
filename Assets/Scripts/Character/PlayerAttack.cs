@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using PlayerInventory;
 using PlayerInventory.Scriptable;
+using Projectiles;
 using UnityEngine;
 using UniversalStatsSystem;
 
@@ -9,7 +10,6 @@ namespace Character
 	[System.Serializable]
 	public class PlayerAttack
 	{
-		public GameObject throwableObject;
 		public Transform attackCheck;
 		public Animator animator;
 		public bool canAttack = true;
@@ -18,24 +18,28 @@ namespace Character
 		private int _attackVariantCycle = 0;
 		const int attacksCount = 3;
 		private Player _player;
+		private ProjectileFactory _projectileFactory;
 		
-		public void Init()
+		public void Init(Player player, ProjectileFactory projectileFactory)
 		{
-			_player = Player.Instance;
+			_player = player;
+			_projectileFactory = projectileFactory;
 		}
 		
-		public ThrowableWeapon ThrowWeapon()
+		public ThrowableProjectile ThrowProjectile()
 		{
 			Transform playerTransform = _player.transform;
-			GameObject throwableWeapon = Player.Instantiate(throwableObject,
-				playerTransform.position + new Vector3(playerTransform.localScale.x * 0.5f, playerTransform.localScale.y * 3f),
-				Quaternion.identity) as GameObject;
+			ProjectileBase throwableWeapon = _projectileFactory.Create(ProjectileId.PlayerArrow,
+				playerTransform.position +
+				new Vector3(playerTransform.localScale.x * 0.5f, playerTransform.localScale.y * 3f));
+			
+			ThrowableProjectile arrow = throwableWeapon.GetComponent<ThrowableProjectile>();
 			Vector2 direction = new Vector2(playerTransform.localScale.x, 0);
-			ThrowableWeapon arrow = throwableWeapon.GetComponent<ThrowableWeapon>();
-			arrow.direction = direction;
 			throwableWeapon.name = "ThrowableWeapon";
+			arrow.Init(direction);
 
-			if (_player.IsHidden) _player.ToggleSneak(false);
+			if (_player.IsHidden) 
+				_player.ToggleSneak(false);
 			return arrow;
 		}
 		

@@ -2,7 +2,8 @@
 {
     public enum GameCycleState
     {
-        Gameplay = 0,
-        Pause = 10
+        LocationGeneration = 0,
+        Gameplay = 10,
+        Pause = 20
     }
 }

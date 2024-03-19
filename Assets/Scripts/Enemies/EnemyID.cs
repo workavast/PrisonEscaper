@@ -5,6 +5,6 @@ namespace Enemies
         Vampire = 0,
         Nightshade = 10,
         MawJ = 20,
-        Enemy4 = 30,
+        BossMutant = 30,
     }
 }

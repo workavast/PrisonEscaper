@@ -1,6 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using Enemies;
+using Projectiles;
 using UnityEngine;
 using UniversalStatsSystem;
 
@@ -10,36 +10,38 @@ namespace Character
     {
         [SerializeField] private GameObject treeRoots;
         [SerializeField] private GameObject fireParticle;
-        private Coroutine _sneakTimeout;
+        
         public static PlayerUseAbility Instance { private set; get; }
-        private Player player;
-        // Start is called before the first frame update
-        void Start()
+        
+        private Coroutine _sneakTimeout;
+        private Player _player;
+
+        private void Awake()
         {
-            player = Player.Instance;
+            _player = GetComponent<Player>();
             Instance = this;
         }
 
         IEnumerator SneakEnd(float spell_duration)
         {
             yield return new WaitForSeconds(spell_duration);
-            if (player.IsHidden) ToggleSneak(false);
+            if (_player.IsHidden) ToggleSneak(false);
         }
 
         public void ToggleSneak(bool isActivate)
         {
             float spell_price = 10f, spell_duration = 20f;
 
-            if (isActivate && !player.StatsSystem.SetMana(-spell_price)) return;
+            if (isActivate && !_player.StatsSystem.SetMana(-spell_price)) return;
 
             SpriteRenderer sr = gameObject.GetComponentInChildren<SpriteRenderer>();
             Color tempColor = sr.color;
             tempColor.a = isActivate ? 0.5f : 1f;
             sr.color = tempColor;
 
-            player.IsHidden = isActivate;
-            player.StatsSystem.isInvincible = isActivate;
-            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), player.IsHidden);
+            _player.IsHidden = isActivate;
+            _player.StatsSystem.isInvincible = isActivate;
+            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), _player.IsHidden);
 
             if (_sneakTimeout != null)
             {
@@ -61,7 +63,7 @@ namespace Character
 
             foreach (GameObject enemy in enemies)
             {
-                float distance = Vector3.Distance(player.transform.position, enemy.transform.position);
+                float distance = Vector3.Distance(_player.transform.position, enemy.transform.position);
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
@@ -97,12 +99,12 @@ namespace Character
         private void TreesTaking()
         {
             float spell_price = 15f, spell_duration = 8f, 
-                  spell_damage = player.StatsSystem.AttackStats.earthDamage * 0.1f + 2f;
+                  spell_damage = _player.StatsSystem.AttackStats.earthDamage * 0.1f + 2f;
 
             Enemy near_enemy = FindClosestEnemy();
             if (!near_enemy) return;
 
-            if (player.StatsSystem.SetMana(-spell_price))
+            if (_player.StatsSystem.SetMana(-spell_price))
             {
                 near_enemy.TakeDamage(spell_damage, StatsSystem.DamageType.Earth);
                 if (near_enemy.Health > 0)
@@ -116,11 +118,11 @@ namespace Character
         private void SpectralArrow()
         {
             float spell_price = 5f;
-            if (player.StatsSystem.SetMana(-spell_price))
+            if (_player.StatsSystem.SetMana(-spell_price))
             {
-                ThrowableWeapon arrow = player.ThrowWeapon();
+                ThrowableProjectile arrow = _player.ThrowProjectile();
                 arrow.isPenetratingShot = true;
-                arrow.bonusDamage += (player.StatsSystem.AttackStats * 0.4f);
+                arrow.bonusDamage += (_player.StatsSystem.AttackStats * 0.4f);
                 SpriteRenderer spriteRenderer = arrow.GetComponent<SpriteRenderer>();
                 arrow.transform.Find("particle").gameObject.SetActive(true);
             }
@@ -143,9 +145,9 @@ namespace Character
             Enemy near_enemy = FindClosestEnemy();
             if (!near_enemy) return;
 
-            if (player.StatsSystem.SetMana(-spell_price))
+            if (_player.StatsSystem.SetMana(-spell_price))
             {
-                near_enemy.AddFireStatus(1f, spell_duration, player.StatsSystem.AttackStats * 0.5f);
+                near_enemy.AddFireStatus(1f, spell_duration, _player.StatsSystem.AttackStats * 0.5f);
                 MakeFire(near_enemy, spell_duration);
             }
         }

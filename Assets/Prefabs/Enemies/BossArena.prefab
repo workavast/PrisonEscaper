@@ -512,6 +512,7 @@ MonoBehaviour:
     OnStatsChanged:
       m_PersistentCalls:
         m_Calls: []
+  enemyID: 30
   patrolRange: {x: 18, y: 6}
   stayCooldown: 2
   attackRange: 2
@@ -519,7 +520,7 @@ MonoBehaviour:
   attackPoint: {fileID: 244828302453728065}
   target: {fileID: 0}
   minRangeDistAttack: 12
-  throwableObject: {fileID: 2424522076249060556, guid: 0f8f4ffc9f2fe274ea092a8a1acea1f5, type: 3}
+  projectileId: 200
   attackType: 0
   wallFrontCheckPoint: {fileID: 1736573563809384797}
   wallFrontCheckLayers:

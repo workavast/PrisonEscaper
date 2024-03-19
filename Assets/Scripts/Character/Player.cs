@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Projectiles;
 using UniversalStatsSystem;
 using UnityEngine;
+using Zenject;
 
 namespace Character
 {
@@ -10,12 +12,14 @@ namespace Character
         [field: Space]
         [field: SerializeField] public Transform CharacterCenter { get; private set; }
         [SerializeField] private PlayerAttack playerAttack;
+
+        [Inject] private ProjectileFactory _projectileFactory;
         
+        public static Player Instance { private set; get; }
         public bool AttackIsPossible { get => CanAttack && playerAttack.canAttack; }
         public bool IsAlive { private set; get; } = true;
         public bool IsHidden { set; get; }
 
-        public static Player Instance { private set; get; }
         private readonly List<IInteractive> _interactiveObjects = new List<IInteractive>();
 
         protected override void OnAwake()
@@ -30,7 +34,7 @@ namespace Character
             Instance = this;
             
             StatsSystem.Init();
-            playerAttack.Init();
+            playerAttack.Init(this, _projectileFactory);
 
             StatsSystem.OnDeath.AddListener(Die);
 
@@ -55,9 +59,9 @@ namespace Character
             UnSubOfKeyBoardObserver();
         }
 
-        public ThrowableWeapon ThrowWeapon()
+        public ThrowableProjectile ThrowProjectile()
         {
-            return playerAttack.ThrowWeapon();
+            return playerAttack.ThrowProjectile();
         }
         
         public void Heal(float value)
@@ -112,7 +116,7 @@ namespace Character
         
         private void SecondAttack()
         {
-            ThrowWeapon();
+            ThrowProjectile();
         } 
         
         private void UseAbility(int spellNum)

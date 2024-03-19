@@ -1,32 +1,39 @@
 using System.Collections;
 using audio;
 using Enemies;
+using LevelGeneration.LevelsGenerators;
 using UnityEngine;
-using UnityEngine.Events;
+using Zenject;
 
 namespace Character
 {
     public class TriggerBossMutant : MonoBehaviour
     {
         [SerializeField] private BossMutantArena boss;
-        
         [SerializeField] private Collider2D enterDoorCollider;
         [SerializeField] private Collider2D exitDoorCollider;
         [SerializeField] private GameObject enterSprite;
         [SerializeField] private GameObject exitSprite;
-       
+
+        [Inject] private LevelGeneratorBase _levelGenerator;
+        
         private bool _activated;
         private Player _player;
         private CameraFollow _cameraFollow;
-        
-        private void Start()
+
+        private void Awake()
         {
             boss.OnBossDie += SetDisable;
             SetDisable();
-            _player = Player.Instance;
-            _cameraFollow = CameraFollow.Instance;
+            _levelGenerator.OnPlayerSpawned += Init;
         }
 
+        private void Init(Player player)
+        {
+            _player = player;
+            _cameraFollow = CameraFollow.Instance;
+        }
+        
         IEnumerator WaitBossAnim()
         {
             _activated = true;
@@ -48,8 +55,8 @@ namespace Character
         
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (_activated || 
-                !other.CompareTag("Player")) 
+            if (_activated ||
+                !other.CompareTag("Player"))
                 return;
             
             StartCoroutine(WaitBossAnim());

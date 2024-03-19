@@ -31,5 +31,11 @@ namespace Enemies
             foreach (var enemy in enemies)
                 enemy.HandleFixedUpdate(fixedDeltaTime);
         }
+
+        private void OnDestroy()
+        {
+            _gameCycleController?.RemoveListener(GameCycleState.Gameplay, this as IGameCycleUpdate);
+            _gameCycleController?.RemoveListener(GameCycleState.Gameplay, this as IGameCycleFixedUpdate);
+        }
     }
 }

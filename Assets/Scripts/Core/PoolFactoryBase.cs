@@ -10,13 +10,15 @@ namespace Core
     public class PoolFactoryBase<TEnum, TBase, TConfig> : MonoBehaviour
         where TEnum : Enum
         where TBase : MonoBehaviour, PoolSystem.IPoolable<TBase, TEnum>
-        where TConfig : PrefabConfigBase<TEnum, TBase>
+        where TConfig : PrefabsConfigBase<TEnum, TBase>
     {
         [Inject] private TConfig _prefabsConfig;
         [Inject] private DiContainer _container;
 
         private Pool<TBase, TEnum> _pool;
         private readonly Dictionary<TEnum, Transform> _parents = new();
+
+        public event Action<TBase> OnCreate; 
         
         private void Awake()
         {
@@ -34,13 +36,19 @@ namespace Core
             }
         }
 
-        public TBase Create(TEnum id) => Create(id, Vector3.zero);
-    
+        public TBase Create(TEnum id) 
+            => Create(id, Vector3.zero, Quaternion.identity);
+
         public TBase Create(TEnum id, Vector3 position)
+            => Create(id, position, Quaternion.identity);
+        
+        public TBase Create(TEnum id, Vector3 position, Quaternion rotation)
         {
             _pool.ExtractElement(id, out var @base);
             @base.transform.position = position;
-        
+            @base.transform.rotation = rotation;
+            OnCreate?.Invoke(@base);
+            
             return @base;
         }
     

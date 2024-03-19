@@ -1,10 +1,12 @@
 ﻿using Character;
+using LevelGeneration.LevelsGenerators;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace UI
 {
-    public class UI_StatsPanel : MonoBehaviour
+    public class UI_StatsPanel : MonoBehaviour, IIniteableUI
     {
         [SerializeField] private TMP_Text health;
         [SerializeField] private TMP_Text mana;
@@ -14,10 +16,16 @@ namespace UI
         [SerializeField] private TMP_Text CritMulty;
         [SerializeField] private TMP_Text attackSpeed;
 
-
-        private void Start()
+        [Inject] private readonly LevelGeneratorBase _levelGenerator;
+        
+        public void Init()
         {
-            Player.Instance.StatsSystem.OnStatsChanged.AddListener(UpdateStatsPanel);
+            _levelGenerator.OnPlayerSpawned += Init;
+        }
+        
+        private void Init(Player player)
+        {
+            player.StatsSystem.OnStatsChanged.AddListener(UpdateStatsPanel);
             UpdateStatsPanel();
         }
 

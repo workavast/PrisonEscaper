@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Character;
+using Projectiles;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -24,6 +25,12 @@ namespace Enemies
 
         public event Action OnStartBossBattle;
         public event Action OnBossDie;
+
+        private void FixedUpdate()
+        {
+            HandleFixedUpdate(Time.fixedDeltaTime);
+        }
+
         private void PlaySound(AudioClip curSound)
         {
             //  if (_source.isPlaying) return;
@@ -32,8 +39,7 @@ namespace Enemies
             _source.loop = false;
             _source.Play();
         }
-   
-
+        
         private IEnumerator RoarAnimation()
         {
             PlaySound(roarSound);
@@ -59,7 +65,8 @@ namespace Enemies
         }
 
         public IEnumerator StartBossFight()
-        { 
+        {
+            target = Player.Instance.transform;
             yield return new WaitForSeconds(1f);
 
             defaultSoundVolume = _source.volume;
@@ -118,16 +125,16 @@ namespace Enemies
 
                 Vector3 spawnPosition = transform.position + rotation * new Vector3(distanceFromCenter, 0);
 
-                GameObject throwableWeapon = GameObject.Instantiate((Object)throwableObject, spawnPosition, rotation) as GameObject;
-
+                var projectileBase = _projectileFactory.Create(projectileId, spawnPosition, rotation);
+                
                 Vector2 direction = rotation * Vector2.right;
 
-                ThrowableWeapon weaponObj = throwableWeapon.GetComponent<ThrowableWeapon>();
-                weaponObj.speed = 14;
-                weaponObj.direction = direction;
-                weaponObj.isPlayerWeapon = false;
-                weaponObj.owner = transform;
-                throwableWeapon.name = "ThrowableWeapon";
+                ThrowableProjectile projectile = projectileBase.GetComponent<ThrowableProjectile>();
+                projectile.speed = 14;
+                projectile.Init(direction);
+                projectile.isPlayerWeapon = false;
+                projectile.owner = transform;
+                projectile.name = "ThrowableWeapon";
             }
         }
 

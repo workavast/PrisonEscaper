@@ -1,5 +1,6 @@
 ﻿using LevelGeneration.LevelsGenerators;
 using UnityEngine;
+using Zenject;
 using Random = UnityEngine.Random;
 
 namespace Character
@@ -8,9 +9,10 @@ namespace Character
 	{
 		public static CameraFollow Instance { private set; get; }
 
-		[SerializeField] private LevelGeneratorBase _levelGenerator;
 		[SerializeField] private Vector3 positionOffset;
 
+		[Inject] private LevelGeneratorBase _levelGenerator;
+		
 		public Transform Target;
 		public float FollowSpeed = 2f;
 		public float shakeDuration = 0f;

@@ -7,8 +7,10 @@ namespace Core
     {
         public override void InstallBindings()
         {
-            IGameCycleController gameCycleController = FindObjectOfType<GameCycleController>();
+            var gameCycleController = FindObjectOfType<GameCycleController>();
+            
             Container.Bind<IGameCycleController>().FromInstance(gameCycleController).AsSingle();
+            Container.Bind<IGameCycleSwitcher>().FromInstance(gameCycleController).AsSingle();
         }
     }
 }
