@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using PlayerInventory.Scriptable;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 [Serializable]
 public class WeightDrop
 {
-    
     [Range(0,10)]
     [SerializeField] private int randomDropAmount;
     [SerializeField] private WeightedItem[] randomDropList;
@@ -56,7 +54,6 @@ public class WeightDrop
                 dropSet.Add(randomDropList[j].item);
             }  
         }
-
 
         foreach (var item in constantDropList)
         {

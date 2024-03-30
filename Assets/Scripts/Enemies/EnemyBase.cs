@@ -1,4 +1,5 @@
 using System;
+using MyNamespace;
 
 namespace Enemies
 {

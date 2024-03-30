@@ -1,4 +1,5 @@
 ﻿using Character;
+using Core;
 using UnityEngine;
 
 namespace PlayerInventory.Scriptable

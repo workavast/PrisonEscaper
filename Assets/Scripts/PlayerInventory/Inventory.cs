@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Character;
+using Core;
 using PlayerInventory.Scriptable;
 using UnityEngine.Events;
 

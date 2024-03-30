@@ -128,7 +128,6 @@ namespace Character
             }
         }
 
-
         private void MakeFire(Enemy target, float spell_duration)
         {
             GameObject fire = GameObject.Instantiate(fireParticle,

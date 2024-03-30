@@ -1,7 +1,5 @@
-﻿using System;
-using Unity.Mathematics;
+﻿using Unity.Mathematics;
 using UnityEngine;
-
 
 public class ItemDropper : MonoBehaviour
 {
@@ -21,6 +19,4 @@ public class ItemDropper : MonoBehaviour
             droppedObject.GetComponentInChildren<CollectableItem>().Item = item;
         }    
     }
-
-
 }

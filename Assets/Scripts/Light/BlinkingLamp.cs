@@ -1,28 +1,37 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
-public class BlinkingLamp : MonoBehaviour
+namespace GameCode.Light
 {
-    private Animator _animator;
+    [RequireComponent(typeof(Animator))]
+    public class BlinkingLamp : MonoBehaviour
+    {
+        private static readonly int AnimatorBlinkString = Animator.StringToHash("Blink");
+        private Animator _animator;
+
+        public event Action<BlinkingLamp> OnDestroyEvent;
+
+        private void Awake()
+        {
+            _animator = GetComponent<Animator>();
+        }
+
+        private void Start()
+        {
+            if (GlobalLampBlinks.Instance == null) 
+                return;
+
+            GlobalLampBlinks.Instance.AddLamp(this);
+        }
     
-    public event Action<BlinkingLamp> OnDestroyEvent;
-
-    void Start()
-    {
-        if (GlobalLampBlinks.Instance == null) return;
-
-        _animator = GetComponent<Animator>();
-        GlobalLampBlinks.Instance.AddLamp(this);
-    }
-    
-    private void OnDestroy()
-    {
-        OnDestroyEvent?.Invoke(this);
-    }
-
-    public void Blink()
-    {
-        _animator.SetTrigger("Blink");
+        public void Blink()
+        {
+            _animator.SetTrigger(AnimatorBlinkString);
+        }
+        
+        private void OnDestroy()
+        {
+            OnDestroyEvent?.Invoke(this);
+        }
     }
 }

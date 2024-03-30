@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using Core;
 using UnityEngine;
 
 [RequireComponent(typeof(ItemDropper))]
@@ -27,10 +27,12 @@ public class Crate : MonoBehaviour, IInteractive
 
     private void OnTriggerExit2D(Collider2D col)
     {
-        if (col.CompareTag("Player")) interactKeyImg.SetActive(false);
+        if (col.CompareTag("Player")) 
+            interactKeyImg.SetActive(false);
     }
     
-    public void Interact() => OpenCrate();
+    public void Interact() 
+        => OpenCrate();
 
     private void OpenCrate()
     {

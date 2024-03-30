@@ -3,7 +3,6 @@ using System.Collections;
 using Character;
 using Projectiles;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace Enemies
