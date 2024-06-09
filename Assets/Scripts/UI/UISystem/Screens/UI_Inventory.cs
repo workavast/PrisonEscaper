@@ -48,6 +48,12 @@ namespace UI
             UpdateSpecialSlots();
         }
 
+        public override void _LoadScene(int sceneBuildIndex)
+        {
+            Inventory.Clear();
+            base._LoadScene(sceneBuildIndex);
+        }
+
         private void InitBag()
         {
             foreach (var slot in specialSlots.Values)

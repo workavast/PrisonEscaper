@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Character;
 using Core;
 using PlayerInventory.Scriptable;
@@ -10,7 +11,8 @@ namespace PlayerInventory
     public static class Inventory
     {
         public static int Size { get; private set; }
-        
+
+        private static bool _initialized;
         private static Item[] _bagItems;
         public static Item[] Items => _bagItems;
 
@@ -20,6 +22,10 @@ namespace PlayerInventory
 
         public static void Init(int startSize)
         {
+            if(_initialized)
+                return;
+            
+            _initialized = true;
             Size = startSize;
             _bagItems = new Item[Size];
 
@@ -39,6 +45,16 @@ namespace PlayerInventory
             };
         }
 
+        public static void Clear()
+        {
+            for (int i = 0; i < _bagItems.Length; i++)
+                _bagItems[i] = null;
+            
+            var keys = SpecialSlots.Keys.ToList();
+            foreach (var key in keys)
+                SpecialSlots[key] = null;
+        }
+        
         public static void AddItem(Item item)
         {
             for (int i = 0; i < _bagItems.Length; i++)
