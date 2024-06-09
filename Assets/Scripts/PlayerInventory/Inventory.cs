@@ -45,6 +45,17 @@ namespace PlayerInventory
             };
         }
 
+        public static void ApplyStats()
+        {
+            var keys = SpecialSlots.Keys.ToList();
+
+            foreach (var slotType in keys)
+            {
+                if (SpecialSlots[slotType] != null)
+                    Player.Instance.ApplyItemStats(SpecialSlots[slotType]!.MainStats, SpecialSlots[slotType]!.AttackStats, SpecialSlots[slotType]!.ResistStats);
+            }
+        }
+        
         public static void Clear()
         {
             for (int i = 0; i < _bagItems.Length; i++)

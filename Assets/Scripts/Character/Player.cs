@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Core;
+using PlayerInventory;
 using Projectiles;
 using UniversalStatsSystem;
 using UnityEngine;
@@ -38,7 +39,8 @@ namespace Character
             playerAttack.Init(this, _projectileFactory);
 
             StatsSystem.OnDeath.AddListener(Die);
-
+            Inventory.ApplyStats();
+            
             KeyboardObserver.OnFirstAttack += FirstAttack;
             KeyboardObserver.OnSecondAttack += SecondAttack;
             KeyboardObserver.OnInteract += InteractWithNearestInteractiveObject;
