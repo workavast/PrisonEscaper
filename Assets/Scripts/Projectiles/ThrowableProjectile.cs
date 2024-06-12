@@ -22,10 +22,12 @@ namespace Projectiles
 		
 		private Rigidbody2D _rigidbody2D;
 		private Vector2 _direction;
+		private float _initialLocalScaleX;
 
 		protected virtual void Awake()
 		{
 			_rigidbody2D = GetComponent<Rigidbody2D>();
+			_initialLocalScaleX = transform.localScale.x;
 		}
 
 		public override void HandleFixedUpdate(float fixedDeltaTime)
@@ -45,7 +47,7 @@ namespace Projectiles
 		{
 			_direction = direction;
 			if (_direction.x < 0)
-				transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+				transform.localScale = new Vector3(-_initialLocalScaleX, transform.localScale.y, transform.localScale.z);
 
 			StartCoroutine(RemoveProjectile());
 		}
