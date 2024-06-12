@@ -113,7 +113,7 @@ namespace Character
         
         private void FirstAttack()
         {
-            if (CanAttack)
+            if (CanAttack && !animator.GetBool("IsAttacking"))
                 playerAttack.Attack();
         }
         

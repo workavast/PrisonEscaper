@@ -21,7 +21,7 @@ public class KeyboardObserver : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.S))
             OnPlatformDrop?.Invoke();
             
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
             OnFirstAttack?.Invoke();
 
         if (Input.GetMouseButtonDown(1))

@@ -339,6 +339,13 @@ namespace Character
 				animator.SetBool("IsDoubleJumping", true);
 			}
 		}
+
+
+
+		protected void Stop()
+		{
+			_rigidbody2D.velocity = Vector2.zero;
+		}
 		#endregion
 
 		private void Flip()

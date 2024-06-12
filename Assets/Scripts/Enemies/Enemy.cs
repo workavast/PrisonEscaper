@@ -12,6 +12,7 @@ namespace Enemies
 {
     [RequireComponent(typeof(ItemDropper))]
     [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(CapsuleCollider2D))]
     public class Enemy : EnemyBase
     {
         [SerializeField] private EnemyID enemyID;
@@ -53,7 +54,8 @@ namespace Enemies
         [SerializeField] protected Animator animator;
 
         [Inject] protected ProjectileFactory _projectileFactory;
-        
+
+        private CapsuleCollider2D _collider;
         private Vector3 _startPosition;
         private ItemDropper _itemDropper;
         private bool _isAlive, _canMove;    
@@ -71,6 +73,7 @@ namespace Enemies
             
             _rigidbody = GetComponent<Rigidbody2D>();
             _itemDropper = GetComponent<ItemDropper>();
+            _collider = GetComponent<CapsuleCollider2D>();
             // DeathEvent.AddListener(DropItems);
             _isAlive = _canMove = true;
             
@@ -99,8 +102,13 @@ namespace Enemies
         
         public override void HandleFixedUpdate(float fixedDeltaTime)
         {
-            if (_isAlive && _canMove && !_frozen)
+            if (_isAlive && _canMove && !_frozen && !animator.GetBool("Attack"))
                 Move();
+            else
+            {
+                if (animator.GetBool("Attack"))
+                    StopMove();
+            }
         }
         
         private void FrozenStatus()
@@ -117,10 +125,9 @@ namespace Enemies
         public void SetFrozenStatus(bool is_activate)
         {
             if (is_activate)
-            {
                 FrozenStatus();
-            }
-            else UnFrozenStatus();
+            else
+                UnFrozenStatus();
         }
     
     
@@ -151,13 +158,12 @@ namespace Enemies
         IEnumerator DistanceAttack(float minDelay, float maxDelay)
         {
             _attacking = true;
+            StopMove();
             yield return new WaitForSeconds(Random.Range(minDelay, maxDelay));
             if (!target || !transform || IsDead) yield break;
             float directionToTarget = target.position.x - transform.position.x;
             if (Mathf.Sign(directionToTarget) != Mathf.Sign(transform.localScale.x))
-            {
                 transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            }
     
             Attack();
             ThrowWeapon();
@@ -194,9 +200,7 @@ namespace Enemies
         
         protected virtual void Move()
         {
-            if (target == null ||
-                IsDead ||
-                transform == null)
+            if (target == null || IsDead || transform == null)
                 return;
     
             float distanceToTargetX = Mathf.Abs(target.position.x - transform.position.x);
@@ -209,29 +213,19 @@ namespace Enemies
                     {
                         case AttackType.Melee:
                             if ((!WallFrontCheck() || !ComparePosition()) && GroundCheck())
-                            {
                                 Follow();
-                            }
                             else
-                            {
-                                _rigidbody.velocity = Vector2.zero;
-                            }
+                                StopMove();
     
                             var distance = Vector2.Distance(target.position, attackPoint.position);
                             if (distance < attackRange)
-                            {
                                 Attack();
-                            }
                             break;
                         case AttackType.Ranged:
                             if (distanceToTargetX < minRangeDistAttack && (!WallFrontCheck() || ComparePosition()) && GroundCheck() && Random.value>=0.005f)
-                            {
                                 Retreat();
-                            }
                             else
-                            {
                                 StartCoroutine(DistanceAttack(0.2f, 1.5f));
-                            }
                             break;
                     }
                 }
@@ -239,21 +233,15 @@ namespace Enemies
             else
             {
                 if (!_stay)
-                {
                     Patrol();
-                }
                 else
-                {
-                    _rigidbody.velocity = Vector2.zero;
-                }
+                    StopMove();
             }
     
             var localScale = transform.localScale;
             if (((_rigidbody.velocity.x < 0 && localScale.x > 0) || (_rigidbody.velocity.x > 0 && localScale.x < 0))
                 && Mathf.Abs(_rigidbody.velocity.x) > 0.001f)
-            {
                 transform.localScale = new Vector3(localScale.x * -1, localScale.y, localScale.z);
-            }
     
     
             animator.SetFloat("velocity", Math.Abs(_rigidbody.velocity.x / StatsSystem.MainStats.WalkSpeed));
@@ -310,6 +298,11 @@ namespace Enemies
         {
             MoveProto(1);
         }
+
+        private void StopMove()
+        {
+            _rigidbody.velocity = Vector2.zero;
+        }
         
         protected virtual void Attack()
         {
@@ -326,9 +319,7 @@ namespace Enemies
             StartCoroutine(Stun());
     
             if (IsDead)
-            {
                 StartCoroutine(Die());
-            }
         }
         
         private bool CheckLifeState()
@@ -376,7 +367,9 @@ namespace Enemies
     
         protected virtual IEnumerator Die()
         {
-            _rigidbody.velocity = Vector2.zero;
+            StopMove();
+            _rigidbody.gravityScale = 0;
+            _collider.enabled = false;
             animator.SetTrigger("Dead");
             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
             float animOffset = 0f;
