@@ -91,7 +91,7 @@ namespace Enemies
     
             _startPosition = transform.position;
     
-            if (target == null)
+            if (target == null && Player.Instance != null)
                 target = Player.Instance.CharacterCenter;
         }
         

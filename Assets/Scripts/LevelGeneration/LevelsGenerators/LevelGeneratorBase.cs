@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Character;
 using Enemies;
 using SerializableDictionaryExtension;
@@ -29,6 +30,7 @@ namespace LevelGeneration.LevelsGenerators
         [Inject] private readonly EnemiesFactory _enemiesFactory;
         [Inject] private DiContainer _container;
 
+        protected bool IsGeneration;
         protected Vector3 PlayerSpawnPosition;
         protected GameObject Player;
         protected readonly List<IBlockData> AllSpawnedBlocks = new();
@@ -39,7 +41,7 @@ namespace LevelGeneration.LevelsGenerators
         private bool _finalBlockSpawned;
 
         public event Action<Player> OnPlayerSpawned;
-        public event Action OnGenereationStart;
+        public event Action OnGenerationStart;
         public event Action OnGenerateFinished; 
         
         private void Awake() => OnAwake();
@@ -86,16 +88,27 @@ namespace LevelGeneration.LevelsGenerators
             }
         }
     
-        protected void GenerateLevel()
+        protected async void GenerateLevel()
         {
-            OnGenereationStart?.Invoke();
+            OnGenerationStart?.Invoke();
             
-            GenerateBlocks();
+            float timer = Time.time;
+            if (test) 
+                Debug.Log("OnGenerationStart");
+            
+            IsGeneration = true;
+            
+            await GenerateBlocks();
             
             SpawnPlayer();
-            SpawnEnemies(enemiesData);
-            GenerateSpawnableObjects(lootBoxesData);
-            GenerateSpawnableObjects(trapsData);
+            await SpawnEnemies(enemiesData);
+            await GenerateSpawnableObjects(lootBoxesData);
+            await GenerateSpawnableObjects(trapsData);
+
+            IsGeneration = false;
+            
+            if(test)
+                Debug.Log($"OnGenerateFinished: {Time.time - timer}");
             
             OnGenerateFinished?.Invoke();
         }
@@ -134,8 +147,9 @@ namespace LevelGeneration.LevelsGenerators
     
         #region GenerateBlocks
 
-        protected abstract void GenerateBlocks();
-    
+        protected virtual Task GenerateBlocks() 
+            => Task.CompletedTask;
+
         protected void CreateStartBlock()
         {
             if (!_container.InstantiatePrefab(startBlock, blocksParent).TryGetComponent(out IStartBlockData startBlockData))
@@ -440,11 +454,18 @@ namespace LevelGeneration.LevelsGenerators
             }
         }
         
-        protected void ApplyGeneration()
+        protected async Task ApplyGeneration()
         {
-            foreach (var blockPrototype in AllBlocksPrototypes)
+            var counter = 3;
+            if (test)
+                counter = 1;
+            
+            for (int i = 1; i < AllBlocksPrototypes.Count; i++)
             {
-                var block = _container.InstantiatePrefab(blockPrototype.Prefab, blockPrototype.Position,
+                if (i % counter == 0)
+                    await Task.Delay(50);
+                
+                var block = _container.InstantiatePrefab(AllBlocksPrototypes[i].Prefab, AllBlocksPrototypes[i].Position,
                     Quaternion.identity, blocksParent).GetComponent<IBlockData>();
                 
                 AllSpawnedBlocks.Add(block);
@@ -455,7 +476,7 @@ namespace LevelGeneration.LevelsGenerators
     
     
         #region GenerateSpawnableObjects
-        private void SpawnEnemies(SpawnableObjectData<EnemyID> data)
+        private async Task SpawnEnemies(SpawnableObjectData<EnemyID> data)
         {
             int randomPercent = Random.Range(data.MinPercent, data.MaxPercent+1);
         
@@ -466,8 +487,12 @@ namespace LevelGeneration.LevelsGenerators
             for (int i = 0; i < trapsCount; i++)
             {
                 iter++;
-                if (iter >= 500) throw new Exception("TO MUCH");
+                if (iter >= 500) 
+                    throw new Exception("TO MUCH");
 
+                if (iter % 10 == 0)
+                    await Task.Delay(50);
+                
                 int pairIndex = Random.Range(0, data.spawnPoints.Count);
                 SpawnableObjectCell<EnemyID> pair = data.spawnPoints[pairIndex];
 
@@ -488,7 +513,7 @@ namespace LevelGeneration.LevelsGenerators
             }
         }
         
-        private void GenerateSpawnableObjects<TIdentifier>(SpawnableObjectData<TIdentifier> data)
+        private async Task GenerateSpawnableObjects<TIdentifier>(SpawnableObjectData<TIdentifier> data)
             where TIdentifier : Enum
         {
             int randomPercent = Random.Range(data.MinPercent, data.MaxPercent+1);
@@ -502,6 +527,9 @@ namespace LevelGeneration.LevelsGenerators
                 iter++;
                 if (iter >= 500) throw new Exception("TO MUCH");
 
+                if (iter % 10 == 0)
+                    await Task.Delay(50);
+                
                 int pairIndex = Random.Range(0, data.spawnPoints.Count);
                 SpawnableObjectCell<TIdentifier> pair = data.spawnPoints[pairIndex];
 

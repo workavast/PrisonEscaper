@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using GameCode.Light;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -32,7 +33,7 @@ namespace LevelGeneration.LevelsGenerators
         
         protected override void OnUpdate()
         {
-            if (test && Input.GetKeyDown(KeyCode.Q))
+            if (test && !IsGeneration && Input.GetKeyDown(KeyCode.Q))
             {
                 ClearLevel();
                 GenerateLevel();
@@ -64,7 +65,7 @@ namespace LevelGeneration.LevelsGenerators
             base.ClearLevel();
         }
     
-        protected override void GenerateBlocks()
+        protected override async Task GenerateBlocks()
         {
             _iteration++;
             if (_iteration > 50)
@@ -77,7 +78,7 @@ namespace LevelGeneration.LevelsGenerators
                 Debug.LogError("Main block cant be spawned");
 
                 ClearLevel();
-                GenerateBlocks();
+                await GenerateBlocks();
                 return;
             }
 
@@ -86,7 +87,7 @@ namespace LevelGeneration.LevelsGenerators
                 Debug.LogError("Final block cant be spawned");
 
                 ClearLevel();
-                GenerateBlocks();
+                await GenerateBlocks();
                 return;
             }
 
@@ -95,11 +96,11 @@ namespace LevelGeneration.LevelsGenerators
                 Debug.LogError("No end block cant be spawned");
 
                 ClearLevel();
-                GenerateBlocks();
+                await GenerateBlocks();
                 return;
             }
             
-            ApplyGeneration();
+            await ApplyGeneration();
         }
     
         /// <summary>

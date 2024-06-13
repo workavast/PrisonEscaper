@@ -12,7 +12,7 @@ namespace Core
         
         private void Awake()
         {
-            _levelGeneratorBase.OnGenereationStart += () => _gameCycleSwitcher.SwitchState(GameCycleState.LocationGeneration);
+            _levelGeneratorBase.OnGenerationStart += () => _gameCycleSwitcher.SwitchState(GameCycleState.LocationGeneration);
             _levelGeneratorBase.OnGenerateFinished += () => _gameCycleSwitcher.SwitchState(GameCycleState.Gameplay);
         }
     }
