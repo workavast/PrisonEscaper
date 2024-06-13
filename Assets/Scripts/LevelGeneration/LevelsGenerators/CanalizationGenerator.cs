@@ -57,6 +57,7 @@ namespace LevelGeneration.LevelsGenerators
 
         protected override void ClearLevel()
         {
+            _iteration = 0;
             if(GlobalLampBlinks.Instance)
                 GlobalLampBlinks.Instance.Clear();
         
@@ -66,7 +67,7 @@ namespace LevelGeneration.LevelsGenerators
         protected override void GenerateBlocks()
         {
             _iteration++;
-            if (_iteration > 100)
+            if (_iteration > 50)
                 throw new Exception("Too much iterations");
             
             CreateStartBlock();
@@ -97,6 +98,8 @@ namespace LevelGeneration.LevelsGenerators
                 GenerateBlocks();
                 return;
             }
+            
+            ApplyGeneration();
         }
     
         /// <summary>
@@ -118,16 +121,23 @@ namespace LevelGeneration.LevelsGenerators
                 if(!forksIndexes.Contains(index)) forksIndexes.Add(index);
                 else i--;
             }
-        
+
+            int iteration = 0;
             int blockIndex = 0;
-            while (AllSpawnedBlocks.Count < blocksCount)
+            while (AllBlocksPrototypes.Count < blocksCount)
             {
+                if (iteration > blocksCount * 10)
+                    throw new Exception("Too much iterations");
+                
                 Dictionary<ConnectorID, List<GameObject>> prefabs =
                     forksIndexes.Contains(blockIndex) ? _forkBlocksPrefabs : _mainBlocksPrefabs;
 
-                if (!TrySpawnMainBlock(AllBlocksWithFreeConnectors, prefabs)) return false;
+                if (!TrySpawnMainBlock(AllBlocksPrototypesWithFreeConnectors, prefabs)) 
+                    return false;
 
                 CheckConnectorsCollisions();
+
+                iteration++;
                 blockIndex++;
             }
 

@@ -22,39 +22,31 @@ namespace LevelGeneration
         public Vector3 LeftUpSizePoint => leftUpSizePoint.position;
         public Vector3 RightDownSizePoint => rightDownSizePoint.position;
         
-        public IReadOnlyList<ConnectorID> AllConnectors => connectorsData.Select(data => data.Key).ToList();
-        public IReadOnlyList<ConnectorID> FreeConnectors =>
-            (from connector in _freeConnectors where connector.Value select connector.Key).ToList();
-        public IReadOnlyDictionary<ConnectorID, Vector3> FreeConnectorsPositions => 
-            _freeConnectors.Where(connector => connector.Value)
+        public IReadOnlyList<ConnectorID> AllConnectors => connectorsData
+            .Select(data => data.Key).ToList();
+        public IReadOnlyDictionary<ConnectorID, Vector3> ConnectorsPositions => connectorsData
             .ToDictionary(connector => connector.Key, connector => connectorsData[connector.Key].position);
 
         public IReadOnlyList<SpawnableObjectCell<EnemyID>> EnemiesPoints => enemyPoints;
         public IReadOnlyList<SpawnableObjectCell<LootBoxID>> LootBoxesPoints => lootBoxPoints;
         public IReadOnlyList<SpawnableObjectCell<TrapID>> TrapsPoints => trapsPoints;
-
-        private readonly Dictionary<ConnectorID, bool> _freeConnectors = new();
-
+        
         private void Awake()
         {
 #if UNITY_EDITOR
             CheckDuplicates(trapsPoints);
             CheckDuplicates(enemyPoints);
 #endif
-            
-            foreach (var connector in connectorsData)
-                _freeConnectors.Add(connector.Key, true);
         }
 
 #if UNITY_EDITOR
-        private void CheckDuplicates<Tid>(List<SpawnableObjectCell<Tid>> points)
-            where Tid : Enum
+        private void CheckDuplicates<TId>(List<SpawnableObjectCell<TId>> points)
+            where TId : Enum
         {
-            List<Tid> ids;
-            
+            var ids = new List<TId>();
             foreach (var trapPoint in points)
             {
-                ids = new List<Tid>();
+                ids.Clear();
                 foreach (var id in trapPoint.IDs)
                 {
                     if (ids.Contains(id))
@@ -64,12 +56,6 @@ namespace LevelGeneration
             }
         }
 #endif
-
-        public void OccupyConnector(ConnectorID id)
-        {
-            if (_freeConnectors.ContainsKey(id))
-                _freeConnectors[id] = false;
-        }
         
         public Vector3 GetConnectorPosition(ConnectorID id)
         {
@@ -79,6 +65,8 @@ namespace LevelGeneration
             throw new Exception($"Invalid ConnectorID: {id} in {this}");
         }
         
+        public BlockDataPrototype GetPreparingBlock() 
+            => new(blockType, gameObject, leftUpSizePoint, rightDownSizePoint, connectorsData);
 
         #region IBlockDataForGUI
         

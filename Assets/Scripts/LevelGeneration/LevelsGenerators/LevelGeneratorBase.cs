@@ -29,11 +29,12 @@ namespace LevelGeneration.LevelsGenerators
         [Inject] private readonly EnemiesFactory _enemiesFactory;
         [Inject] private DiContainer _container;
 
-        protected List<BlockData> AllBlocksWithFreeConnectors = new();
-        protected List<IBlockData> AllSpawnedBlocks = new();
         protected Vector3 PlayerSpawnPosition;
         protected GameObject Player;
-    
+        protected readonly List<IBlockData> AllSpawnedBlocks = new();
+        protected readonly List<BlockDataPrototype> AllBlocksPrototypes = new();
+        protected readonly List<BlockDataPrototype> AllBlocksPrototypesWithFreeConnectors = new();
+        
         private readonly Dictionary<ConnectorID, List<GameObject>> _finalBlocksPrefabs = new();
         private bool _finalBlockSpawned;
 
@@ -90,6 +91,7 @@ namespace LevelGeneration.LevelsGenerators
             OnGenereationStart?.Invoke();
             
             GenerateBlocks();
+            
             SpawnPlayer();
             SpawnEnemies(enemiesData);
             GenerateSpawnableObjects(lootBoxesData);
@@ -114,11 +116,9 @@ namespace LevelGeneration.LevelsGenerators
             foreach (var blocks in AllSpawnedBlocks)
                 Destroy(blocks.gameObject);
             
-            foreach (var blocks in AllBlocksWithFreeConnectors)
-                Destroy(blocks.gameObject);
-        
-            AllSpawnedBlocks = new List<IBlockData>();
-            AllBlocksWithFreeConnectors = new List<BlockData>();
+            AllSpawnedBlocks.Clear();
+            AllBlocksPrototypes.Clear();
+            AllBlocksPrototypesWithFreeConnectors.Clear();
         
             _finalBlockSpawned = false;
         
@@ -142,9 +142,14 @@ namespace LevelGeneration.LevelsGenerators
                 throw new Exception("Start block dont have script startBlockData");
         
             InitBlockData(startBlockData);
+            var blockPrototype = startBlockData.GetPreparingBlock();
+            blockPrototype.SetPosition(Vector3.zero);
+            
             PlayerSpawnPosition = startBlockData.PlayerSpawnPosition;
             AllSpawnedBlocks.Add(startBlockData);
-            AllBlocksWithFreeConnectors.Add(startBlockData as BlockData);
+
+            AllBlocksPrototypes.Add(blockPrototype);
+            AllBlocksPrototypesWithFreeConnectors.Add(blockPrototype);
         }
     
         /// <sumary>
@@ -155,15 +160,15 @@ namespace LevelGeneration.LevelsGenerators
             if (_finalBlockSpawned)
                 throw new Exception("Final block has already been spawned");
         
-            var connectorsDistances = new List<(float, IBlockData, ConnectorID)>();
-            foreach (var block in AllBlocksWithFreeConnectors)//calculate and sort distances from start block to all free connectors
+            var connectorsDistances = new List<(float, BlockDataPrototype, ConnectorID)>();
+            foreach (var block in AllBlocksPrototypesWithFreeConnectors)//calculate and sort distances from start block to all free connectors
             {
                 IReadOnlyDictionary<ConnectorID, Vector3>  connectorPositions = block.FreeConnectorsPositions;
                 foreach (var connector in connectorPositions)
                 {
                     float newDistance = Mathf.Abs(Vector3.Distance(startBlock.transform.position, connector.Value));
                 
-                    var newConnectors = new List<(float, IBlockData, ConnectorID)>();
+                    var newConnectors = new List<(float, BlockDataPrototype, ConnectorID)>();
                     foreach (var connectorDistance in connectorsDistances)
                     {
                         if (connectorDistance.Item1 >= newDistance)
@@ -187,7 +192,7 @@ namespace LevelGeneration.LevelsGenerators
         
             foreach (var connectorDistance in connectorsDistances)
             {
-                IBlockData blockForConnection = connectorDistance.Item2;
+                var blockForConnection = connectorDistance.Item2;
                 ConnectorID freeConnectorID = connectorDistance.Item3;
 
                 if (TrySpawnBlock(blockForConnection, freeConnectorID, _finalBlocksPrefabs))
@@ -205,11 +210,11 @@ namespace LevelGeneration.LevelsGenerators
         /// </sumary>
         protected bool TryCreateEndBlocks(IReadOnlyDictionary<ConnectorID, List<GameObject>> blocksPrefabs)
         {
-            int iterationsCount = AllBlocksWithFreeConnectors.Count;
+            int iterationsCount = AllBlocksPrototypesWithFreeConnectors.Count;
             
             for (int i = 0; i < iterationsCount; i++)
             {
-                IBlockData blockForConnection = AllBlocksWithFreeConnectors.First();
+                var blockForConnection = AllBlocksPrototypesWithFreeConnectors.First();
 
                 IReadOnlyList<ConnectorID> freeConnectors = blockForConnection.FreeConnectors;
                 foreach (var freeConnectorID in freeConnectors)
@@ -220,24 +225,24 @@ namespace LevelGeneration.LevelsGenerators
             return true;
         }
     
-        protected bool TrySpawnMainBlock(List<BlockData> blocksWithFreeConnectors, IReadOnlyDictionary<ConnectorID, List<GameObject>> blocksPrefabs)
+        protected bool TrySpawnMainBlock(IEnumerable<BlockDataPrototype> blocksWithFreeConnectors, 
+            IReadOnlyDictionary<ConnectorID, List<GameObject>> blocksPrefabs)
         {
-            List<BlockData> possibleBlocks = new List<BlockData>(blocksWithFreeConnectors);
+            var possibleBlocks = new List<BlockDataPrototype>(blocksWithFreeConnectors);
             for (int i = 0; i < possibleBlocks.Count; i++)
             {
                 int blockPrefabIndex = Random.Range(0, possibleBlocks.Count);
-                IBlockData blockForConnection = possibleBlocks[blockPrefabIndex];
+                var blockForConnection = possibleBlocks[blockPrefabIndex];
             
-                List<ConnectorID> freeConnectorsIDs = new List<ConnectorID>(blockForConnection.FreeConnectors);
-
+                var freeConnectorsIDs = new List<ConnectorID>(blockForConnection.FreeConnectors);
                 for (int j = 0; j < freeConnectorsIDs.Count; j++)
                 {
                     int prefabBlockConnectorIndex = Random.Range(0, freeConnectorsIDs.Count);
                     ConnectorID freeConnectorID = freeConnectorsIDs[prefabBlockConnectorIndex];
-                
+
                     if (TrySpawnBlock(blockForConnection, freeConnectorID, blocksPrefabs))
                         return true;
-                
+
                     freeConnectorsIDs.RemoveAt(prefabBlockConnectorIndex);
                     j--;
                 }
@@ -252,7 +257,8 @@ namespace LevelGeneration.LevelsGenerators
         /// <summary>
         ///  <para> Spawn some prefab from blocksPrefabs that can be spawned, and return true. If no block that can be spawned return false</para>
         /// </summary>
-        private bool TrySpawnBlock(IBlockData blockForConnection, ConnectorID freeConnectorID, IReadOnlyDictionary<ConnectorID, List<GameObject>> blocksPrefabs)
+        private bool TrySpawnBlock(BlockDataPrototype blockForConnection, ConnectorID freeConnectorID, 
+            IReadOnlyDictionary<ConnectorID, List<GameObject>> blocksPrefabs)
         {
             ConnectorID newBlockConnectorID = CalculateConstConnector(freeConnectorID);
         
@@ -273,7 +279,8 @@ namespace LevelGeneration.LevelsGenerators
                 }
                 else
                 {
-                    SpawnBlock(newBlockPrefab, newBlockPosition, blockForConnection, freeConnectorID, newBlockConnectorID);
+                    SpawnBlock(newBlockPrefab, newBlockPosition, blockForConnection, 
+                        freeConnectorID, newBlockConnectorID);
                     return true;
                 }
             }
@@ -313,7 +320,7 @@ namespace LevelGeneration.LevelsGenerators
             Vector3 leftUpPosition = newBlockPosition + leftSize;
             Vector3 rightDownPosition = newBlockPosition + rightSize;
         
-            foreach (var spawnedBlock in AllSpawnedBlocks)
+            foreach (var spawnedBlock in AllBlocksPrototypes)
             {
                 //if leftUpPosition of new block inside spawned block
                 if (spawnedBlock.LeftUpSizePoint.x <= leftUpPosition.x && leftUpPosition.x < spawnedBlock.RightDownSizePoint.x &&
@@ -372,20 +379,21 @@ namespace LevelGeneration.LevelsGenerators
             return false;
         }
 
-        private void SpawnBlock(GameObject newBlockPrefab, Vector3 newBlockPosition, IBlockData blockForConnection, ConnectorID existBlockConnector, ConnectorID newBlockConnectorID)
+        private void SpawnBlock(GameObject newBlockPrefab, Vector3 newBlockPosition, BlockDataPrototype blockForConnection, 
+            ConnectorID existBlockConnector, ConnectorID newBlockConnectorID)
         {
-            IBlockData newBlock = _container.InstantiatePrefab(newBlockPrefab, newBlockPosition, Quaternion.identity, blocksParent).GetComponent<IBlockData>();
-            InitBlockData(newBlock);
+            var newBlock = newBlockPrefab.GetComponent<IBlockData>().GetPreparingBlock();
+            newBlock.SetPosition(newBlockPosition);
+            
             blockForConnection.OccupyConnector(existBlockConnector);
             newBlock.OccupyConnector(newBlockConnectorID);
-        
-            AllSpawnedBlocks.Add(newBlock);
-        
+            AllBlocksPrototypes.Add(newBlock);
+            
             if (newBlock.FreeConnectors.Count > 0)
-                AllBlocksWithFreeConnectors.Add(newBlock as BlockData);
+                AllBlocksPrototypesWithFreeConnectors.Add(newBlock);
         
             if (blockForConnection.FreeConnectors.Count <= 0)
-                AllBlocksWithFreeConnectors.Remove(blockForConnection as BlockData);
+                AllBlocksPrototypesWithFreeConnectors.Remove(blockForConnection);
         }
 
         private void InitBlockData(IBlockData blockData)
@@ -397,12 +405,12 @@ namespace LevelGeneration.LevelsGenerators
     
         protected void CheckConnectorsCollisions()
         {
-            for (int i = 0; i < AllBlocksWithFreeConnectors.Count; i++)
+            for (int i = 0; i < AllBlocksPrototypesWithFreeConnectors.Count; i++)
             {
-                IReadOnlyDictionary<ConnectorID, Vector3> mainBlockConnectors = AllBlocksWithFreeConnectors[i].FreeConnectorsPositions;
-                for (int n = i+1; n < AllBlocksWithFreeConnectors.Count; n++)
+                IReadOnlyDictionary<ConnectorID, Vector3> mainBlockConnectors = AllBlocksPrototypesWithFreeConnectors[i].FreeConnectorsPositions;
+                for (int n = i+1; n < AllBlocksPrototypesWithFreeConnectors.Count; n++)
                 {
-                    IReadOnlyDictionary<ConnectorID, Vector3>  curBlockConnectors = AllBlocksWithFreeConnectors[n].FreeConnectorsPositions;
+                    IReadOnlyDictionary<ConnectorID, Vector3>  curBlockConnectors = AllBlocksPrototypesWithFreeConnectors[n].FreeConnectorsPositions;
 
                     foreach (var mainBlockConnector in mainBlockConnectors)
                     {
@@ -411,27 +419,38 @@ namespace LevelGeneration.LevelsGenerators
                             if (!(Mathf.Abs(Vector3.Distance(mainBlockConnector.Value, curBlockConnector.Value)) < 0.1f)) 
                                 continue;
                         
-                            AllBlocksWithFreeConnectors[i].OccupyConnector(mainBlockConnector.Key);
-                            AllBlocksWithFreeConnectors[n].OccupyConnector(curBlockConnector.Key);
+                            AllBlocksPrototypesWithFreeConnectors[i].OccupyConnector(mainBlockConnector.Key);
+                            AllBlocksPrototypesWithFreeConnectors[n].OccupyConnector(curBlockConnector.Key);
                         }
                     }
                         
-                    if (AllBlocksWithFreeConnectors[i].FreeConnectors.Count <= 0)
+                    if (AllBlocksPrototypesWithFreeConnectors[i].FreeConnectors.Count <= 0)
                     {
-                        AllBlocksWithFreeConnectors.RemoveAt(i);
+                        AllBlocksPrototypesWithFreeConnectors.RemoveAt(i);
                         i--;
                         n--;
                     }   
                                                                         
-                    if (AllBlocksWithFreeConnectors[n].FreeConnectors.Count <= 0)
+                    if (AllBlocksPrototypesWithFreeConnectors[n].FreeConnectors.Count <= 0)
                     {
-                        AllBlocksWithFreeConnectors.RemoveAt(n);
+                        AllBlocksPrototypesWithFreeConnectors.RemoveAt(n);
                         n--;
                     } 
                 }
             }
         }
-    
+        
+        protected void ApplyGeneration()
+        {
+            foreach (var blockPrototype in AllBlocksPrototypes)
+            {
+                var block = _container.InstantiatePrefab(blockPrototype.Prefab, blockPrototype.Position,
+                    Quaternion.identity, blocksParent).GetComponent<IBlockData>();
+                
+                AllSpawnedBlocks.Add(block);
+                InitBlockData(block);
+            }
+        }
         #endregion
     
     
