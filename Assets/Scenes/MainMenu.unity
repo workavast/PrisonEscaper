@@ -357,6 +357,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 523742569015857885, guid: 234942237f809bf468d98c9b1e734e19, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1883302009478869092, guid: 234942237f809bf468d98c9b1e734e19, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -381,6 +385,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: CanvasGameplay
       objectReference: {fileID: 0}
+    - target: {fileID: 2232267583945122338, guid: 234942237f809bf468d98c9b1e734e19, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2381868596077368012, guid: 234942237f809bf468d98c9b1e734e19, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2834450227057747967, guid: 234942237f809bf468d98c9b1e734e19, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3455901402213168129, guid: 234942237f809bf468d98c9b1e734e19, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -388,6 +404,10 @@ PrefabInstance:
     - target: {fileID: 3983846335520666538, guid: 234942237f809bf468d98c9b1e734e19, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4686501451399030479, guid: 234942237f809bf468d98c9b1e734e19, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5055012118086841073, guid: 234942237f809bf468d98c9b1e734e19, type: 3}
       propertyPath: m_AnchorMax.y

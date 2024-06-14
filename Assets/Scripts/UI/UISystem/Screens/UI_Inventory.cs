@@ -10,6 +10,8 @@ namespace UI
 {
     public class UI_Inventory : UI_ScreenBase
     {
+        [SerializeField] private GameObject settingsWindow;
+        [Space]
         [SerializeField] private GameObject bagSlotsParent;
         [SerializeField] private GameObject slotPrefab;
         [SerializeField] private GameObject collectablePrefab;
@@ -22,12 +24,13 @@ namespace UI
 
         private int _backpackSlotsCount;
         private List<UI_Slot> _backpackCells;
-        
+
         public override void InitScreen()
         {
             base.InitScreen();
             //TODO: move inventory opening/closing in other class (maybe in UI_Controller??, not sure)
             _keyboardObserver.OnInventory += ToggleActive;
+            settingsWindow.SetActive(false);
         }
 
         private void Awake()
@@ -133,9 +136,20 @@ namespace UI
                 Inventory.RemoveItem(_backpackCells.IndexOf(slot));
         }
         
+        public void _OpenSettings()
+        {
+            settingsWindow.SetActive(true);
+        }
+
+        public void _CloseSettings()
+        {
+            settingsWindow.SetActive(false);
+        }
+
         private void OnEnable()
         {
             Cursor.visible = true;
+            settingsWindow.SetActive(false);
             _volumeProfileController.ToggleDepthOfField(true);
         }
 
