@@ -147,7 +147,7 @@ AudioSource:
   m_GameObject: {fileID: 1042697046979344849}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 4225029690547304401, guid: f6a0920830cd14e42a7ebdb6974a9992, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -10247,7 +10247,6 @@ MonoBehaviour:
     <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
   <CharacterCenter>k__BackingField: {fileID: 1257229790305722171}
   playerAttack:
-    throwableObject: {fileID: 2424522076249060556, guid: 73778ccc44e7f0f4993a8b59979695f6, type: 3}
     attackCheck: {fileID: 92392213295343343}
     animator: {fileID: 3999804778073440320}
     canAttack: 1

@@ -1,23 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlaySoundBehaviour : StateMachineBehaviour
 {
-    private AudioSource audioSource;
-    public AudioClip audioSound;
-    public bool loop = false;
-    [Range(0, 1)] public float volume = 1f;
-    
+    [SerializeField] private AudioClip audioSound;
+    [SerializeField] private bool loop = false;
+    [SerializeField] private bool stopOnExit = true;
+    [SerializeField, Range(0, 1)] private float volume = 1f;
+
+    private AudioSource _audioSource;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        audioSource = animator.transform.GetComponent<AudioSource>();
-        audioSource.clip = audioSound;
-        audioSource.loop = loop;
-        audioSource.volume = volume;
-        audioSource.Play();
+        _audioSource = animator.transform.GetComponent<AudioSource>();
+        _audioSource.clip = audioSound;
+        _audioSource.loop = loop;
+        _audioSource.volume = volume;
+        _audioSource.Play();
+    }
+
+    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
+    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        if (_audioSource == null) 
+            return;
+
+        _audioSource.loop = false;
+        if (stopOnExit)
+            _audioSource.Stop();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -25,16 +35,7 @@ public class PlaySoundBehaviour : StateMachineBehaviour
     //{
     //    
     //}
-
-    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        if(audioSource == null)return;
-        
-        audioSource.Stop();
-        audioSource.loop = false;
-    }
-
+    
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{

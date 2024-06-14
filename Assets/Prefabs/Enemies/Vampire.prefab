@@ -136,6 +136,7 @@ MonoBehaviour:
     OnStatsChanged:
       m_PersistentCalls:
         m_Calls: []
+  enemyID: 0
   patrolRange: {x: 18, y: 6}
   stayCooldown: 2
   attackRange: 1.5
@@ -143,7 +144,7 @@ MonoBehaviour:
   attackPoint: {fileID: 283318635580375777}
   target: {fileID: 0}
   minRangeDistAttack: 12
-  throwableObject: {fileID: 2424522076249060556, guid: 73778ccc44e7f0f4993a8b59979695f6, type: 3}
+  projectileId: 0
   attackType: 0
   wallFrontCheckPoint: {fileID: 9208897507805218092}
   wallFrontCheckLayers:
@@ -427,7 +428,7 @@ AudioSource:
   m_GameObject: {fileID: 8380941719081518366}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 4225029690547304401, guid: f6a0920830cd14e42a7ebdb6974a9992, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

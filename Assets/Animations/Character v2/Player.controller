@@ -169,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSound: {fileID: 8300000, guid: 3a134d3e4c7d8f24e9ff0ecbbd8d29b4, type: 3}
   loop: 0
+  stopOnExit: 0
   volume: 0.5
 --- !u!1101 &-7248893264307413015
 AnimatorStateTransition:
@@ -270,6 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSound: {fileID: 0}
   loop: 0
+  stopOnExit: 0
   volume: 1
 --- !u!114 &-6234722320115028612
 MonoBehaviour:
@@ -403,6 +405,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSound: {fileID: 0}
   loop: 0
+  stopOnExit: 0
   volume: 1
 --- !u!114 &-4100976258910566035
 MonoBehaviour:
@@ -418,6 +421,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSound: {fileID: 8300000, guid: 8f1aac8bd588ba4409b407b9abdcd563, type: 3}
   loop: 0
+  stopOnExit: 0
   volume: 0.5
 --- !u!1102 &-3599741485764922736
 AnimatorState:
@@ -462,6 +466,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSound: {fileID: 0}
   loop: 1
+  stopOnExit: 0
   volume: 1
 --- !u!1102 &-3079491543766969576
 AnimatorState:
@@ -981,6 +986,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSound: {fileID: 8300000, guid: edcae144f60be584fbd7af167f7aca9c, type: 3}
   loop: 0
+  stopOnExit: 0
   volume: 0.5
 --- !u!114 &1089822425127554095
 MonoBehaviour:
@@ -1005,7 +1011,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 4
     m_ConditionEvent: Speed
-    m_EventTreshold: 0.01
+    m_EventTreshold: 0.1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5076634419743747057}
   m_Solo: 0
@@ -1062,6 +1068,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSound: {fileID: 0}
   loop: 0
+  stopOnExit: 0
   volume: 1
 --- !u!1101 &2179992740139172088
 AnimatorStateTransition:
@@ -1212,6 +1219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSound: {fileID: 0}
   loop: 0
+  stopOnExit: 0
   volume: 1
 --- !u!114 &4339910774868192549
 MonoBehaviour:
@@ -1240,6 +1248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSound: {fileID: 8300000, guid: 0b4ae413bcf98684e96543625f1dd100, type: 3}
   loop: 0
+  stopOnExit: 0
   volume: 1
 --- !u!1109 &5075273412928262352
 AnimatorTransition:
@@ -1405,6 +1414,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSound: {fileID: 8300000, guid: 822f50442cbb46f40b7c3b45c0b44a84, type: 3}
   loop: 0
+  stopOnExit: 0
   volume: 0.5
 --- !u!1101 &6521792481419384683
 AnimatorStateTransition:
@@ -1468,9 +1478,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f394ad694fddb4b4e8e3a4249c2b8ecd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSound: {fileID: 8300000, guid: 755c4eb503f1da94ab1764c0b5ef0231, type: 3}
+  audioSound: {fileID: 8300000, guid: 80f75a89582433c49939f75c2efafa9c, type: 3}
   loop: 1
-  volume: 0.5
+  stopOnExit: 0
+  volume: 0.2
 --- !u!114 &6965798115093792810
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1542,7 +1553,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSound: {fileID: 8300000, guid: d4498f4cdc3c7994e91a39761f740349, type: 3}
   loop: 0
-  volume: 0.5
+  stopOnExit: 0
+  volume: 0.35
 --- !u!1102 &7714216133200570472
 AnimatorState:
   serializedVersion: 6
