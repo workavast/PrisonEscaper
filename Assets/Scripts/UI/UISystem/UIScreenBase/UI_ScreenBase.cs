@@ -1,9 +1,13 @@
+using GameCode.Core.SceneLoading;
 using UnityEngine;
+using Zenject;
 
 namespace UI
 {
     public class UI_ScreenBase : MonoBehaviour
     {
+        [Inject] private readonly SceneLoader _sceneLoader;
+        
         public virtual void InitScreen()
         {
             
@@ -16,7 +20,7 @@ namespace UI
 
         public virtual void _LoadScene(int sceneBuildIndex)
         {
-            UI_Controller.LoadScene(sceneBuildIndex);
+            _sceneLoader.LoadScene(sceneBuildIndex);
         }
 
         public virtual void _Quit()

@@ -456,14 +456,9 @@ namespace LevelGeneration.LevelsGenerators
         
         protected async Task ApplyGeneration()
         {
-            var counter = 3;
-            if (test)
-                counter = 1;
-            
             for (int i = 1; i < AllBlocksPrototypes.Count; i++)
             {
-                if (i % counter == 0)
-                    await Task.Delay(50);
+                await Task.Delay(50);
                 
                 var block = _container.InstantiatePrefab(AllBlocksPrototypes[i].Prefab, AllBlocksPrototypes[i].Position,
                     Quaternion.identity, blocksParent).GetComponent<IBlockData>();
@@ -490,7 +485,7 @@ namespace LevelGeneration.LevelsGenerators
                 if (iter >= 500) 
                     throw new Exception("TO MUCH");
 
-                if (iter % 10 == 0)
+                if (iter % 5 == 0)
                     await Task.Delay(50);
                 
                 int pairIndex = Random.Range(0, data.spawnPoints.Count);

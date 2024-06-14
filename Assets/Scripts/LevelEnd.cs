@@ -1,10 +1,13 @@
 using System;
+using GameCode.Core.SceneLoading;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Zenject;
 
 public class LevelEnd : MonoBehaviour
 {
     [SerializeField] private LocationID nextLocation;
+
+    [Inject] private readonly SceneLoader _sceneLoader;
 
     public void SwitchLevel()
     {
@@ -16,10 +19,10 @@ public class LevelEnd : MonoBehaviour
                 UI.UI_Controller.SetWindow(UI.ScreenEnum.GameplayMenuScreen);
                 break;
             case LocationID.Caves:
-                SceneManager.LoadScene("Caves");
+                _sceneLoader.LoadScene(1);
                 break;
             case LocationID.Canalization:
-                SceneManager.LoadScene("Canalization");
+                _sceneLoader.LoadScene(2);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
