@@ -55,10 +55,11 @@ namespace Enemies
 
         [Inject] protected ProjectileFactory _projectileFactory;
 
+        private Coroutine _distanceAttackCoroutine;
         private CapsuleCollider2D _collider;
         private Vector3 _startPosition;
         private ItemDropper _itemDropper;
-        private bool _isAlive, _canMove;    
+        private bool _isAlive, _canMove, _isStun;
         private Rigidbody2D _rigidbody;
         private bool _stay;
         protected bool _following, _attacking;
@@ -102,7 +103,7 @@ namespace Enemies
         
         public override void HandleFixedUpdate(float fixedDeltaTime)
         {
-            if (_isAlive && _canMove && !_frozen && !animator.GetBool("Attack"))
+            if (_isAlive && !_isStun && _canMove && !_frozen && !animator.GetBool("Attack"))
                 Move();
             else
             {
@@ -129,8 +130,7 @@ namespace Enemies
             else
                 UnFrozenStatus();
         }
-    
-    
+        
         public void AddFireStatus(float chance, float duration, AttackStats baseDamage)
         {
             AttackStats fireEffect = baseDamage;
@@ -154,21 +154,7 @@ namespace Enemies
             projectile.owner = transform;
             projectile.name = "ThrowableWeapon";
         }
-    
-        IEnumerator DistanceAttack(float minDelay, float maxDelay)
-        {
-            _attacking = true;
-            StopMove();
-            yield return new WaitForSeconds(Random.Range(minDelay, maxDelay));
-            if (!target || !transform || IsDead) yield break;
-            float directionToTarget = target.position.x - transform.position.x;
-            if (Mathf.Sign(directionToTarget) != Mathf.Sign(transform.localScale.x))
-                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-    
-            Attack();
-            ThrowWeapon();
-        }
-    
+        
         private bool ComparePosition()
         {
             float directionToTarget = target.position.x - transform.position.x;
@@ -200,7 +186,7 @@ namespace Enemies
         
         protected virtual void Move()
         {
-            if (target == null || IsDead || transform == null)
+            if (target == null || IsDead || transform == null || _isStun)
                 return;
     
             float distanceToTargetX = Mathf.Abs(target.position.x - transform.position.x);
@@ -225,7 +211,7 @@ namespace Enemies
                             if (distanceToTargetX < minRangeDistAttack && (!WallFrontCheck() || ComparePosition()) && GroundCheck() && Random.value>=0.005f)
                                 Retreat();
                             else
-                                StartCoroutine(DistanceAttack(0.2f, 1.5f));
+                                _distanceAttackCoroutine = StartCoroutine(DistanceAttack(0.2f, 1.5f));
                             break;
                     }
                 }
@@ -246,7 +232,7 @@ namespace Enemies
     
             animator.SetFloat("velocity", Math.Abs(_rigidbody.velocity.x / StatsSystem.MainStats.WalkSpeed));
         }
-    
+        
         protected virtual void Patrol()
         {
             bool outOfBounds;
@@ -306,7 +292,7 @@ namespace Enemies
         
         protected virtual void Attack()
         {
-            if (IsDead) return;
+            if (IsDead && _isStun) return;
             _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
             _attacking = true;
             animator.SetTrigger("Attack");
@@ -350,11 +336,28 @@ namespace Enemies
             TakeDamageCont();
         }
     
+        IEnumerator DistanceAttack(float minDelay, float maxDelay)
+        {
+            _attacking = true;
+            StopMove();
+            yield return new WaitForSeconds(Random.Range(minDelay, maxDelay));
+            if (!target || !transform || IsDead || _isStun) yield break;
+            float directionToTarget = target.position.x - transform.position.x;
+            if (Mathf.Sign(directionToTarget) != Mathf.Sign(transform.localScale.x))
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+    
+            Attack();
+            ThrowWeapon();
+        }
+        
         private IEnumerator Stun()
         {
-            _canMove = false;
-            yield return new WaitForSeconds(.2f);
-            _canMove = true;
+            _isStun = true;
+            StopMove();
+            if(_distanceAttackCoroutine != null)
+                StopCoroutine(_distanceAttackCoroutine);
+            yield return new WaitForSeconds(.75f);
+            _isStun = false;
         }
     
         /*  private IEnumerator Die()
@@ -385,8 +388,7 @@ namespace Enemies
             OnEndDie?.Invoke(this);
             Destroy(gameObject);
         }
-    
-    
+        
         private IEnumerator ResetAttackFlag(float attackCooldown)
         {
             yield return new WaitForSeconds(.2f);
