@@ -1,4 +1,6 @@
+using System;
 using PlayerInventory;
+using UnityEngine;
 
 namespace UI
 {
@@ -8,6 +10,11 @@ namespace UI
         {
             Inventory.Clear();
             base._LoadScene(sceneBuildIndex);
+        }
+
+        private void OnEnable()
+        {
+            Cursor.visible = true;
         }
     }
 }
