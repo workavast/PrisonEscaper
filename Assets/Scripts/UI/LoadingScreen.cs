@@ -42,6 +42,14 @@ namespace GameCode.UI
             StartCoroutine(Fade());
         }
 
+        public void EndLoadingInstantly()
+        {
+            StopAllCoroutines();
+            IsShow = false;
+            gameObject.SetActive(false);
+            FadeAnimationEnded?.Invoke();
+        }
+        
         IEnumerator Fade()
         {
             float timer = 0;

@@ -7,7 +7,7 @@ namespace GameCode.Core.SceneLoading
     {
         private void Start()
         {
-            LoadingScreen.Instance.EndLoading();
+            LoadingScreen.Instance.EndLoadingInstantly();
         }
     }
 }
