@@ -1,11 +1,13 @@
-﻿using GameCode.Scenes.PGD;
+﻿using GameCode.PGD.Fps;
 using UnityEngine;
 
-namespace GameCode.Scenes.Audio
+namespace GameCode.Core
 {
     public class FpsCapChanger
     {
         private readonly FpsSettings _fpsSettings;
+
+        public int FpsCap => _fpsSettings.FpsCap;
         
         public FpsCapChanger(FpsSettings fpsSettings)
         {

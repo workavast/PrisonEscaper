@@ -1,5 +1,8 @@
-﻿namespace GameCode.Scenes.PGD
+﻿using System;
+
+namespace GameCode.PGD.Fps
 {
+    [Serializable]
     public class FpsSettingsSave
     {
         public int FpsCap = 60;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SourceCode.Core.GlobalData
+namespace GameCode.PGD
 {
     public interface ISettings
     {

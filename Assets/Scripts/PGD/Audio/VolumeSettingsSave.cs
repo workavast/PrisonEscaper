@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SourceCode.Core.GlobalData.Volume
+namespace GameCode.PGD.Audio
 {
     [Serializable]
     public sealed class VolumeSettingsSave

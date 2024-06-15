@@ -1,11 +1,11 @@
-﻿using GameCode.Scenes.Audio;
-using SourceCode.Audio;
-using SourceCode.Core.GlobalData;
+﻿using GameCode.audio;
+using GameCode.Core;
+using GameCode.Scenes.Audio;
 using UnityEngine;
 using UnityEngine.Audio;
 using Zenject;
 
-namespace GameCode.Scenes
+namespace GameCode.PGD
 {
     public class GameContextInstaller : MonoInstaller
     {

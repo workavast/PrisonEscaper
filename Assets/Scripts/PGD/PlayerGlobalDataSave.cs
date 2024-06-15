@@ -1,8 +1,8 @@
 ﻿using System;
-using GameCode.Scenes.PGD;
-using SourceCode.Core.GlobalData.Volume;
+using GameCode.PGD.Audio;
+using GameCode.PGD.Fps;
 
-namespace SourceCode.Core.GlobalData
+namespace GameCode.PGD
 {
     [Serializable]
     public class PlayerGlobalDataSave

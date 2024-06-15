@@ -1,7 +1,6 @@
 ﻿using System;
-using SourceCode.Core.GlobalData;
 
-namespace GameCode.Scenes.PGD
+namespace GameCode.PGD.Fps
 {
     public class FpsSettings : ISettings
     {

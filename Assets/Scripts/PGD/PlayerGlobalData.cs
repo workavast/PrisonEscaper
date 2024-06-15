@@ -1,10 +1,10 @@
 using System;
-using GameCode.Scenes.PGD;
-using SourceCode.Core.GlobalData.Volume;
+using GameCode.PGD.Audio;
+using GameCode.PGD.Fps;
 using SourceCode.SavingAndLoading;
 using UnityEngine;
 
-namespace SourceCode.Core.GlobalData
+namespace GameCode.PGD
 {
     public class PlayerGlobalData
     {

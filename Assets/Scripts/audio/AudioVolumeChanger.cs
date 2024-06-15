@@ -1,8 +1,8 @@
-﻿using SourceCode.Core.GlobalData.Volume;
+﻿using GameCode.PGD.Audio;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace SourceCode.Audio
+namespace GameCode.audio
 {
     public class AudioVolumeChanger
     {

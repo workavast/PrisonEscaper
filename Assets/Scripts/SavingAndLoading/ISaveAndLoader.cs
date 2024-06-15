@@ -1,4 +1,4 @@
-using SourceCode.Core.GlobalData;
+using GameCode.PGD;
 
 namespace SourceCode.SavingAndLoading
 {
