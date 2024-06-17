@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2cc50e4f1a744afbc17b482aacb9b4a, type: 3}
+  m_Name: StartetDropListConfig
+  m_EditorClassIdentifier: 
+  dropSet:
+    randomDropAmount: 1
+    randomDropList:
+    - item: {fileID: 11400000, guid: 47430494c777ea44692f449b233af553, type: 2}
+      weight: 0
+    - item: {fileID: 11400000, guid: f57ae1dcff8b5be4da472fd76723e118, type: 2}
+      weight: 10
+    - item: {fileID: 11400000, guid: 06385910c11954a4791d5c1e5988d682, type: 2}
+      weight: 20
+    - item: {fileID: 11400000, guid: 8c9c95c07f41a604ba8fd2e70bf714dc, type: 2}
+      weight: 30
+    constantDropList: []
+  startWeight: 0
+  step: 10
+  items:
+  - {fileID: 11400000, guid: 47430494c777ea44692f449b233af553, type: 2}
+  - {fileID: 11400000, guid: f57ae1dcff8b5be4da472fd76723e118, type: 2}
+  - {fileID: 11400000, guid: 06385910c11954a4791d5c1e5988d682, type: 2}
+  - {fileID: 11400000, guid: 8c9c95c07f41a604ba8fd2e70bf714dc, type: 2}

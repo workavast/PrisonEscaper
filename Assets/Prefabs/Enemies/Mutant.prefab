@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropPositionOffset: {x: 0, y: 0, z: 0}
-  collectablePrefab: {fileID: 6422088307482987705, guid: 611767f8ce6148e418ebd81e5603e670, type: 3}
+  collectablePrefab: {fileID: 2222112740418855158, guid: 611767f8ce6148e418ebd81e5603e670, type: 3}
   _DropSet:
     randomDropAmount: 1
     randomDropList:
@@ -66,6 +66,7 @@ MonoBehaviour:
     - item: {fileID: 11400000, guid: 8c9c95c07f41a604ba8fd2e70bf714dc, type: 2}
       weight: 245
     constantDropList: []
+  dropList: {fileID: 11400000, guid: 86eadb71a40d8014e87c5ff260613291, type: 2}
 --- !u!114 &4106198917063721728
 MonoBehaviour:
   m_ObjectHideFlags: 0

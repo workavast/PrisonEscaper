@@ -180,42 +180,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dropPositionOffset: {x: 0, y: 1, z: 0}
   collectablePrefab: {fileID: 2222112740418855158, guid: 611767f8ce6148e418ebd81e5603e670, type: 3}
-  _DropSet:
-    randomDropAmount: 1
-    randomDropList:
-    - item: {fileID: 11400000, guid: 5a3862797e9e1bc488a53a556d314a88, type: 2}
-      weight: 0
-    - item: {fileID: 11400000, guid: 2772c0b4f7bcbef47aa90e31b7600d84, type: 2}
-      weight: 100
-    - item: {fileID: 11400000, guid: 3941f896b07cc164bb50f8c5cf66fc14, type: 2}
-      weight: 200
-    - item: {fileID: 11400000, guid: a7c17ed948653fd498480b7bce5cf807, type: 2}
-      weight: 300
-    - item: {fileID: 11400000, guid: f3e364c9e33bf114498399241e76a299, type: 2}
-      weight: 400
-    - item: {fileID: 11400000, guid: 5bfb782ff613bac4b8d19913a8393768, type: 2}
-      weight: 500
-    - item: {fileID: 11400000, guid: 9f2f17be77a93f24bacaac25d4aaea93, type: 2}
-      weight: 600
-    - item: {fileID: 11400000, guid: 6ed07a5008aff4149bc2427f243014c7, type: 2}
-      weight: 700
-    - item: {fileID: 11400000, guid: e544d56e5d14c7d4abc797943637fe62, type: 2}
-      weight: 800
-    - item: {fileID: 11400000, guid: 8dd267a8299e28649b7bb399a60f1336, type: 2}
-      weight: 900
-    - item: {fileID: 11400000, guid: 93f22d94c35c70d4a96763517faf22b3, type: 2}
-      weight: 1000
-    - item: {fileID: 11400000, guid: 7bcf6024af87ba3458b1a872a619dde7, type: 2}
-      weight: 1100
-    - item: {fileID: 11400000, guid: 47430494c777ea44692f449b233af553, type: 2}
-      weight: 1200
-    - item: {fileID: 11400000, guid: f57ae1dcff8b5be4da472fd76723e118, type: 2}
-      weight: 1300
-    - item: {fileID: 11400000, guid: 06385910c11954a4791d5c1e5988d682, type: 2}
-      weight: 1400
-    - item: {fileID: 11400000, guid: 8c9c95c07f41a604ba8fd2e70bf714dc, type: 2}
-      weight: 1500
-    constantDropList: []
+  dropList: {fileID: 11400000, guid: 800678a3ea45bff4abd6162a3a0dc89e, type: 2}
 --- !u!114 &3250631897803033855
 MonoBehaviour:
   m_ObjectHideFlags: 0

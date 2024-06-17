@@ -1,4 +1,5 @@
-﻿using Unity.Mathematics;
+﻿using GameCode.Drop;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class ItemDropper : MonoBehaviour
@@ -6,15 +7,15 @@ public class ItemDropper : MonoBehaviour
     [SerializeField] private Vector3 dropPositionOffset;
     [SerializeField] private CollectableItem collectablePrefab;
     [Space]
-    [SerializeField] private WeightDrop _DropSet;
+    [SerializeField] private DropListConfig dropList;
 
-    private float _dropRange = 2f;
-    
+    private const float DropRange = 2f;
+
     public void DropItems()
     {
-        foreach (var item in _DropSet.GetDropSet())
+        foreach (var item in dropList.DropSet.GetDropSet())
         {
-            var position = transform.position + Vector3.right * UnityEngine.Random.Range(0, _dropRange);
+            var position = transform.position + Vector3.right * UnityEngine.Random.Range(0, DropRange);
             var droppedObject = Instantiate(collectablePrefab, position + dropPositionOffset, quaternion.identity);
             droppedObject.Item = item;
         }    

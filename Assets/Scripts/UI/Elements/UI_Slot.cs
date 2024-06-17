@@ -1,4 +1,5 @@
 ﻿using System;
+using GameCode.UI.Elements;
 using PlayerInventory;
 using PlayerInventory.Scriptable;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace UI
         IPointerEnterHandler, IPointerExitHandler, 
         IBeginDragHandler, IDragHandler, IEndDragHandler
     {
+        [SerializeField] private UI_Rarity uiRarity;
         [SerializeField] private GameObject litFill;
         [SerializeField] private Image itemIcon;
         [SerializeField] private Image placeholder;
@@ -51,6 +53,11 @@ namespace UI
 
             itemIcon.enabled = (newItem is not null);
             itemIcon.sprite = newItem ? Item.Sprite : null;
+
+            if (newItem != null)
+                uiRarity.SetRarity(newItem.Rarity);
+            else
+                uiRarity.Hide();
         }
 
         public void ToggleItemVisible(bool showItem)

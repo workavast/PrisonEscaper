@@ -62,4 +62,25 @@ public class WeightDrop
 
         return dropSet.ToArray();
     }
+
+    public void FillRandomDrop(int startWeight, int step, Item[] items)
+    {
+        randomDropList = new WeightedItem[items.Length];
+
+        for (int i = 0; i < items.Length; i++)
+        {
+            randomDropList[i] = new WeightedItem
+            {
+                item = items[i],
+                weight = startWeight + i * step
+            };
+        }
+    }
+
+    public void FillConstDrop(Item[] items)
+    {
+        constantDropList = new Item[items.Length];
+        for (int i = 0; i < items.Length; i++)
+            constantDropList[i] = items[i];
+    }
 }
