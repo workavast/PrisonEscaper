@@ -39,12 +39,16 @@ namespace Character
             playerAttack.Init(this, _projectileFactory);
 
             StatsSystem.OnDeath.AddListener(Die);
-            Inventory.ApplyStats();
             
             KeyboardObserver.OnFirstAttack += FirstAttack;
             KeyboardObserver.OnSecondAttack += SecondAttack;
             KeyboardObserver.OnInteract += InteractWithNearestInteractiveObject;
             KeyboardObserver.OnAbilityUse += UseAbility;
+        }
+
+        protected override void OnStart()
+        {
+            Inventory.ApplyStats();
         }
 
         private void OnTriggerEnter2D(Collider2D col)
