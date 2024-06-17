@@ -4,7 +4,7 @@ using UnityEngine;
 public class ItemDropper : MonoBehaviour
 {
     [SerializeField] private Vector3 dropPositionOffset;
-    [SerializeField] private GameObject collectablePrefab;
+    [SerializeField] private CollectableItem collectablePrefab;
     [Space]
     [SerializeField] private WeightDrop _DropSet;
 
@@ -16,7 +16,7 @@ public class ItemDropper : MonoBehaviour
         {
             var position = transform.position + Vector3.right * UnityEngine.Random.Range(0, _dropRange);
             var droppedObject = Instantiate(collectablePrefab, position + dropPositionOffset, quaternion.identity);
-            droppedObject.GetComponentInChildren<CollectableItem>().Item = item;
+            droppedObject.Item = item;
         }    
     }
 }

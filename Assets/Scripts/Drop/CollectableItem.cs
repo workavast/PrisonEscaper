@@ -1,23 +1,24 @@
 using System.Collections;
 using Core;
+using GameCode.Drop;
 using PlayerInventory;
 using PlayerInventory.Scriptable;
 using SerializableDictionaryExtension;
 using UnityEngine;
-using UnityEngine.VFX;
 
 [RequireComponent(typeof(AudioSource))]
 public class CollectableItem : MonoBehaviour, IInteractive
 {
+    [SerializeField] private Transform itemTransform;
     [SerializeField] private GameObject interactKeyImg;
     [SerializeField] private SpriteRenderer itemSpriteRenderer;
     [SerializeField] private Animator itemAnimator;
-    [SerializeField] private SerializableDictionary<ItemRarity, GameObject> glowPrefabs;
+    [SerializeField] private SerializableDictionary<ItemRarity, CollectableItemVfx> glowPrefabs;
 
     [field: SerializeField] public bool Interactable { get; private set; } = true;
    
     private AudioSource _source;
-    private VisualEffect _vfx;
+    private CollectableItemVfx _vfx;
     private Item _item;
     
     public Item Item
@@ -29,7 +30,7 @@ public class CollectableItem : MonoBehaviour, IInteractive
             itemSpriteRenderer.sprite = _item.Sprite;
             
             if (glowPrefabs.ContainsKey(_item.Rarity))
-                _vfx = Instantiate(glowPrefabs[_item.Rarity], transform).GetComponent<VisualEffect>();
+                _vfx = Instantiate(glowPrefabs[_item.Rarity], itemTransform);
         }
     }
 
@@ -58,6 +59,7 @@ public class CollectableItem : MonoBehaviour, IInteractive
         if (Inventory.HasBagEmptySlot())
         {
             itemAnimator.Play("Picked");
+            _vfx.ActivatePickUpAnimation();
             _source.Play();
             Interactable = false;
             interactKeyImg.SetActive(false);

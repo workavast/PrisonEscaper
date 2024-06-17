@@ -154,19 +154,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da1c228bd5c2cd047be7d74f28184f1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemTransform: {fileID: 6422088306954798404}
   interactKeyImg: {fileID: 8833165930631426991}
   itemSpriteRenderer: {fileID: 6422088306954798405}
   itemAnimator: {fileID: 6422088306954798406}
   glowPrefabs:
     cells:
     - key: 0
-      value: {fileID: 8310117880542421069, guid: 38d31c8de0785dc428a26c3dc44d8e6d, type: 3}
+      value: {fileID: 8061572701434294716, guid: 38d31c8de0785dc428a26c3dc44d8e6d, type: 3}
     - key: 1
-      value: {fileID: 927832404263057596, guid: 000694c1f63f587488ab20f95c6536da, type: 3}
+      value: {fileID: -2114012808063218410, guid: 000694c1f63f587488ab20f95c6536da, type: 3}
     - key: 2
-      value: {fileID: 1474788702735248140, guid: eb5c31a3f20a04241b72b7ea5d5fd30d, type: 3}
+      value: {fileID: 9087378058339068327, guid: eb5c31a3f20a04241b72b7ea5d5fd30d, type: 3}
     - key: 3
-      value: {fileID: 6151353452414818167, guid: 3821a8cbf1fb149429e88ded43585fc1, type: 3}
+      value: {fileID: -4086148823896836414, guid: 3821a8cbf1fb149429e88ded43585fc1, type: 3}
   <Interactable>k__BackingField: 1
 --- !u!82 &5231341415492953514
 AudioSource:

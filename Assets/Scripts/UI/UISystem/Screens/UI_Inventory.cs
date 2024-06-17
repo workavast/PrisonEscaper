@@ -14,7 +14,7 @@ namespace UI
         [Space]
         [SerializeField] private GameObject bagSlotsParent;
         [SerializeField] private GameObject slotPrefab;
-        [SerializeField] private GameObject collectablePrefab;
+        [SerializeField] private CollectableItem collectablePrefab;
         [SerializeField] private DragAndDropController dragAndDropController;
         [SerializeField] private UI_ItemInfoPanel infoPanel;
         [SerializeField] private SerializableDictionary<SlotType, UI_Slot> specialSlots;
@@ -123,9 +123,8 @@ namespace UI
 
         private void DropItem(UI_Slot slot)
         {
-            CollectableItem collectableItem =
-                Instantiate(collectablePrefab, Player.Instance.transform.position + Vector3.up, Quaternion.identity)
-                    .GetComponentInChildren<CollectableItem>();
+            var collectableItem =
+                Instantiate(collectablePrefab, Player.Instance.transform.position + Vector3.up, Quaternion.identity);
 
             collectableItem.Item = slot.Item;
             slot.SetItem(null);
