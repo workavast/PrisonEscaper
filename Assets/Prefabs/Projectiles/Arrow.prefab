@@ -11,13 +11,14 @@ GameObject:
   - component: {fileID: 3236880901697155879}
   - component: {fileID: 7384049005932825511}
   - component: {fileID: 6811944536713848873}
+  - component: {fileID: 9063404825210119332}
   m_Layer: 0
   m_Name: particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3236880901697155879
 Transform:
   m_ObjectHideFlags: 0
@@ -4830,6 +4831,19 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &9063404825210119332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416838744798221880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 916aac346ea44fc3b89368466da720f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectileBase: {fileID: 4963518687537345441}
 --- !u!1 &2424522076249060556
 GameObject:
   m_ObjectHideFlags: 0
@@ -4904,10 +4918,6 @@ MonoBehaviour:
       poisonStatusEffect:
         Chance: 0
         Duration: 0
-  speed: 20
-  hasHit: 0
-  isPlayerWeapon: 1
-  isPenetratingShot: 0
   bonusDamage:
     physicalDamage: 0
     fireDamage: 0
@@ -4933,6 +4943,10 @@ MonoBehaviour:
       poisonStatusEffect:
         Chance: 0
         Duration: 0
+  isPenetratingShot: 0
+  isPlayerWeapon: 1
+  hasHit: 0
+  speed: 20
   owner: {fileID: 0}
 --- !u!212 &7895144639539901906
 SpriteRenderer:

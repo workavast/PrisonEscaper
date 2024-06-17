@@ -48,6 +48,8 @@ namespace Projectiles
 			_direction = direction;
 			if (_direction.x < 0)
 				transform.localScale = new Vector3(-_initialLocalScaleX, transform.localScale.y, transform.localScale.z);
+			else
+				transform.localScale = new Vector3(_initialLocalScaleX, transform.localScale.y, transform.localScale.z);
 
 			StartCoroutine(RemoveProjectile());
 		}

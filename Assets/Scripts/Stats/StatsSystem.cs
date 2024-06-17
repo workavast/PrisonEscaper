@@ -50,8 +50,11 @@ namespace UniversalStatsSystem
             MainStats.ChangeHealth(value);
         }
 
-        public bool SetMana(float value)
+        public bool ChangeMana(float value)
         {
+            if (value < 0 && MainStats.Mana.CurrentValue < -value) 
+                return false;
+            
             MainStats.ChangeMana(value);
             return true;
         }

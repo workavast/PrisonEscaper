@@ -63,7 +63,7 @@ namespace Character
 		{
 			base.OnFixedUpdate();
 			
-			if(!animator.GetBool("IsAttacking"))
+			if(!animator.GetBool("IsAttacking") && !animator.GetBool("IsDead"))
 				Move(_horizontalMove * Time.fixedDeltaTime, _jump, _dash);
 			else
 			{

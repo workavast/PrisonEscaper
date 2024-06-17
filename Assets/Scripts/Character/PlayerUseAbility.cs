@@ -1,5 +1,6 @@
 using System.Collections;
 using Enemies;
+using GameCode;
 using Projectiles;
 using UnityEngine;
 using UniversalStatsSystem;
@@ -32,7 +33,7 @@ namespace Character
         {
             float spell_price = 10f, spell_duration = 20f;
 
-            if (isActivate && !_player.StatsSystem.SetMana(-spell_price)) return;
+            if (isActivate && !_player.StatsSystem.ChangeMana(-spell_price)) return;
 
             SpriteRenderer sr = gameObject.GetComponentInChildren<SpriteRenderer>();
             Color tempColor = sr.color;
@@ -104,7 +105,7 @@ namespace Character
             Enemy near_enemy = FindClosestEnemy();
             if (!near_enemy) return;
 
-            if (_player.StatsSystem.SetMana(-spell_price))
+            if (_player.StatsSystem.ChangeMana(-spell_price))
             {
                 near_enemy.TakeDamage(spell_damage, StatsSystem.DamageType.Earth);
                 if (near_enemy.Health > 0)
@@ -117,14 +118,13 @@ namespace Character
 
         private void SpectralArrow()
         {
-            float spell_price = 5f;
-            if (_player.StatsSystem.SetMana(-spell_price))
+            const float spellPrice = 5f;
+            if (_player.StatsSystem.ChangeMana(-spellPrice))
             {
                 ThrowableProjectile arrow = _player.ThrowProjectile();
                 arrow.isPenetratingShot = true;
                 arrow.bonusDamage += (_player.StatsSystem.AttackStats * 0.4f);
-                SpriteRenderer spriteRenderer = arrow.GetComponent<SpriteRenderer>();
-                arrow.transform.Find("particle").gameObject.SetActive(true);
+                arrow.GetComponentInChildren<ParticleEffector>(true)?.Show();
             }
         }
 
@@ -144,7 +144,7 @@ namespace Character
             Enemy near_enemy = FindClosestEnemy();
             if (!near_enemy) return;
 
-            if (_player.StatsSystem.SetMana(-spell_price))
+            if (_player.StatsSystem.ChangeMana(-spell_price))
             {
                 near_enemy.AddFireStatus(1f, spell_duration, _player.StatsSystem.AttackStats * 0.5f);
                 MakeFire(near_enemy, spell_duration);

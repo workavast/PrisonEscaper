@@ -36,7 +36,7 @@ public class KeyboardObserver : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift))
             OnDash?.Invoke();
             
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Escape))
             OnInventory?.Invoke();
             
         for (int i = 1; i <= 9; i++)
