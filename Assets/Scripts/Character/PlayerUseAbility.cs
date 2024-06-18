@@ -56,30 +56,33 @@ namespace Character
             }
         }
 
-        private Enemy FindClosestEnemy()
+        private bool FindClosestEnemy(out Enemy closetEnemy)
         {
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-            GameObject closest = null;
+            closetEnemy = null;
+            
+            var hits = Physics2D.CircleCastAll(transform.position, 15, Vector2.right, 0f);
             float closestDistance = float.MaxValue;
-
-            foreach (GameObject enemy in enemies)
+            foreach (var hit in hits)
             {
-                float distance = Vector3.Distance(_player.transform.position, enemy.transform.position);
-                if (distance < closestDistance)
+                if (hit.collider.TryGetComponent(out Enemy enemy))
                 {
-                    closestDistance = distance;
-                    closest = enemy;
+                    float distance = Vector3.Distance(_player.transform.position, enemy.transform.position);
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        closetEnemy = enemy;
+                    }
                 }
             }
-            Enemy near_enemy = closest.GetComponent<Enemy>();
-            return near_enemy;
+
+            return closetEnemy != null;
         }
 
         private GameObject CreateRoots(Enemy target)
         {
             GameObject roots = GameObject.Instantiate(treeRoots,
             target.transform.position - new Vector3(0, 1f, 0),
-            Quaternion.identity) as GameObject;
+            Quaternion.identity);
             roots.transform.SetParent(target.transform);
             return roots;
         }
@@ -87,7 +90,7 @@ namespace Character
         IEnumerator ObjectLifeEnd(GameObject removedObject, float waitingTime)
         {
             yield return new WaitForSeconds(waitingTime);
-            GameObject.Destroy(removedObject);
+            Destroy(removedObject);
         }
 
         IEnumerator TreesEnd(Enemy target, GameObject roots, float spell_duration)
@@ -99,19 +102,18 @@ namespace Character
 
         private void TreesTaking()
         {
-            float spell_price = 15f, spell_duration = 8f, 
-                  spell_damage = _player.StatsSystem.AttackStats.earthDamage * 0.1f + 2f;
+            if (!FindClosestEnemy(out var nearEnemy)) 
+                return;
 
-            Enemy near_enemy = FindClosestEnemy();
-            if (!near_enemy) return;
-
-            if (_player.StatsSystem.ChangeMana(-spell_price))
+            const float spellPrice = 15f, spellDuration = 8f; 
+            float spellDamage = _player.StatsSystem.AttackStats.earthDamage * 0.1f + 2f;
+            if (_player.StatsSystem.ChangeMana(-spellPrice))
             {
-                near_enemy.TakeDamage(spell_damage, StatsSystem.DamageType.Earth);
-                if (near_enemy.Health > 0)
+                nearEnemy.TakeDamage(spellDamage, StatsSystem.DamageType.Earth);
+                if (nearEnemy.Health > 0)
                 {
-                    near_enemy.SetFrozenStatus(true);
-                    StartCoroutine(TreesEnd(near_enemy, CreateRoots(near_enemy), spell_duration));
+                    nearEnemy.SetFrozenStatus(true);
+                    StartCoroutine(TreesEnd(nearEnemy, CreateRoots(nearEnemy), spellDuration));
                 }
             }
         }
@@ -127,27 +129,20 @@ namespace Character
                 arrow.GetComponentInChildren<ParticleEffector>(true)?.Show();
             }
         }
-
-        private void MakeFire(Enemy target, float spell_duration)
-        {
-            GameObject fire = GameObject.Instantiate(fireParticle,
-            target.transform.position + new Vector3(0f, 0f, -5f),
-            Quaternion.identity) as GameObject;
-            fire.transform.SetParent(target.transform);
-            fire.transform.localScale.Set(1f, 1f, 1f);
-            StartCoroutine(ObjectLifeEnd(fire, spell_duration));
-        }
-
+        
         private void BurnEnemy()
         {
-            float spell_price = 15f, spell_duration = 10f;
-            Enemy near_enemy = FindClosestEnemy();
-            if (!near_enemy) return;
-
-            if (_player.StatsSystem.ChangeMana(-spell_price))
+            if (!FindClosestEnemy(out var nearEnemy)) 
+                return;
+            
+            const float spellPrice = 15f, spellDuration = 10f;
+            if (_player.StatsSystem.ChangeMana(-spellPrice))
             {
-                near_enemy.AddFireStatus(1f, spell_duration, _player.StatsSystem.AttackStats * 0.5f);
-                MakeFire(near_enemy, spell_duration);
+                var fireEffect = new AttackStats(40);
+                fireEffect += _player.StatsSystem.AttackStats * 0.5f;
+                fireEffect.statusEffects = new StatusEffects(1f, spellDuration, 0, 0, 0, 0, 0, 0);
+                
+                nearEnemy.AddStatusEffect(fireEffect);
             }
         }
 

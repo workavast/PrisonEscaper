@@ -1,4 +1,5 @@
 using Core;
+using GameCode.StatsSystem;
 using UnityEngine;
 using UniversalStatsSystem;
 
@@ -6,11 +7,12 @@ namespace MyNamespace
 {
     public abstract class CharacterBase : MonoBehaviour, IDamageable, IStatusEffectable
     {
+        [SerializeField] private EffectsVisualization effectsVisualization;
         [field: SerializeField] public StatsSystem StatsSystem { get; private set; }
         public float Health => StatsSystem.Health.CurrentValue;
         public bool Invincible { get => StatsSystem.isInvincible; protected set => StatsSystem.isInvincible = value; }
     
-        protected StatusEffectSystem StatusEffectSystem = new StatusEffectSystem();
+        protected StatusEffectSystem StatusEffectSystem;
         public MonoBehaviour StatusEffectCoroutine => this;
         public Vector2 Position => transform.position;
     
@@ -22,7 +24,7 @@ namespace MyNamespace
     
         protected virtual void OnAwake()
         {
-            StatusEffectSystem.OnAwake(this);
+            StatusEffectSystem = new StatusEffectSystem(this, effectsVisualization);
         }
 
         protected virtual void OnStart ()

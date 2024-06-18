@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Enemies;
+using GameCode.StatsSystem;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -13,14 +14,14 @@ using UniversalStatsSystem;
 public class StatusEffectSystem
 {
     [Serializable]
-    protected class StatusEffect
+    protected class StatusEffectData
     {
         public bool Active;
         public float Damage;
         public float Duration;
         public float CurrentTime;
 
-        public StatusEffect(bool active, float damage, float duration)
+        public StatusEffectData(bool active, float damage, float duration)
         {
             Active = active;
             Damage = damage;
@@ -29,18 +30,19 @@ public class StatusEffectSystem
         }
     }
 
-    private IStatusEffectable _statusEffectable;
+    private readonly IStatusEffectable _statusEffectable;
+    private readonly EffectsVisualization _effectsVisualization;
 
-    private StatusEffect _fireStatus = new StatusEffect(false, 0f,0f);
+    private StatusEffectData _fireStatus = new StatusEffectData(false, 0f,0f);
     private Coroutine _fireCoroutine;
     
-    private StatusEffect _frozenStatus = new StatusEffect(false, 0f,0f);
+    private StatusEffectData _frozenStatus = new StatusEffectData(false, 0f,0f);
     private Coroutine _frozenCoroutine;
 
-    private StatusEffect _electricityStatus = new StatusEffect(false, 0f,0f);
+    private StatusEffectData _electricityStatus = new StatusEffectData(false, 0f,0f);
     private Coroutine _electricityCoroutine;
 
-    private StatusEffect _poisonStatus = new StatusEffect(false, 0f,0f);
+    private StatusEffectData _poisonStatus = new StatusEffectData(false, 0f,0f);
     private Coroutine _poisonCoroutine;
     
     public bool FireStatusActive => _fireStatus.Active;
@@ -58,9 +60,10 @@ public class StatusEffectSystem
     public event Action OnElectricityStatusEnd; 
     public event Action OnPoisonStatusEnd;
     
-    public void OnAwake(IStatusEffectable statusEffectable)
+    public StatusEffectSystem(IStatusEffectable statusEffectable, EffectsVisualization effectsVisualization)
     {
         _statusEffectable = statusEffectable;
+        _effectsVisualization = effectsVisualization;
     }
 
     public void AddStatusEffects(AttackStats attackStats)
@@ -71,11 +74,11 @@ public class StatusEffectSystem
         {
             if (_fireStatus.Active)
             {
-                _fireStatus = new StatusEffect(true, attackStats.fireDamage / 10, statusEffects.FireEffectDuration);
+                _fireStatus = new StatusEffectData(true, attackStats.fireDamage / 8, statusEffects.FireEffectDuration);
             }
             else
             {
-                _fireStatus = new StatusEffect(false, attackStats.fireDamage/10, statusEffects.FireEffectDuration);
+                _fireStatus = new StatusEffectData(false, attackStats.fireDamage / 8, statusEffects.FireEffectDuration);
                 _fireCoroutine = _statusEffectable.StatusEffectCoroutine.StartCoroutine(FireEffectTick());
             }
         }
@@ -84,11 +87,11 @@ public class StatusEffectSystem
         {
             if (_frozenStatus.Active)
             {
-                _frozenStatus = new StatusEffect(true,0, statusEffects.FrozenEffectDuration);
+                _frozenStatus = new StatusEffectData(true,0, statusEffects.FrozenEffectDuration);
             }
             else
             {
-                _frozenStatus = new StatusEffect(false,0, statusEffects.FrozenEffectDuration);
+                _frozenStatus = new StatusEffectData(false,0, statusEffects.FrozenEffectDuration);
                 _frozenCoroutine = _statusEffectable.StatusEffectCoroutine.StartCoroutine(FrozenEffectTick());
             }
         }
@@ -97,11 +100,13 @@ public class StatusEffectSystem
         {
             if (_electricityStatus.Active)
             {
-                _electricityStatus = new StatusEffect( true, attackStats.electricityDamage/10, statusEffects.ElectricityEffectDuration);
+                _electricityStatus = new StatusEffectData(true, attackStats.electricityDamage / 8,
+                    statusEffects.ElectricityEffectDuration);
             }
             else
             {
-                _electricityStatus = new StatusEffect( false, attackStats.electricityDamage/10, statusEffects.ElectricityEffectDuration);
+                _electricityStatus = new StatusEffectData(false, attackStats.electricityDamage / 8,
+                    statusEffects.ElectricityEffectDuration);
                 _electricityCoroutine = _statusEffectable.StatusEffectCoroutine.StartCoroutine(ElectricityEffectTick());
             }
         }
@@ -110,11 +115,13 @@ public class StatusEffectSystem
         {
             if (_poisonStatus.Active)
             {
-                _poisonStatus = new StatusEffect(true, attackStats.poisonDamage / 10, statusEffects.PoisonEffectDuration);
+                _poisonStatus = new StatusEffectData(true, attackStats.poisonDamage / 8,
+                    statusEffects.PoisonEffectDuration);
             }
             else
             {
-                _poisonStatus = new StatusEffect(false, attackStats.poisonDamage/10, statusEffects.PoisonEffectDuration);
+                _poisonStatus = new StatusEffectData(false, attackStats.poisonDamage / 8,
+                    statusEffects.PoisonEffectDuration);
                 _poisonCoroutine = _statusEffectable.StatusEffectCoroutine.StartCoroutine(PoisonEffectTick());
             }
         }
@@ -124,6 +131,7 @@ public class StatusEffectSystem
     private IEnumerator FireEffectTick()
     {
         OnFireStatusStart?.Invoke();
+        _effectsVisualization.SetActiveEffect(StatusEffect.Fire, true);
         _fireStatus.Active = true;
         _fireStatus.CurrentTime = 0f;
         
@@ -131,8 +139,8 @@ public class StatusEffectSystem
         while (_fireStatus.Active)
         {
             yield return new WaitForSeconds(timePause);
-            
-            AttackStats attackStats = new AttackStats(0,_fireStatus.Damage,0,0,0,0,0);
+
+            AttackStats attackStats = new AttackStats(0, _fireStatus.Damage, 0, 0, 0, 0, 0);
             _statusEffectable.TakeDamage(attackStats);
             
             _fireStatus.CurrentTime += timePause;
@@ -140,12 +148,15 @@ public class StatusEffectSystem
                 _fireStatus.Active = false;
         }
 
+        _effectsVisualization.SetActiveEffect(StatusEffect.Fire, false);
         OnFireStatusEnd?.Invoke();
     }
     
     private IEnumerator FrozenEffectTick()
     {
         OnFrozenStatusStart?.Invoke();
+        _effectsVisualization.SetActiveEffect(StatusEffect.Frozen, true);
+
         _frozenStatus.Active = true;
         _frozenStatus.CurrentTime = 0f;
 
@@ -159,12 +170,15 @@ public class StatusEffectSystem
                 _frozenStatus.Active = false;
         }
         
+        _effectsVisualization.SetActiveEffect(StatusEffect.Frozen, false);
         OnFrozenStatusEnd?.Invoke();
     }
     
     private IEnumerator ElectricityEffectTick()
     {
         OnElectricityStatusStart?.Invoke();
+        _effectsVisualization.SetActiveEffect(StatusEffect.Electricity, true);
+
         _electricityStatus.Active = true;
         _electricityStatus.CurrentTime = 0f;
 
@@ -185,12 +199,15 @@ public class StatusEffectSystem
                 _electricityStatus.Active = false;
         }
         
+        _effectsVisualization.SetActiveEffect(StatusEffect.Electricity, false);
         OnElectricityStatusEnd?.Invoke();
     }
     
     private IEnumerator PoisonEffectTick()
     {
         OnPoisonStatusStart?.Invoke();
+        _effectsVisualization.SetActiveEffect(StatusEffect.Poison, true);
+
         _poisonStatus.Active = true;
         _poisonStatus.CurrentTime = 0f;
         
@@ -207,6 +224,7 @@ public class StatusEffectSystem
                 _poisonStatus.Active = false;
         }
 
+        _effectsVisualization.SetActiveEffect(StatusEffect.Poison, false);
         OnPoisonStatusEnd?.Invoke();
     }
     
@@ -220,6 +238,7 @@ public class StatusEffectSystem
             if (_fireCoroutine != null)
                 _statusEffectable.StatusEffectCoroutine.StopCoroutine(_fireCoroutine);
             
+            _effectsVisualization.SetActiveEffect(StatusEffect.Fire, false);
             OnFireStatusEnd?.Invoke();
         }
     }
@@ -233,6 +252,7 @@ public class StatusEffectSystem
             if (_frozenCoroutine != null)
                 _statusEffectable.StatusEffectCoroutine.StopCoroutine(_frozenCoroutine);
             
+            _effectsVisualization.SetActiveEffect(StatusEffect.Frozen, false);
             OnFrozenStatusEnd?.Invoke();
         }
 
@@ -247,6 +267,7 @@ public class StatusEffectSystem
             if (_electricityCoroutine != null)
                 _statusEffectable.StatusEffectCoroutine.StopCoroutine(_electricityCoroutine);
             
+            _effectsVisualization.SetActiveEffect(StatusEffect.Electricity, false);
             OnElectricityStatusEnd?.Invoke();
         }
     }
@@ -260,6 +281,7 @@ public class StatusEffectSystem
             if (_poisonCoroutine != null)
                 _statusEffectable.StatusEffectCoroutine.StopCoroutine(_poisonCoroutine);
 
+            _effectsVisualization.SetActiveEffect(StatusEffect.Poison, false);
             OnPoisonStatusEnd?.Invoke();
         }
     }

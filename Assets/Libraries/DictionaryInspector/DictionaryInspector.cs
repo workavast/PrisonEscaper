@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// ATTENTION!!! It is legacy code, use SerializableDictionary
-/// </summary>
 [Serializable]
+[Obsolete("ATTENTION!!! It is legacy code, use SerializableDictionary")]
 public class DictionaryInspector<TKey, TValue> : Dictionary<TKey,TValue>, ISerializationCallbackReceiver
 {
     [SerializeField] private List<DictionaryCell> dictionaryCells = new List<DictionaryCell>();

@@ -131,14 +131,6 @@ namespace Enemies
                 UnFrozenStatus();
         }
         
-        public void AddFireStatus(float chance, float duration, AttackStats baseDamage)
-        {
-            AttackStats fireEffect = baseDamage;
-            fireEffect.statusEffects = new StatusEffects(chance, duration, 0, 0, 0, 0, 0, 0);
-    
-            StatusEffectSystem.AddStatusEffects(fireEffect);
-        }
-        
         public virtual void ThrowWeapon()
         {
             if (IsDead) return;
