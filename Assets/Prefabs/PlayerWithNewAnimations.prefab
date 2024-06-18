@@ -10161,14 +10161,14 @@ MonoBehaviour:
   <StatsSystem>k__BackingField:
     mainStats:
       health:
-        maxValue: 100
-        currentValue: 100
+        maxValue: 150
+        currentValue: 150
         minValue: 0
       mana:
-        maxValue: 100
-        currentValue: 100
+        maxValue: 150
+        currentValue: 150
         minValue: 0
-      WalkSpeed: 40
+      WalkSpeed: 45
     attackStats:
       physicalDamage: 0
       fireDamage: 0
@@ -10214,7 +10214,7 @@ MonoBehaviour:
   movementSmoothing: 0.05
   gravityForce: -9.8
   gravityScale: 3
-  dashForce: 25
+  dashForce: 30
   jumpForce: 22
   limitFallSpeed: 20
   canDoubleJump: 1
