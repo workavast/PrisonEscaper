@@ -48,6 +48,7 @@ namespace UniversalStatsSystem
         public void Heal(float value)
         {
             MainStats.ChangeHealth(value);
+            OnStatsChanged.Invoke();
         }
 
         public bool ChangeMana(float value)
@@ -56,6 +57,7 @@ namespace UniversalStatsSystem
                 return false;
             
             MainStats.ChangeMana(value);
+            OnStatsChanged.Invoke();
             return true;
         }
 
@@ -100,6 +102,7 @@ namespace UniversalStatsSystem
             if (isInvincible)
                 return;
             MainStats.ChangeHealth(-damageMagnitude);
+            OnStatsChanged.Invoke();
             if (MainStats.Health.IsEmpty)
                 OnDeath.Invoke();
 

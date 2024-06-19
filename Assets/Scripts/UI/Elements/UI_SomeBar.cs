@@ -4,10 +4,11 @@ using UnityEngine.UI;
 
 public class UI_SomeBar
 {
-    private MonoBehaviour _parentBehaviour;
+    private readonly MonoBehaviour _parentBehaviour;
     private readonly Slider _slider;
     private bool _coroutineIsActive;
     private float _targetValue;
+    private Coroutine _coroutine;
 
     public UI_SomeBar(MonoBehaviour parentBehaviour, Slider slider, float startValue)
     {
@@ -18,6 +19,11 @@ public class UI_SomeBar
     
     public void SetValue(float value)
     {
+        if (_coroutine != null)
+        {
+            _parentBehaviour.StopCoroutine(_coroutine);
+            _coroutineIsActive = false;
+        }
         _slider.value = value;
         _targetValue = value;
     }
@@ -26,10 +32,10 @@ public class UI_SomeBar
     {
         _targetValue = targetValue;
         if (!_coroutineIsActive)
-            _parentBehaviour.StartCoroutine(ChangeHealthBarValue());
+            _coroutine = _parentBehaviour.StartCoroutine(ChangeBarValue());
     }
     
-    private IEnumerator ChangeHealthBarValue()
+    private IEnumerator ChangeBarValue()
     {
         _coroutineIsActive = true;
     
