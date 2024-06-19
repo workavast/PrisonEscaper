@@ -1,32 +1,39 @@
+using Core;
 using UnityEngine;
 
-public class LevelEndTrigger : MonoBehaviour
+public class LevelEndTrigger : MonoBehaviour, IInteractive
 {
-    private bool _isTriggered;
-    private LevelEnd _levelEnd;
+    [SerializeField] private GameObject interactKeyImg;
     
+    public bool Interactable { get; private set; } = true;
+    private LevelEnd _levelEnd;
+
+    private void Awake()
+    {
+        interactKeyImg.SetActive(false);
+    }
+
     private void Start()
     {
         _levelEnd = FindObjectOfType<LevelEnd>();
     }
-
-    private void OnTriggerEnter2D(Collider2D other)
+    
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        if (_isTriggered)
-        {
-            Debug.LogWarning($"Second enter. Maybe your player have two colliders: trigger and non trigger");
-            return;
-        }
-        
-        if (!other.CompareTag("Player"))
-            return;
-
-        _isTriggered = true;
-        _levelEnd.SwitchLevel();
+        if (col.gameObject.CompareTag("Player") && Interactable) 
+            interactKeyImg.SetActive(true);
     }
-
-    private void OnDestroy()
+    
+    private void OnTriggerExit2D(Collider2D col)
     {
-        Time.timeScale = 1;
+        if (col.CompareTag("Player")) 
+            interactKeyImg.SetActive(false);
+    }
+    
+    public void Interact()
+    {
+        Interactable = false;
+        interactKeyImg.SetActive(false);
+        _levelEnd.SwitchLevel();
     }
 }
