@@ -1123,6 +1123,10 @@ PrefabInstance:
       propertyPath: bossFight
       value: 
       objectReference: {fileID: 8300000, guid: 5e0a29ed6b300b94c919d8c4a135bea1, type: 3}
+    - target: {fileID: 8488252009100551796, guid: 74da39abdb185ac49ae84fd1709082e6, type: 3}
+      propertyPath: mainVolume
+      value: 0.75
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
