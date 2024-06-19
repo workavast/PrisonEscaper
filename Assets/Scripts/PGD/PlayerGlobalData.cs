@@ -13,6 +13,7 @@ namespace GameCode.PGD
 
         public readonly VolumeSettings VolumeSettings = new();
         public readonly FpsSettings FpsSettings = new();
+        public readonly TutorialSettings TutorialSettings = new();
         
         private readonly ISaveAndLoader _saveAndLoader;
         
@@ -36,6 +37,7 @@ namespace GameCode.PGD
             
             VolumeSettings.LoadData(save.volumeSettingsSave);
             FpsSettings.LoadData(save.fpsSettingsSave);
+            TutorialSettings.LoadData(save.tutorialSettingsSave);
         }
         
         private void SaveData() 
@@ -48,7 +50,8 @@ namespace GameCode.PGD
             ISettings[] settings =
             {
                 VolumeSettings, 
-                FpsSettings
+                FpsSettings,
+                TutorialSettings
             };
             foreach (var setting in settings)
                 setting.OnChange += SaveData;

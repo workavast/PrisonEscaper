@@ -18,13 +18,16 @@ namespace Character
 			
 			OnFallEvent.AddListener(OnFall);
 			OnLandEvent.AddListener(OnLanding);
+		}
 
+		protected virtual void SubOfKeyBoardObserver()
+		{
 			KeyboardObserver.OnDash += Dash;
 			KeyboardObserver.OnJump += Jump;
 			KeyboardObserver.OnPlatformDrop += PlatformDrop;
 			KeyboardObserver.OnMove += Move;
 		}
-
+		
 		protected virtual void UnSubOfKeyBoardObserver()
 		{
 			KeyboardObserver.OnDash -= Dash;

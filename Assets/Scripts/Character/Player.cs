@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Core;
+using GameCycleFramework;
 using PlayerInventory;
 using Projectiles;
 using UniversalStatsSystem;
@@ -8,14 +9,15 @@ using Zenject;
 
 namespace Character
 {
-    public sealed class Player : PlayerMovement
+    public sealed class Player : PlayerMovement, IGameCycleEnter, IGameCycleExit
     {
         [field: Header("Player")] 
         [field: Space]
         [field: SerializeField] public Transform CharacterCenter { get; private set; }
         [SerializeField] private PlayerAttack playerAttack;
 
-        [Inject] private ProjectileFactory _projectileFactory;
+        [Inject] private readonly ProjectileFactory _projectileFactory;
+        [Inject] private readonly IGameCycleController _gameCycleController;
         
         public static Player Instance { private set; get; }
         public bool AttackIsPossible { get => CanAttack && playerAttack.canAttack; }
@@ -39,15 +41,14 @@ namespace Character
             playerAttack.Init(this, _projectileFactory);
 
             StatsSystem.OnDeath.AddListener(Die);
-            
-            KeyboardObserver.OnFirstAttack += FirstAttack;
-            KeyboardObserver.OnSecondAttack += SecondAttack;
-            KeyboardObserver.OnInteract += InteractWithNearestInteractiveObject;
-            KeyboardObserver.OnAbilityUse += UseAbility;
         }
 
         protected override void OnStart()
         {
+            _gameCycleController.AddListener(GameCycleState.Gameplay, this as IGameCycleEnter);
+            _gameCycleController.AddListener(GameCycleState.Gameplay, this as IGameCycleExit);
+            if(_gameCycleController.CurrentState == GameCycleState.Gameplay)
+                SubOfKeyBoardObserver();
             Inventory.ApplyStats();
         }
 
@@ -121,15 +122,11 @@ namespace Character
                 playerAttack.Attack();
         }
         
-        private void SecondAttack()
-        {
-            ThrowProjectile();
-        } 
-        
+        private void SecondAttack() 
+            => ThrowProjectile();
+
         private void UseAbility(int spellNum)
-        {
-            PlayerUseAbility.Instance.UseAbility(spellNum);
-        }
+            => PlayerUseAbility.Instance.UseAbility(spellNum);
 
         private void Die()
         {
@@ -139,12 +136,23 @@ namespace Character
             StartCoroutine(WaitToDead());
         }
 
+        protected override void SubOfKeyBoardObserver()
+        {
+            base.SubOfKeyBoardObserver();
+            
+            KeyboardObserver.OnFirstAttack += FirstAttack;
+            KeyboardObserver.OnSecondAttack += SecondAttack;
+            KeyboardObserver.OnInteract += InteractWithNearestInteractiveObject;
+            KeyboardObserver.OnAbilityUse += UseAbility;
+        }
+        
         protected override void UnSubOfKeyBoardObserver()
         {
             base.UnSubOfKeyBoardObserver();
             
             KeyboardObserver.OnFirstAttack -= FirstAttack;
             KeyboardObserver.OnSecondAttack -= SecondAttack;
+            KeyboardObserver.OnInteract -= InteractWithNearestInteractiveObject;
             KeyboardObserver.OnAbilityUse -= UseAbility;
         }
 
@@ -194,5 +202,15 @@ namespace Character
             nearestInteractiveObj.Interact();
         }
         #endregion
+        
+        public void GameCycleEnter()
+        {
+            SubOfKeyBoardObserver();
+        }
+
+        public void GameCycleExit()
+        {
+            UnSubOfKeyBoardObserver();
+        }
     }
 }

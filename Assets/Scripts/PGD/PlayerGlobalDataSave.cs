@@ -9,23 +9,27 @@ namespace GameCode.PGD
     {
         public VolumeSettingsSave volumeSettingsSave;
         public FpsSettingsSave fpsSettingsSave;
+        public TutorialSettingsSave tutorialSettingsSave;
 
         public PlayerGlobalDataSave()
         {
             volumeSettingsSave = new();
             fpsSettingsSave = new();
+            tutorialSettingsSave = new();
         }
         
         public PlayerGlobalDataSave(PlayerGlobalData playerGlobalData)
         {
             volumeSettingsSave = new VolumeSettingsSave(playerGlobalData.VolumeSettings);
             fpsSettingsSave = new FpsSettingsSave(playerGlobalData.FpsSettings);
+            tutorialSettingsSave = new TutorialSettingsSave(playerGlobalData.TutorialSettings);
         }
         
-        public PlayerGlobalDataSave(VolumeSettings volumeSettings, FpsSettings fpsSettings)
+        public PlayerGlobalDataSave(VolumeSettings volumeSettings, FpsSettings fpsSettings, TutorialSettings tutorialSettings)
         {
             volumeSettingsSave = new VolumeSettingsSave(volumeSettings);
             fpsSettingsSave = new FpsSettingsSave(fpsSettings);
+            tutorialSettingsSave = new TutorialSettingsSave(tutorialSettings);
         }
     }
 }

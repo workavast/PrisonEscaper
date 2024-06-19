@@ -20,7 +20,6 @@ namespace UI
         [SerializeField] private SerializableDictionary<SlotType, UI_Slot> specialSlots;
 
         [Inject] private VolumeProfileController _volumeProfileController;
-        [Inject] private KeyboardObserver _keyboardObserver;
 
         private int _backpackSlotsCount;
         private List<UI_Slot> _backpackCells;
@@ -28,8 +27,6 @@ namespace UI
         public override void InitScreen()
         {
             base.InitScreen();
-            //TODO: move inventory opening/closing in other class (maybe in UI_Controller??, not sure)
-            _keyboardObserver.OnInventory += ToggleActive;
             settingsWindow.SetActive(false);
         }
 
@@ -78,21 +75,6 @@ namespace UI
             
             dragAndDropController.RegisterSlots(specialSlots.Values);
             dragAndDropController.RegisterSlots(_backpackCells);
-        }
-
-        //TODO: move inventory opening/closing in other class (maybe in UI_Controller??, not sure)
-        private void ToggleActive()
-        {
-            if (!gameObject.activeInHierarchy)
-            {
-                UI.UI_Controller.SetWindow(ScreenEnum.Inventory);
-                Cursor.visible = true;
-            }
-            else
-            {
-                UI.UI_Controller.SetWindow(ScreenEnum.GameplayScreen);
-                Cursor.visible = false;
-            }
         }
         
         private void UpdateBackpack(Item[] items)

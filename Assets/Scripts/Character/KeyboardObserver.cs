@@ -30,7 +30,7 @@ public class KeyboardObserver : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
             OnInteract?.Invoke();
         
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             OnJump?.Invoke();
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
