@@ -1,26 +1,27 @@
 ﻿using System;
 using GameCode.audio;
+using GameCode.UI.Elements;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 namespace SourceCode.Ui.Elements
 {
-    [RequireComponent(typeof(Slider))]
+    [RequireComponent(typeof(ExtendedSlider))]
     public class VolumeSlider : MonoBehaviour
     {
         [SerializeField] private VolumeType volumeType;
-
-        [Inject] private readonly AudioVolumeChanger _audioManager;
         
-        private Slider _slider;
+        [Inject] private readonly AudioVolumeChanger _audioVolumeChanger;
+        
+        private ExtendedSlider _slider;
         
         private event Action<float> OnValueChange;
         
         private void Awake()
         {
-            _slider = GetComponent<Slider>();
+            _slider = GetComponent<ExtendedSlider>();
             _slider.onValueChanged.AddListener(ChangeValue);
+            _slider.OnPointerUpEvent += _audioVolumeChanger.Apply;
         }
 
         private void Start()
@@ -28,15 +29,15 @@ namespace SourceCode.Ui.Elements
             switch (volumeType)
             {
                 case VolumeType.Master:
-                    _slider.value = _audioManager.MasterVolume;
+                    _slider.value = _audioVolumeChanger.MasterVolume;
                     OnValueChange += SetMasterVolume;
                     break;
                 case VolumeType.Music:
-                    _slider.value = _audioManager.OstVolume;
+                    _slider.value = _audioVolumeChanger.OstVolume;
                     OnValueChange += SetOstVolume;
                     break;
                 case VolumeType.Effects:
-                    _slider.value = _audioManager.EffectsVolume;
+                    _slider.value = _audioVolumeChanger.EffectsVolume;
                     OnValueChange += SetEffectsVolume;
                     break;
                 default:
@@ -46,14 +47,16 @@ namespace SourceCode.Ui.Elements
 
         private void ChangeValue(float newValue) => OnValueChange?.Invoke(newValue);
         
-        private void SetMasterVolume(float newVolume) => _audioManager.SetMasterVolume(newVolume);
+        private void SetMasterVolume(float newVolume) => _audioVolumeChanger.SetMasterVolume(newVolume);
 
-        private void SetEffectsVolume(float newVolume) => _audioManager.SetEffectsVolume(newVolume);
+        private void SetEffectsVolume(float newVolume) => _audioVolumeChanger.SetEffectsVolume(newVolume);
         
-        private void SetOstVolume(float newVolume) => _audioManager.SetOstVolume(newVolume);
+        private void SetOstVolume(float newVolume) => _audioVolumeChanger.SetOstVolume(newVolume);
 
         private void OnDestroy() => _slider.onValueChanged.RemoveListener(ChangeValue);
 
+        private void Apply() => _audioVolumeChanger.Apply();
+        
         private enum VolumeType
         {
             Master = 0,

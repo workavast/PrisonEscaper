@@ -12,15 +12,15 @@ namespace GameCode.audio
         private readonly AudioMixer _mixer;
         private readonly VolumeSettings _volumeSettings;
 
+        public float MasterVolume => _volumeSettings.Master;
+        public float OstVolume => _volumeSettings.OstVolume;
+        public float EffectsVolume => _volumeSettings.EffectsVolume;
+        
         public AudioVolumeChanger(AudioMixer mixer, VolumeSettings volumeSettings)
         {
             _mixer = mixer;
             _volumeSettings = volumeSettings;
         }
-
-        public float MasterVolume => _volumeSettings.Master;
-        public float OstVolume => _volumeSettings.OstVolume;
-        public float EffectsVolume => _volumeSettings.EffectsVolume;
 
         public void StartInit()
         {         
@@ -28,7 +28,7 @@ namespace GameCode.audio
             SetVolume(EffectsParam, EffectsVolume);
             SetVolume(OstParam, OstVolume);
         }
-
+        
         public void SetMasterVolume(float newVolume)
         {
             _volumeSettings.ChangeMasterVolume(newVolume);
@@ -46,6 +46,9 @@ namespace GameCode.audio
             _volumeSettings.ChangeOstVolume(newVolume);
             SetVolume(OstParam, OstVolume);
         }
+
+        public void Apply() 
+            => _volumeSettings.Apply();
 
         private void SetVolume(string paramName, float newVolume)
             => _mixer.SetFloat($"{paramName}", Mathf.Lerp(-80, 0, Mathf.Sqrt(Mathf.Sqrt(newVolume))));
