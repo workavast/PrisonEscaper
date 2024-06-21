@@ -9,12 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3507292493331551573}
+  - component: {fileID: 6925003386787175821}
   - component: {fileID: 3994271875077534865}
   - component: {fileID: 5301884428815939286}
-  - component: {fileID: 6925003386787175821}
-  - component: {fileID: 3508584521398740686}
-  - component: {fileID: 6495892105898805832}
   - component: {fileID: 4104056322059966884}
+  - component: {fileID: 167020142491701689}
   m_Layer: 0
   m_Name: Fireball
   m_TagString: Untagged
@@ -34,9 +33,79 @@ Transform:
   m_LocalPosition: {x: -0.7, y: 2.59, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3056572926483186843}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6925003386787175821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216671771666902163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b48da1a2a795084d8c1b69e877a7760, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectileId: 100
+  <AttackStats>k__BackingField:
+    physicalDamage: 0
+    fireDamage: 0
+    waterDamage: 0
+    airDamage: 0
+    earthDamage: 0
+    electricityDamage: 0
+    poisonDamage: 0
+    criticalChance: 0
+    criticalMultiply: 0
+    attackCooldown: 0
+    attackRange: 0
+    statusEffects:
+      fireStatusEffect:
+        Chance: 0
+        Duration: 0
+      frozenStatusEffect:
+        Chance: 0
+        Duration: 0
+      electricityStatusEffect:
+        Chance: 0
+        Duration: 0
+      poisonStatusEffect:
+        Chance: 0
+        Duration: 0
+  triggerZone2D: {fileID: 7022386899426160382}
+  bonusDamage:
+    physicalDamage: 0
+    fireDamage: 0
+    waterDamage: 0
+    airDamage: 0
+    earthDamage: 0
+    electricityDamage: 0
+    poisonDamage: 0
+    criticalChance: 0
+    criticalMultiply: 0
+    attackCooldown: 1
+    attackRange: 1
+    statusEffects:
+      fireStatusEffect:
+        Chance: 0
+        Duration: 0
+      frozenStatusEffect:
+        Chance: 0
+        Duration: 0
+      electricityStatusEffect:
+        Chance: 0
+        Duration: 0
+      poisonStatusEffect:
+        Chance: 0
+        Duration: 0
+  isPenetratingShot: 0
+  isPlayerWeapon: 1
+  hasHit: 0
+  speed: 0
+  owner: {fileID: 0}
 --- !u!2083052967 &3994271875077534865
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -145,138 +214,8 @@ VFXRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2057261371
-  m_SortingLayer: 10
+  m_SortingLayer: 11
   m_SortingOrder: 32767
---- !u!114 &6925003386787175821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1216671771666902163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b48da1a2a795084d8c1b69e877a7760, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectileId: 100
-  <AttackStats>k__BackingField:
-    physicalDamage: 0
-    fireDamage: 0
-    waterDamage: 0
-    airDamage: 0
-    earthDamage: 0
-    electricityDamage: 0
-    poisonDamage: 0
-    criticalChance: 0
-    criticalMultiply: 0
-    attackCooldown: 0
-    attackRange: 0
-    statusEffects:
-      fireStatusEffect:
-        Chance: 0
-        Duration: 0
-      frozenStatusEffect:
-        Chance: 0
-        Duration: 0
-      electricityStatusEffect:
-        Chance: 0
-        Duration: 0
-      poisonStatusEffect:
-        Chance: 0
-        Duration: 0
-  bonusDamage:
-    physicalDamage: 0
-    fireDamage: 0
-    waterDamage: 0
-    airDamage: 0
-    earthDamage: 0
-    electricityDamage: 0
-    poisonDamage: 0
-    criticalChance: 0
-    criticalMultiply: 0
-    attackCooldown: 1
-    attackRange: 1
-    statusEffects:
-      fireStatusEffect:
-        Chance: 0
-        Duration: 0
-      frozenStatusEffect:
-        Chance: 0
-        Duration: 0
-      electricityStatusEffect:
-        Chance: 0
-        Duration: 0
-      poisonStatusEffect:
-        Chance: 0
-        Duration: 0
-  isPenetratingShot: 0
-  isPlayerWeapon: 1
-  hasHit: 0
-  speed: 0
-  owner: {fileID: 0}
---- !u!50 &3508584521398740686
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1216671771666902163}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
---- !u!58 &6495892105898805832
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1216671771666902163}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.3
 --- !u!82 &4104056322059966884
 AudioSource:
   m_ObjectHideFlags: 0
@@ -373,3 +312,110 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!50 &167020142491701689
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216671771666902163}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!1 &5057506209921284269
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3056572926483186843}
+  - component: {fileID: 7022386899426160382}
+  - component: {fileID: 3762883671435302723}
+  m_Layer: 0
+  m_Name: TriggerZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3056572926483186843
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5057506209921284269}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3507292493331551573}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7022386899426160382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5057506209921284269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab43afb12c7b4d7b9e135b0253f3391e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!58 &3762883671435302723
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5057506209921284269}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.3

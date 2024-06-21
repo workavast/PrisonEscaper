@@ -74,8 +74,7 @@ namespace Projectiles
             _effect.SetGradient("New Gradient", gradient);
         }
 
-
-        void OnTriggerEnter2D(Collider2D collision)
+        protected override void TriggerEnter2D(Collider2D collision)
         {
             if (isPlayerWeapon)
             {

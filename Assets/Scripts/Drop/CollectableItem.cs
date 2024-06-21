@@ -1,5 +1,5 @@
 using System.Collections;
-using Core;
+using GameCode.Core;
 using GameCode.Drop;
 using PlayerInventory;
 using PlayerInventory.Scriptable;
@@ -7,15 +7,17 @@ using SerializableDictionaryExtension;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class CollectableItem : MonoBehaviour, IInteractive
+public class CollectableItem : MonoBehaviour
 {
     [SerializeField] private Transform itemTransform;
     [SerializeField] private GameObject interactKeyImg;
     [SerializeField] private SpriteRenderer itemSpriteRenderer;
     [SerializeField] private Animator itemAnimator;
+    [SerializeField] private TriggerZone2D triggerZone2D;
+    [SerializeField] private InteractionZone interactionZone;
     [SerializeField] private SerializableDictionary<ItemRarity, CollectableItemVfx> glowPrefabs;
 
-    [field: SerializeField] public bool Interactable { get; private set; } = true;
+    public bool Interactable => interactionZone.Interactable;
    
     private AudioSource _source;
     private CollectableItemVfx _vfx;
@@ -38,22 +40,24 @@ public class CollectableItem : MonoBehaviour, IInteractive
     {
         _source = GetComponent<AudioSource>();
         _source.Stop();
+
+        interactionZone.OnInteract += PickUpItem;
+        triggerZone2D.OnTriggerEnter2DEvent += TriggerEnter2D;
+        triggerZone2D.OnTriggerExit2DEvent += TriggerExit2D;
     }
     
-    private void OnTriggerEnter2D(Collider2D col)
+    private void TriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.CompareTag("Player") && Interactable) 
             interactKeyImg.SetActive(true);
     }
 
-    private void OnTriggerExit2D(Collider2D col)
+    private void TriggerExit2D(Collider2D col)
     {
         if (col.CompareTag("Player")) 
             interactKeyImg.SetActive(false);
     }
 
-    public void Interact() => PickUpItem();
-    
     private void PickUpItem()
     {
         if (Inventory.HasBagEmptySlot())
@@ -61,7 +65,7 @@ public class CollectableItem : MonoBehaviour, IInteractive
             itemAnimator.Play("Picked");
             _vfx.ActivatePickUpAnimation();
             _source.Play();
-            Interactable = false;
+            interactionZone.SetInteractionState(false);
             interactKeyImg.SetActive(false);
             Inventory.AddItem(_item);
             StartCoroutine(OnPickedUp());

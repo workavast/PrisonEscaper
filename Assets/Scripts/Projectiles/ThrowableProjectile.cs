@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using Character;
 using Enemies;
+using GameCode.Core;
 using UnityEngine;
 using UniversalStatsSystem;
 
 namespace Projectiles
-{ 
+{
 	public class ThrowableProjectile : ProjectileBase
 	{
 		[field : SerializeField] public AttackStats AttackStats { get; set; }
+		[SerializeField] private TriggerZone2D triggerZone2D;
 		
 		public AttackStats bonusDamage = new(0);
 		public bool isPenetratingShot = false;
@@ -28,6 +30,8 @@ namespace Projectiles
 		{
 			_rigidbody2D = GetComponent<Rigidbody2D>();
 			_initialLocalScaleX = transform.localScale.x;
+
+			triggerZone2D.OnTriggerEnter2DEvent += TriggerEnter2D;
 		}
 
 		public override void HandleFixedUpdate(float fixedDeltaTime)
@@ -59,9 +63,10 @@ namespace Projectiles
 			base.OnElementReturnInPool();
 			HitEnemies = new List<GameObject>();
 			hasHit = false;
+			isPenetratingShot = false;
 		}
 
-		private void OnTriggerEnter2D(Collider2D collision)
+		protected virtual void TriggerEnter2D(Collider2D collision)
 		{
 			if (isPlayerWeapon)
 			{
