@@ -24,8 +24,10 @@ public class KeyboardObserver : MonoBehaviour
         if (Input.GetMouseButton(0))
             OnFirstAttack?.Invoke();
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         if (Input.GetMouseButtonDown(1))
             OnSecondAttack?.Invoke();
+#endif
             
         if (Input.GetKeyDown(KeyCode.F))
             OnInteract?.Invoke();
