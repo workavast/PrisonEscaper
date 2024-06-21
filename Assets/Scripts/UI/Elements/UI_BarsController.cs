@@ -1,4 +1,5 @@
-﻿using Character;
+﻿using System;
+using Character;
 using LevelGeneration.LevelsGenerators;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,6 +40,12 @@ namespace UI
                 bar.SetTargetValue(value);
             else
                 bar.SetValue(value);
+        }
+
+        private void OnDisable()
+        {
+            _healthBar.OnParentDisabled();
+            _manaBar.OnParentDisabled();
         }
     }
 }

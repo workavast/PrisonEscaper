@@ -34,6 +34,16 @@ public class UI_SomeBar
         if (!_coroutineIsActive)
             _coroutine = _parentBehaviour.StartCoroutine(ChangeBarValue());
     }
+
+    public void OnParentDisabled()
+    {
+        if (_coroutine != null)
+        {
+            _slider.value = _targetValue;
+            _parentBehaviour.StopCoroutine(_coroutine);
+            _coroutineIsActive = false;
+        }
+    }
     
     private IEnumerator ChangeBarValue()
     {
