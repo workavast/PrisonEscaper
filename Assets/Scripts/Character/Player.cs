@@ -15,6 +15,7 @@ namespace Character
         [field: Space]
         [field: SerializeField] public Transform CharacterCenter { get; private set; }
         [SerializeField] private PlayerAttack playerAttack;
+        [SerializeField] private float attackMoveForce;
 
         [Inject] private readonly ProjectileFactory _projectileFactory;
         [Inject] private readonly IGameCycleController _gameCycleController;
@@ -115,11 +116,18 @@ namespace Character
 
             StatsSystem.OnStatsChanged.Invoke();
         }
-        
+
         private void FirstAttack()
         {
             if (CanAttack && !animator.GetBool("IsAttacking"))
+            {
                 playerAttack.Attack();
+                if (animator.GetBool("IsAttacking"))
+                {
+                    Stop();
+                    _rigidbody2D.AddForce(Vector2.right * (Mathf.Sign(transform.localScale.x) * attackMoveForce));   
+                }
+            }
         }
         
         private void SecondAttack() 

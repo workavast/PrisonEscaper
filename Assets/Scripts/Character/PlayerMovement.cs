@@ -70,7 +70,7 @@ namespace Character
 				Move(_horizontalMove * Time.fixedDeltaTime, _jump, _dash);
 			else
 			{
-				if(Grounded)
+				if(Grounded && !animator.GetBool("IsAttacking"))
 					Stop();
 			}
 			_jump = false;

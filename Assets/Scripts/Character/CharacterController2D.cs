@@ -50,7 +50,7 @@ namespace Character
 		#endregion
 		
 		#region PrivateFields
-		private Rigidbody2D _rigidbody2D;
+		protected Rigidbody2D _rigidbody2D;
 		private Vector3 _velocity = Vector3.zero;
 
 		private bool _canMove = true;
