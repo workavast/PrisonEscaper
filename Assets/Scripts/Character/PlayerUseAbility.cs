@@ -10,7 +10,7 @@ namespace Character
     public class PlayerUseAbility : MonoBehaviour
     {
         [SerializeField] private GameObject treeRoots;
-        [SerializeField] private GameObject fireParticle;
+        [SerializeField] private GameObject smoke;
         
         public static PlayerUseAbility Instance { private set; get; }
         
@@ -43,7 +43,10 @@ namespace Character
             _player.IsHidden = isActivate;
             _player.StatsSystem.isInvincible = isActivate;
             Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), _player.IsHidden);
-
+            
+            if(isActivate)
+                Instantiate(smoke, _player.transform.position + Vector3.up * 1.25f, Quaternion.identity);
+                
             if (_sneakTimeout != null)
             {
                 StopCoroutine(_sneakTimeout);
